@@ -34,7 +34,7 @@ set +a
 : "${DATABASE_URL:?В .env должна быть DATABASE_URL}"
 
 echo "==> Installing locked Node.js dependencies"
-npm ci
+npm ci --include=dev
 
 echo "==> Generating Prisma client"
 npx prisma generate

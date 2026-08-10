@@ -15,7 +15,7 @@ REPO_URL="https://github.com/pogrikCarp/masterskaya-prazdnikov.git"
 APP_DIR="/opt/myapp"
 APP_NAME="masterskaya-prazdnikov"
 APP_PORT="3002"
-NODE_MAJOR="20"
+NODE_MAJOR="22"
 DOMAIN="${1:-}"
 
 log() { echo -e "\n\033[1;32m==> $1\033[0m"; }
