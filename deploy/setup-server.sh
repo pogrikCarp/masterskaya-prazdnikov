@@ -25,7 +25,9 @@ NODE_MAJOR="20"
 
 DB_NAME="masterskaya"
 DB_USER="masterskaya"
-DB_PASS="$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 24)"
+# Без pipeline: с `set -o pipefail` конструкция `tr | head` завершалась
+# ошибкой SIGPIPE и останавливала скрипт до начала установки.
+DB_PASS="$(tr -d '-' </proc/sys/kernel/random/uuid)"
 
 DOMAIN="${1:-}"
 CREDENTIALS_FILE="/root/${APP_NAME}-credentials.txt"
