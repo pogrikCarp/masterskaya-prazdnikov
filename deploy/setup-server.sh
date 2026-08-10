@@ -1,47 +1,30 @@
 #!/usr/bin/env bash
 #
-# setup-server.sh — подготовка чистого Ubuntu-сервера (22.04/24.04) и деплой
-# сайта "Мастерская праздников" (Next.js + Prisma + PostgreSQL + Nginx + PM2).
+# setup-server.sh — первичная подготовка Ubuntu-сервера для CI/CD.
+# Устанавливает Node.js, PostgreSQL, Nginx и systemd-сервис.
 #
-# Запуск (от root или через sudo):
-#   sudo bash setup-server.sh [домен]
+# ВАЖНО: до запуска вручную создайте /opt/myapp/.env.
+# Скрипт никогда не создаёт и не перезаписывает .env.
 #
 # Пример:
-#   sudo bash setup-server.sh prazdniki.studio
-#   sudo bash setup-server.sh            # без домена — Nginx слушает по IP, без SSL
-#
-# Скрипт идемпотентен: повторный запуск безопасен (обновит код и перезапустит сервис).
+#   bash deploy/setup-server.sh prazdniki.studio
 
 set -euo pipefail
 
-# ---------------------------------------------------------------------------
-# Настройки — при необходимости поменяйте перед запуском
-# ---------------------------------------------------------------------------
 REPO_URL="https://github.com/pogrikCarp/masterskaya-prazdnikov.git"
-APP_DIR="/var/www/masterskaya-prazdnikov"
+APP_DIR="/opt/myapp"
 APP_NAME="masterskaya-prazdnikov"
 APP_PORT="3002"
 NODE_MAJOR="20"
-
-DB_NAME="masterskaya"
-DB_USER="masterskaya"
-# Без pipeline: с `set -o pipefail` конструкция `tr | head` завершалась
-# ошибкой SIGPIPE и останавливала скрипт до начала установки.
-DB_PASS="$(tr -d '-' </proc/sys/kernel/random/uuid)"
-
 DOMAIN="${1:-}"
-CREDENTIALS_FILE="/root/${APP_NAME}-credentials.txt"
 
 log() { echo -e "\n\033[1;32m==> $1\033[0m"; }
 
 if [[ "$(id -u)" -ne 0 ]]; then
-  echo "Запустите скрипт с правами root (sudo bash setup-server.sh)" >&2
+  echo "Запустите скрипт от root." >&2
   exit 1
 fi
 
-# ---------------------------------------------------------------------------
-# 0. Своп-файл — на маленьких VPS (1-2 ГБ RAM) сборка Next.js падает с OOM
-# ---------------------------------------------------------------------------
 log "Проверка памяти и swap"
 TOTAL_MEM_KB="$(awk '/MemTotal/ {print $2}' /proc/meminfo)"
 if [[ "$TOTAL_MEM_KB" -lt 3000000 ]] && ! swapon --show | grep -q .; then
@@ -55,18 +38,11 @@ if [[ "$TOTAL_MEM_KB" -lt 3000000 ]] && ! swapon --show | grep -q .; then
   fi
 fi
 
-# ---------------------------------------------------------------------------
-# 1. Базовые пакеты и обновление системы
-# ---------------------------------------------------------------------------
 log "Обновление системы и установка базовых пакетов"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
-apt-get upgrade -y
 apt-get install -y curl git ufw build-essential ca-certificates gnupg lsb-release
 
-# ---------------------------------------------------------------------------
-# 2. Node.js (NodeSource)
-# ---------------------------------------------------------------------------
 if ! command -v node >/dev/null || [[ "$(node -v | cut -d. -f1 | tr -d v)" -lt "$NODE_MAJOR" ]]; then
   log "Установка Node.js ${NODE_MAJOR}.x"
   curl -fsSL "https://deb.nodesource.com/setup_${NODE_MAJOR}.x" | bash -
@@ -75,82 +51,54 @@ else
   log "Node.js уже установлен: $(node -v)"
 fi
 
-log "Установка PM2 (менеджер процессов Node.js)"
-npm install -g pm2
-
-# ---------------------------------------------------------------------------
-# 3. PostgreSQL
-# ---------------------------------------------------------------------------
 log "Установка PostgreSQL"
 apt-get install -y postgresql postgresql-contrib
 systemctl enable --now postgresql
 
-log "Настройка базы данных и пользователя PostgreSQL"
-sudo -u postgres psql -v ON_ERROR_STOP=1 <<-SQL
-DO \$\$
-BEGIN
-  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '${DB_USER}') THEN
-    CREATE ROLE ${DB_USER} LOGIN PASSWORD '${DB_PASS}';
-  ELSE
-    ALTER ROLE ${DB_USER} WITH PASSWORD '${DB_PASS}';
-  END IF;
-END
-\$\$;
-SQL
-
-if ! sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname = '${DB_NAME}'" | grep -q 1; then
-  sudo -u postgres psql -c "CREATE DATABASE ${DB_NAME} OWNER ${DB_USER};"
-fi
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};"
-
-DATABASE_URL="postgresql://${DB_USER}:${DB_PASS}@localhost:5432/${DB_NAME}?schema=public"
-
-# ---------------------------------------------------------------------------
-# 4. Клонирование / обновление кода приложения
-# ---------------------------------------------------------------------------
 log "Получение кода приложения из ${REPO_URL}"
-mkdir -p "$(dirname "$APP_DIR")"
+install -d -o root -g root -m 755 "$(dirname "$APP_DIR")"
 if [[ -d "$APP_DIR/.git" ]]; then
-  git -C "$APP_DIR" pull --ff-only
+  git -C "$APP_DIR" fetch origin main
+  git -C "$APP_DIR" reset --hard origin/main
 else
   git clone "$REPO_URL" "$APP_DIR"
 fi
+chown root:root "$APP_DIR"
+chmod 755 "$APP_DIR"
 
-log "Запись .env"
-cat >"$APP_DIR/.env" <<EOF
-DATABASE_URL="${DATABASE_URL}"
-NODE_ENV=production
-EOF
-
-# ---------------------------------------------------------------------------
-# 5. Установка зависимостей, миграции, сборка
-# ---------------------------------------------------------------------------
-log "npm ci"
-cd "$APP_DIR"
-npm ci
-
-log "Применение миграций Prisma к PostgreSQL"
-npx prisma generate
-npx prisma migrate deploy
-
-log "Сборка Next.js (production build)"
-npm run build
-
-# ---------------------------------------------------------------------------
-# 6. PM2 — запуск и автозапуск при перезагрузке сервера
-# ---------------------------------------------------------------------------
-log "Запуск приложения через PM2"
-if pm2 list | grep -q "$APP_NAME"; then
-  pm2 restart "$APP_NAME"
-else
-  pm2 start npm --name "$APP_NAME" -- start
+if [[ ! -f "$APP_DIR/.env" ]]; then
+  echo "Не найден $APP_DIR/.env. Создайте его вручную по инструкции и запустите скрипт повторно." >&2
+  exit 1
 fi
-pm2 save
-env PATH="$PATH:/usr/bin" pm2 startup systemd -u root --hp /root >/dev/null
+chmod 600 "$APP_DIR/.env"
 
-# ---------------------------------------------------------------------------
-# 7. Nginx — обратный проксирующий сервер
-# ---------------------------------------------------------------------------
+set -a
+# shellcheck disable=SC1090
+source "$APP_DIR/.env"
+set +a
+
+for variable in POSTGRES_DB POSTGRES_USER POSTGRES_PASSWORD DATABASE_URL; do
+  if [[ -z "${!variable:-}" ]]; then
+    echo "В $APP_DIR/.env не задана переменная $variable." >&2
+    exit 1
+  fi
+done
+
+if [[ ! "$POSTGRES_DB" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]] || [[ ! "$POSTGRES_USER" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
+  echo "POSTGRES_DB и POSTGRES_USER могут содержать только буквы, цифры и _." >&2
+  exit 1
+fi
+
+POSTGRES_PASSWORD_SQL="${POSTGRES_PASSWORD//\'/\'\'}"
+if ! runuser -u postgres -- psql -tAc "SELECT 1 FROM pg_roles WHERE rolname = '$POSTGRES_USER'" | grep -q 1; then
+  runuser -u postgres -- psql -v ON_ERROR_STOP=1 -c "CREATE ROLE \"$POSTGRES_USER\" LOGIN PASSWORD '$POSTGRES_PASSWORD_SQL';"
+else
+  runuser -u postgres -- psql -v ON_ERROR_STOP=1 -c "ALTER ROLE \"$POSTGRES_USER\" WITH PASSWORD '$POSTGRES_PASSWORD_SQL';"
+fi
+if ! runuser -u postgres -- psql -tAc "SELECT 1 FROM pg_database WHERE datname = '$POSTGRES_DB'" | grep -q 1; then
+  runuser -u postgres -- createdb -O "$POSTGRES_USER" "$POSTGRES_DB"
+fi
+
 log "Установка и настройка Nginx"
 apt-get install -y nginx
 
@@ -182,44 +130,25 @@ nginx -t
 systemctl enable --now nginx
 systemctl reload nginx
 
-# ---------------------------------------------------------------------------
-# 8. Firewall (UFW)
-# ---------------------------------------------------------------------------
 log "Настройка firewall (UFW)"
 ufw allow OpenSSH
 ufw allow "Nginx Full"
 ufw --force enable
 
-# ---------------------------------------------------------------------------
-# 9. SSL (Let's Encrypt) — только если передан домен
-# ---------------------------------------------------------------------------
+log "Установка systemd-сервиса"
+install -m 644 "$APP_DIR/deploy/masterskaya-prazdnikov.service" \
+  "/etc/systemd/system/${APP_NAME}.service"
+systemctl daemon-reload
+systemctl enable "$APP_NAME"
+
 if [[ -n "$DOMAIN" ]]; then
   log "Установка Certbot и выпуск SSL-сертификата для ${DOMAIN}"
   apt-get install -y certbot python3-certbot-nginx
   certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" --non-interactive --agree-tos -m "admin@${DOMAIN}" --redirect || \
     echo "Certbot не смог выпустить сертификат автоматически — проверьте, что DNS-запись домена указывает на этот сервер, и запустите вручную: certbot --nginx -d $DOMAIN"
 else
-  log "Домен не передан — SSL пропущен. Позже: sudo bash setup-server.sh ваш-домен.ru"
+  log "Домен не передан — SSL пропущен."
 fi
 
-# ---------------------------------------------------------------------------
-# Итог
-# ---------------------------------------------------------------------------
-cat >"$CREDENTIALS_FILE" <<EOF
-Дата: $(date)
-DATABASE_URL=${DATABASE_URL}
-Приложение: ${APP_DIR}
-PM2 процесс: ${APP_NAME} (порт ${APP_PORT})
-EOF
-chmod 600 "$CREDENTIALS_FILE"
-
-log "Готово!"
-echo "Сайт запущен через PM2 и проксируется Nginx."
-echo "Данные для подключения к БД сохранены в: ${CREDENTIALS_FILE}"
-echo "Проверить статус приложения: pm2 status"
-echo "Логи приложения:            pm2 logs ${APP_NAME}"
-if [[ -n "$DOMAIN" ]]; then
-  echo "Сайт доступен по адресу:    https://${DOMAIN}"
-else
-  echo "Сайт доступен по IP сервера на 80 порту."
-fi
+log "Первичная настройка завершена. Запускаю первый деплой."
+bash "$APP_DIR/deploy/deploy-server.sh"
