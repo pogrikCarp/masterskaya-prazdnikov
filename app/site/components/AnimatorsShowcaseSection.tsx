@@ -68,6 +68,16 @@ export default function AnimatorsShowcaseSection({
     el.scrollBy({ left: dir * amount, behavior: "smooth" });
   };
 
+  const onScrollerWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    const isVerticalScroll =
+      !event.shiftKey && Math.abs(event.deltaY) >= Math.abs(event.deltaX);
+
+    if (!isVerticalScroll) return;
+
+    event.preventDefault();
+    window.scrollBy({ top: event.deltaY, behavior: "auto" });
+  };
+
   return (
     <>
       <section id="services" className="py-14">
@@ -118,6 +128,7 @@ export default function AnimatorsShowcaseSection({
             ) : (
               <div
                 ref={popularScrollerRef}
+                onWheel={onScrollerWheel}
                 className="flex items-stretch gap-5 overflow-x-auto px-6 pb-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth snap-x snap-mandatory scroll-px-6 focus:outline-none"
               >
                 {popular.map((c, idx) => (
