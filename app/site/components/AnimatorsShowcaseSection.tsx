@@ -56,35 +56,6 @@ export default function AnimatorsShowcaseSection({
     fetchAnimators();
   }, []);
 
-  useEffect(() => {
-    const el = popularScrollerRef.current;
-    if (!el) return;
-
-    const onWheel = (e: WheelEvent) => {
-      if (e.defaultPrevented) return;
-      if (e.ctrlKey) return;
-
-      const absX = Math.abs(e.deltaX);
-      const absY = Math.abs(e.deltaY);
-
-      if (e.shiftKey && absY > 0) {
-        e.preventDefault();
-        el.scrollLeft += e.deltaY;
-        return;
-      }
-
-      if (absX > absY && absX > 0) {
-        e.preventDefault();
-        el.scrollLeft += e.deltaX;
-      }
-    };
-
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      el.removeEventListener("wheel", onWheel);
-    };
-  }, []);
-
   const scrollPopularByAmount = (dir: -1 | 1) => {
     const el = popularScrollerRef.current;
     if (!el) return;
@@ -147,7 +118,7 @@ export default function AnimatorsShowcaseSection({
             ) : (
               <div
                 ref={popularScrollerRef}
-                className="flex items-stretch gap-5 overflow-x-auto px-6 pb-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth snap-x snap-mandatory scroll-px-6 overscroll-x-contain overscroll-y-none [touch-action:pan-x] focus:outline-none"
+                className="flex items-stretch gap-5 overflow-x-auto px-6 pb-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth snap-x snap-mandatory scroll-px-6 focus:outline-none"
               >
                 {popular.map((c, idx) => (
                   <motion.div
