@@ -42,6 +42,9 @@ npx prisma generate
 echo "==> Applying Prisma migrations"
 npx prisma migrate deploy
 
+echo "==> Updating existing uploaded image URLs"
+npm run db:normalize-uploads
+
 echo "==> Running lint"
 npm run lint
 

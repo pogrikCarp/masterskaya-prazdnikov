@@ -31,8 +31,9 @@ export async function POST(request: Request) {
     const filepath = path.join(uploadsDir, filename);
     await writeFile(filepath, buffer);
 
-    // Return public URL
-    const url = `/uploads/${filename}`;
+    // Next.js indexes public/ only at process start. Serving via an API route
+    // makes a photo available immediately, without restarting the site.
+    const url = `/api/uploads/${filename}`;
     return NextResponse.json({ url });
   } catch (error) {
     console.error("Upload error:", error);
