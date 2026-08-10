@@ -819,7 +819,7 @@ export default function HeroSection() {
                 aria-hidden="true"
                 width={112}
                 height={112}
-                className="pointer-events-none absolute left-[calc(50%_-_390px)] top-0 hidden h-28 w-28 -translate-y-[8%] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.25)] lg:block"
+                className="pointer-events-none absolute left-24 top-0 hidden h-28 w-28 -translate-y-[8%] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.25)] lg:block"
                 priority
               />
 
