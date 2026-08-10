@@ -1,12 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
 import { Icon } from "./Icon";
-import LogoBelowNavigation from "../../img/logoformpng.png";
 
 type NavItem = {
   label: string;
@@ -112,7 +110,7 @@ export default function GlassHeader() {
           marginTop: { type: "spring", stiffness: 140, damping: 40, mass: 1.2 },
           borderRadius: { type: "spring", stiffness: 140, damping: 40, mass: 1.2 },
         }}
-        className={`relative backdrop-blur-xl ${surfaceClass} ${
+        className={`relative overflow-hidden backdrop-blur-xl ${surfaceClass} ${
           scrolled ? "border-b border-black/5" : ""
         }`}
       >
@@ -235,20 +233,6 @@ export default function GlassHeader() {
               </button>
             </div>
           </div>
-
-          <Link
-            href="/"
-            className="absolute left-1/2 top-full z-10 -translate-x-1/2 -translate-y-2 transition-transform hover:scale-105"
-          >
-            <Image
-              src={LogoBelowNavigation}
-              alt="Мастерская праздников"
-              width={150}
-              height={150}
-              className="h-[92px] w-[92px] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.25)] sm:h-[112px] sm:w-[112px]"
-              priority
-            />
-          </Link>
 
           {open && (
             <div className="lg:hidden px-4 pb-4" data-site-mobile>

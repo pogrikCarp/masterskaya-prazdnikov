@@ -12,6 +12,7 @@ import FoldSparkleButton from "./FoldSparkleButton";
 
 import Among2 from "../../img/Among2.png";
 import Logo from "../../img/mastprasnPOSLEDN.png";
+import LogoForm from "../../img/logoformpng.png";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -761,7 +762,7 @@ export default function HeroSection() {
       </div>
 
       <Container>
-        <div className="relative pt-40 pb-28 sm:pt-44 sm:pb-32 lg:pt-48 lg:pb-40">
+        <div className="relative pt-14 pb-28 sm:pt-16 sm:pb-32 lg:pt-20 lg:pb-40">
           <div className="mx-auto max-w-4xl text-center">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
@@ -811,16 +812,28 @@ export default function HeroSection() {
               </motion.span>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease, delay: 0.08 }}
-              className="mt-2 text-[42px] leading-[1.02] font-extrabold tracking-tight text-white sm:text-[64px]"
-            >
-              Подарите ребенку сказку,
-              <br />
-              <span>а себе — отдых</span>
-            </motion.h1>
+            <div className="relative">
+              <Image
+                src={LogoForm}
+                alt=""
+                aria-hidden="true"
+                width={112}
+                height={112}
+                className="pointer-events-none absolute left-[7%] top-0 hidden h-20 w-20 -translate-y-[8%] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.25)] sm:block lg:h-28 lg:w-28"
+                priority
+              />
+
+              <motion.h1
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, ease, delay: 0.08 }}
+                className="mt-2 text-[42px] leading-[1.02] font-extrabold tracking-tight text-white sm:text-[64px]"
+              >
+                Подарите ребенку сказку,
+                <br />
+                <span>а себе — отдых</span>
+              </motion.h1>
+            </div>
 
             <motion.p
               initial={{ opacity: 0, y: 14 }}

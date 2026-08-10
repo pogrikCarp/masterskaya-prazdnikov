@@ -1,11 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
 import { Icon } from "./Icon";
-import LogoBelowNavigation from "../../img/logoformpng.png";
 
 type NavItem = {
   label: string;
@@ -70,7 +68,7 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 relative">
+    <header className="sticky top-0 z-50">
       {/* Top bar - фиолетовый тон, приглушённый */}
       <div className="bg-gradient-to-r from-[#5A3FE0]/90 to-[#7C3AED]/85 backdrop-blur-md">
         <Container>
@@ -149,20 +147,6 @@ export default function Header() {
             </div>
           </div>
         </Container>
-
-        <Link
-          href="/"
-          className="absolute left-1/2 top-full z-10 -translate-x-1/2 -translate-y-2 transition-transform hover:scale-105"
-        >
-          <Image
-            src={LogoBelowNavigation}
-            alt="Мастерская праздников"
-            width={150}
-            height={150}
-            className="h-[92px] w-[92px] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.18)] sm:h-[112px] sm:w-[112px]"
-            priority
-          />
-        </Link>
 
         {open && (
           <div className="lg:hidden" data-site-mobile>
