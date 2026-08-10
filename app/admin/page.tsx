@@ -135,6 +135,8 @@ function EntityModal({
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [selectedFileName, setSelectedFileName] = useState("");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(entity?.imageUrl || "");
 
   const handleChange = (field: string, value: string | number | boolean | null) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -146,6 +148,7 @@ function EntityModal({
 
     setUploading(true);
     setError("");
+    setSelectedFileName(file.name);
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -157,7 +160,8 @@ function EntityModal({
 
       if (res.ok) {
         const { url } = await res.json();
-        handleChange("imageUrl", url);
+        setUploadedImageUrl(url);
+        setForm((prev) => ({ ...prev, imageUrl: url }));
       } else {
         const data = await res.json().catch(() => ({}));
         setError(data.error || "Не удалось загрузить изображение");
@@ -179,7 +183,10 @@ function EntityModal({
       const res = await fetch(`/api/admin/${entityType}`, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          imageUrl: uploadedImageUrl || form.imageUrl || null,
+        }),
       });
 
       if (res.ok) {
@@ -305,13 +312,23 @@ function EntityModal({
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Изображение</label>
             <div className="flex items-center gap-4">
-              {form.imageUrl && (
-                <img src={form.imageUrl} alt="" className="w-16 h-16 object-cover rounded-lg" />
+              {(uploadedImageUrl || form.imageUrl) && (
+                <img
+                  src={uploadedImageUrl || form.imageUrl || ""}
+                  alt=""
+                  className="w-16 h-16 object-cover rounded-lg"
+                />
               )}
               <label className="cursor-pointer px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">
-                {uploading ? "Загрузка..." : "Выбрать файл"}
+                {uploading ? "Загрузка..." : uploadedImageUrl ? "Заменить файл" : "Выбрать файл"}
                 <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
               </label>
+              {selectedFileName && (
+                <span className="max-w-40 truncate text-xs text-gray-500">
+                  {uploadedImageUrl ? "Загружено: " : "Выбрано: "}
+                  {selectedFileName}
+                </span>
+              )}
             </div>
           </div>
 
