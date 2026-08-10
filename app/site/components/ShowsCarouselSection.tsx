@@ -120,7 +120,15 @@ export default function ShowsCarouselSection() {
     return (
       <section id="shows" className="py-14">
         <Container className="max-w-[1320px]">
-          <div className="text-center py-20 text-black/50">Нет шоу-программ</div>
+          <div className="text-center py-20">
+            <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
+              Шоу-программы
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-black/60">
+              Яркие программы для детских и семейных праздников.
+            </p>
+            <div className="mt-8 text-black/50">Нет шоу-программ</div>
+          </div>
         </Container>
       </section>
     );
