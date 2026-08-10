@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
 import { Icon } from "./Icon";
-import Logo from "../../img/logoitog.jpg";
+import LogoBelowNavigation from "../../img/logoformpng.png";
 
 type NavItem = {
   label: string;
@@ -70,7 +70,7 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50">
+    <header className="sticky top-0 z-50 relative">
       {/* Top bar - фиолетовый тон, приглушённый */}
       <div className="bg-gradient-to-r from-[#5A3FE0]/90 to-[#7C3AED]/85 backdrop-blur-md">
         <Container>
@@ -111,19 +111,6 @@ export default function Header() {
         <Container>
           <div className="flex h-[72px] items-center justify-between gap-6 px-2">
             <Link href="/" className="group flex items-center gap-3.5">
-              <div className="relative">
-                <div className="absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">
-                  <span className="mp-confetti mp-confetti-1" />
-                  <span className="mp-confetti mp-confetti-2" />
-                  <span className="mp-confetti mp-confetti-3" />
-                  <span className="mp-confetti mp-confetti-4" />
-                  <span className="mp-confetti mp-confetti-5" />
-                </div>
-
-                <div className="relative h-12 w-12 overflow-hidden rounded-2xl ring-1 ring-black/5 shadow-[0_8px_24px_rgba(90,63,224,0.25)] transition-all duration-300 group-hover:-rotate-[8deg] group-hover:scale-105 group-hover:shadow-[0_12px_32px_rgba(90,63,224,0.35)]">
-                  <Image src={Logo} alt="Мастерская праздников" fill sizes="48px" className="object-cover" priority />
-                </div>
-              </div>
               <div className="leading-tight">
                 <div className="text-[15px] font-bold tracking-tight text-[#2A245E]">Мастерская праздников</div>
                 <div className="text-[12px] font-medium tracking-wide text-[#5A3FE0]/60">аниматоры, декор, шоу</div>
@@ -162,6 +149,20 @@ export default function Header() {
             </div>
           </div>
         </Container>
+
+        <Link
+          href="/"
+          className="absolute left-1/2 top-full z-10 -translate-x-1/2 -translate-y-2 transition-transform hover:scale-105"
+        >
+          <Image
+            src={LogoBelowNavigation}
+            alt="Мастерская праздников"
+            width={150}
+            height={150}
+            className="h-[92px] w-[92px] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.18)] sm:h-[112px] sm:w-[112px]"
+            priority
+          />
+        </Link>
 
         {open && (
           <div className="lg:hidden" data-site-mobile>

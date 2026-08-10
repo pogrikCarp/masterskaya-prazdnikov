@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
 import { Icon } from "./Icon";
-import Logo from "../../img/logoitog.jpg";
+import LogoBelowNavigation from "../../img/logoformpng.png";
 
 type NavItem = {
   label: string;
@@ -112,7 +112,7 @@ export default function GlassHeader() {
           marginTop: { type: "spring", stiffness: 140, damping: 40, mass: 1.2 },
           borderRadius: { type: "spring", stiffness: 140, damping: 40, mass: 1.2 },
         }}
-        className={`relative overflow-hidden backdrop-blur-xl ${surfaceClass} ${
+        className={`relative backdrop-blur-xl ${surfaceClass} ${
           scrolled ? "border-b border-black/5" : ""
         }`}
       >
@@ -130,19 +130,7 @@ export default function GlassHeader() {
               scrolled ? "py-2" : "py-3"
             } relative`}
           >
-            <Link
-              href="/"
-              className="group flex w-[92px] shrink-0 items-center gap-2 sm:w-[103px] lg:w-[120px]"
-            >
-              <div
-                className={[
-                  "relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl ring-1 transition-transform duration-300 group-hover:-rotate-[8deg] group-hover:scale-105",
-                  scrolled ? "ring-black/10 shadow-[0_8px_20px_rgba(0,0,0,0.12)]" : "ring-white/30 shadow-[0_8px_20px_rgba(0,0,0,0.25)]",
-                ].join(" ")}
-              >
-                <Image src={Logo} alt="Мастерская праздников" fill sizes="40px" className="object-cover" priority />
-              </div>
-            </Link>
+            <div className="w-11 shrink-0" aria-hidden="true" />
 
             <nav className="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
               <div className="flex items-center justify-center gap-3">
@@ -247,6 +235,20 @@ export default function GlassHeader() {
               </button>
             </div>
           </div>
+
+          <Link
+            href="/"
+            className="absolute left-1/2 top-full z-10 -translate-x-1/2 -translate-y-2 transition-transform hover:scale-105"
+          >
+            <Image
+              src={LogoBelowNavigation}
+              alt="Мастерская праздников"
+              width={150}
+              height={150}
+              className="h-[92px] w-[92px] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.25)] sm:h-[112px] sm:w-[112px]"
+              priority
+            />
+          </Link>
 
           {open && (
             <div className="lg:hidden px-4 pb-4" data-site-mobile>
