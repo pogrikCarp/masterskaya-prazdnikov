@@ -2,15 +2,26 @@
 
 import { useMemo, useState } from "react";
 import Lightbox from "./Lightbox";
-import { galleryCategories, galleryItems, type GalleryCategory } from "../content/gallery";
+import { galleryItems as fallbackGalleryItems } from "../content/gallery";
 
-type FilterId = "all" | GalleryCategory;
+type FilterId = string;
+
+export type GalleryGridItem = {
+  id: string;
+  src: string;
+  thumb: string;
+  alt: string;
+  category: string;
+  place: string;
+};
 
 export default function PhotoGrid({
+  galleryItems = fallbackGalleryItems,
   initialFilter = "all",
   title = "Фотогалерея",
   subtitle = "Яркие кадры, живые эмоции и аккуратная визуальная подача",
 }: {
+  galleryItems?: GalleryGridItem[];
   initialFilter?: FilterId;
   title?: string;
   subtitle?: string;
@@ -18,10 +29,20 @@ export default function PhotoGrid({
   const [filter, setFilter] = useState<FilterId>(initialFilter);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
+  const galleryCategories = useMemo(
+    () => [
+      { id: "all", label: "Все" },
+      ...Array.from(new Set(galleryItems.map((item) => item.category)))
+        .filter(Boolean)
+        .map((category) => ({ id: category, label: category })),
+    ],
+    [galleryItems]
+  );
+
   const items = useMemo(() => {
     if (filter === "all") return galleryItems;
     return galleryItems.filter((i) => i.category === filter);
-  }, [filter]);
+  }, [filter, galleryItems]);
 
   const onPrev = () => {
     setActiveIndex((idx) => {

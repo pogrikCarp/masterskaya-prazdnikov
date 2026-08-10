@@ -1,8 +1,28 @@
 import SiteShell from "../site/components/SiteShell";
 import Container from "../site/components/Container";
 import PhotoGrid from "../site/components/PhotoGrid";
+import { galleryItems as fallbackGalleryItems } from "../site/content/gallery";
+import prisma from "@/lib/prisma";
 
-export default function GalleryPage() {
+export const dynamic = "force-dynamic";
+
+export default async function GalleryPage() {
+  const galleryFromDatabase = await prisma.galleryItem.findMany({
+    where: { active: true },
+    orderBy: [{ order: "asc" }, { id: "desc" }],
+  });
+
+  const galleryItems = galleryFromDatabase.length
+    ? galleryFromDatabase.map((item) => ({
+        id: String(item.id),
+        src: item.imageUrl,
+        thumb: item.imageUrl,
+        alt: item.title || "Фотография с праздника",
+        category: item.category || "Без категории",
+        place: item.description || "",
+      }))
+    : fallbackGalleryItems;
+
   return (
     <SiteShell>
       <section className="pt-10">
@@ -18,6 +38,7 @@ export default function GalleryPage() {
             </div>
 
             <PhotoGrid
+              galleryItems={galleryItems}
               title=""
               subtitle=""
             />

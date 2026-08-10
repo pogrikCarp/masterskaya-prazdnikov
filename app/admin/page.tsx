@@ -2,11 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-type EntityType = "animators" | "quests" | "shows" | "master-classes" | "additional-services";
+type EntityType =
+  | "animators"
+  | "quests"
+  | "shows"
+  | "master-classes"
+  | "additional-services"
+  | "gallery";
 
 type BaseEntity = {
   id: number;
-  name: string;
+  name?: string;
+  title?: string | null;
   description: string | null;
   imageUrl: string | null;
   price?: number;
@@ -16,13 +23,16 @@ type BaseEntity = {
   maxAge?: number | null;
   popular: boolean;
   active: boolean;
+  category?: string | null;
+  order?: number;
 };
 
 type EntityConfig = {
   title: string;
-  priceField: "price" | "pricePerHour";
+  priceField: "price" | "pricePerHour" | null;
   hasDuration: boolean;
   hasAge: boolean;
+  isGallery?: boolean;
 };
 
 const ENTITY_CONFIG: Record<EntityType, EntityConfig> = {
@@ -31,6 +41,7 @@ const ENTITY_CONFIG: Record<EntityType, EntityConfig> = {
   shows: { title: "Шоу-программы", priceField: "price", hasDuration: true, hasAge: false },
   "master-classes": { title: "Мастер-классы", priceField: "price", hasDuration: true, hasAge: true },
   "additional-services": { title: "Дополнительные услуги", priceField: "price", hasDuration: false, hasAge: false },
+  gallery: { title: "Галерея", priceField: null, hasDuration: false, hasAge: false, isGallery: true },
 };
 
 function LoginForm({ onLogin }: { onLogin: () => void }) {
@@ -115,8 +126,11 @@ function EntityModal({
   onSave: () => void;
 }) {
   const config = ENTITY_CONFIG[entityType];
+  const priceField = config.priceField;
   const [form, setForm] = useState<Partial<BaseEntity>>(
-    entity || { name: "", description: "", popular: false, active: true }
+    entity || (config.isGallery
+      ? { title: "", description: "", category: "", order: 0, active: true, popular: false }
+      : { name: "", description: "", popular: false, active: true })
   );
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -184,11 +198,13 @@ function EntityModal({
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Название *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {config.isGallery ? "Название фото" : "Название"} *
+            </label>
             <input
               type="text"
-              value={form.name || ""}
-              onChange={(e) => handleChange("name", e.target.value)}
+              value={config.isGallery ? form.title || "" : form.name || ""}
+              onChange={(e) => handleChange(config.isGallery ? "title" : "name", e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
               required
             />
@@ -204,17 +220,43 @@ function EntityModal({
             />
           </div>
 
-          <div>
+          {!config.isGallery && priceField && (
+            <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {config.priceField === "pricePerHour" ? "Цена за час (₽)" : "Цена (₽)"}
+              {priceField === "pricePerHour" ? "Цена за час (₽)" : "Цена (₽)"}
             </label>
             <input
               type="number"
-              value={form[config.priceField] || ""}
-              onChange={(e) => handleChange(config.priceField, e.target.value)}
+              value={form[priceField] || ""}
+              onChange={(e) => handleChange(priceField, e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
             />
-          </div>
+            </div>
+          )}
+
+          {config.isGallery && (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Категория</label>
+                <input
+                  type="text"
+                  value={form.category || ""}
+                  onChange={(e) => handleChange("category", e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  placeholder="Например: Детские праздники"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Порядок</label>
+                <input
+                  type="number"
+                  value={form.order ?? 0}
+                  onChange={(e) => handleChange("order", e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+          )}
 
           {config.hasDuration && (
             <div>
@@ -265,15 +307,17 @@ function EntityModal({
           </div>
 
           <div className="flex gap-4">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={form.popular || false}
-                onChange={(e) => handleChange("popular", e.target.checked)}
-                className="w-4 h-4 rounded border-gray-300 text-indigo-600"
-              />
-              <span className="text-sm">Популярный</span>
-            </label>
+            {!config.isGallery && (
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.popular || false}
+                  onChange={(e) => handleChange("popular", e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-indigo-600"
+                />
+                <span className="text-sm">Популярный</span>
+              </label>
+            )}
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -435,7 +479,9 @@ export default function AdminPage() {
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Фото</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Название</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Цена</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      {config.isGallery ? "Категория / порядок" : "Цена"}
+                    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Действия</th>
                   </tr>
@@ -453,16 +499,24 @@ export default function AdminPage() {
                         )}
                       </td>
                       <td className="px-6 py-4">
-                        <div className="font-medium text-gray-900">{item.name}</div>
+                        <div className="font-medium text-gray-900">
+                          {config.isGallery ? item.title : item.name}
+                        </div>
                         <div className="text-sm text-gray-500 truncate max-w-xs">{item.description}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        {(item[config.priceField] ?? 0).toLocaleString()} ₽
-                        {config.priceField === "pricePerHour" && "/ч"}
+                        {config.isGallery ? (
+                          <span>{item.category || "Без категории"} · {item.order ?? 0}</span>
+                        ) : (
+                          <>
+                            {(item[config.priceField!] ?? 0).toLocaleString()} ₽
+                            {config.priceField === "pricePerHour" && "/ч"}
+                          </>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex gap-2">
-                          {item.popular && (
+                          {!config.isGallery && item.popular && (
                             <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
                               ⭐ Популярный
                             </span>

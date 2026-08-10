@@ -1,19 +1,14 @@
 import { cookies } from "next/headers";
+import { createHmac } from "crypto";
 
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "праздник2024";
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const SESSION_COOKIE = "admin_session";
-const SESSION_SECRET = process.env.SESSION_SECRET || "mp-secret-key-change-in-production";
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 export function hashPassword(password: string): string {
-  let hash = 0;
-  const str = password + SESSION_SECRET;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return hash.toString(36);
+  if (!SESSION_SECRET) return "";
+  return createHmac("sha256", SESSION_SECRET).update(password).digest("hex");
 }
 
 export function createSession(): string {
@@ -39,7 +34,13 @@ export function validateSession(session: string): boolean {
 }
 
 export function validateCredentials(username: string, password: string): boolean {
-  return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
+  return Boolean(
+    ADMIN_USERNAME &&
+      ADMIN_PASSWORD &&
+      SESSION_SECRET &&
+      username === ADMIN_USERNAME &&
+      password === ADMIN_PASSWORD
+  );
 }
 
 export async function isAuthenticated(): Promise<boolean> {
