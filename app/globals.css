@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+:root {
+  --mp-bg: #fbf3f4;
+  --mp-bg-rgb: 251 243 244;
+  --mp-text: #2b2b2b;
+  --mp-ink: #2b2b2b;
+
+  --mp-accent: #ffc400;
+  --mp-accent-2: #ff6b8a;
+  --mp-lavender: #8d7cff;
+  --mp-lavender-rgb: 141 124 255;
+  --mp-mint: #82e6c8;
+
+  --mp-card: rgba(255, 255, 255, 0.72);
+  --mp-border: rgba(0, 0, 0, 0.10);
+}
+
+@theme inline {
+  --color-background: var(--mp-bg);
+  --color-foreground: var(--mp-text);
+  --font-sans: var(--font-inter);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--mp-bg);
+  color: var(--mp-text);
+  overflow-x: hidden;
+}
+
+html.is-preloading,
+html.is-preloading body {
+  overflow: hidden;
+}
+
+html.is-preloading .site-content {
+  visibility: hidden;
+}
+
+.site-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mp-bg);
+  transition: opacity 480ms ease;
+}
+
+.site-preloader--hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.site-preloader__spinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  border: 3px solid rgba(var(--mp-lavender-rgb), 0.22);
+  border-top-color: rgba(var(--mp-lavender-rgb), 0.95);
+  animation: site-spinner 0.85s linear infinite;
+}
+
+@keyframes site-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (min-width: 1920px) {
+  :root {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1440px) {
+  :root {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 14px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.site-content {
+  min-height: 100vh;
+}
+
+/* Prevent long words/URLs from breaking layout */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: anywhere;
+}
