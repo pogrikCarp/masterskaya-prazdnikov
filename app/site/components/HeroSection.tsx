@@ -137,6 +137,16 @@ export default function HeroSection() {
       <AnimatedBackground />
       <FloatingParticles />
       <GlassHeader />
+      <Image
+        src={LogoForm}
+        alt=""
+        aria-hidden="true"
+        width={112}
+        height={112}
+        className="pointer-events-none absolute z-20 hidden h-28 w-28 object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.25)] lg:block"
+        style={{ left: "clamp(100px, 12vw, 160px)", top: "112px" }}
+        priority
+      />
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0">
@@ -812,28 +822,16 @@ export default function HeroSection() {
               </motion.span>
             </motion.div>
 
-            <div className="relative">
-              <Image
-                src={LogoForm}
-                alt=""
-                aria-hidden="true"
-                width={112}
-                height={112}
-                className="pointer-events-none absolute left-24 top-0 hidden h-28 w-28 -translate-y-[8%] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.25)] lg:block"
-                priority
-              />
-
-              <motion.h1
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, ease, delay: 0.08 }}
-                className="mt-2 text-[42px] leading-[1.02] font-extrabold tracking-tight text-white sm:text-[64px]"
-              >
-                Подарите ребенку сказку,
-                <br />
-                <span>а себе — отдых</span>
-              </motion.h1>
-            </div>
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease, delay: 0.08 }}
+              className="mt-2 text-[42px] leading-[1.02] font-extrabold tracking-tight text-white sm:text-[64px]"
+            >
+              Подарите ребенку сказку,
+              <br />
+              <span>а себе — отдых</span>
+            </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 14 }}
