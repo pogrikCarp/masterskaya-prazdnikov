@@ -120,15 +120,31 @@ export default function ShowsCarouselSection() {
     return (
       <section id="shows" className="py-14">
         <Container className="max-w-[1320px]">
-          <div className="text-center py-20">
-            <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-              Шоу-программы
-            </h2>
-            <p className="mt-3 text-sm sm:text-base text-black/60">
-              Яркие программы для детских и семейных праздников.
-            </p>
-            <div className="mt-8 text-black/50">Нет шоу-программ</div>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-3xl">
+              <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
+                Шоу-программы
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl">
+                Яркие программы для детских и семейных праздников.
+              </p>
+            </div>
+
+            <Link
+              href="/shows"
+              className="group relative inline-flex h-14 sm:h-16 items-center justify-center gap-3 rounded-full px-8 sm:px-10 text-sm sm:text-[15px] font-semibold text-white bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.92)_0%,rgb(var(--mp-lavender-rgb)_/_0.72)_42%,rgba(255,107,138,0.90)_100%)] bg-[length:220%_220%] bg-[position:0%_50%] shadow-[0_24px_70px_rgba(17,24,39,0.18)] ring-1 ring-white/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_30px_90px_rgba(17,24,39,0.22)] hover:bg-[position:100%_50%] active:translate-y-0"
+            >
+              <span className="pointer-events-none absolute inset-0 rounded-full bg-[linear-gradient(180deg,rgba(255,255,255,0.34)_0%,rgba(255,255,255,0.12)_28%,rgba(0,0,0,0.12)_100%)]" />
+              <span className="pointer-events-none absolute -top-10 left-6 h-16 w-44 rotate-[18deg] rounded-full bg-white/30 blur-2xl transition-transform duration-500 group-hover:translate-x-10" />
+              <span className="pointer-events-none absolute -inset-1 rounded-full bg-white/10 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
+              <span className="relative">Смотреть ещё</span>
+              <span className="relative inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/18 ring-1 ring-white/30 transition-transform duration-300 group-hover:translate-x-0.5">
+                <span className="text-lg leading-none">→</span>
+              </span>
+            </Link>
           </div>
+
+          <div className="mt-10 text-center text-black/50">Нет шоу-программ</div>
         </Container>
       </section>
     );
