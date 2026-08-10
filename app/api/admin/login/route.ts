@@ -15,10 +15,15 @@ export async function POST(request: Request) {
 
     const session = createSession();
     const cookieStore = await cookies();
+    const isSecureRequest =
+      new URL(request.url).protocol === "https:" ||
+      request.headers.get("x-forwarded-proto") === "https";
     
     cookieStore.set(SESSION_COOKIE, session, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      // На тестовом сервере сайт пока открыт по HTTP/IP. После подключения
+      // HTTPS через Nginx флаг снова включится автоматически.
+      secure: isSecureRequest,
       sameSite: "lax",
       maxAge: 24 * 60 * 60, // 24 hours
       path: "/",

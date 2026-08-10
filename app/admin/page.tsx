@@ -134,6 +134,7 @@ function EntityModal({
   );
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (field: string, value: string | number | boolean | null) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -144,6 +145,7 @@ function EntityModal({
     if (!file) return;
 
     setUploading(true);
+    setError("");
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -156,9 +158,12 @@ function EntityModal({
       if (res.ok) {
         const { url } = await res.json();
         handleChange("imageUrl", url);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Не удалось загрузить изображение");
       }
-    } catch (error) {
-      console.error("Upload error:", error);
+    } catch {
+      setError("Ошибка соединения при загрузке изображения");
     } finally {
       setUploading(false);
     }
@@ -167,6 +172,7 @@ function EntityModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    setError("");
 
     try {
       const method = entity ? "PUT" : "POST";
@@ -179,9 +185,12 @@ function EntityModal({
       if (res.ok) {
         onSave();
         onClose();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Не удалось сохранить запись");
       }
-    } catch (error) {
-      console.error("Save error:", error);
+    } catch {
+      setError("Ошибка соединения при сохранении записи");
     } finally {
       setSaving(false);
     }
@@ -345,6 +354,7 @@ function EntityModal({
               {saving ? "Сохранение..." : "Сохранить"}
             </button>
           </div>
+          {error && <p className="text-center text-sm text-red-600">{error}</p>}
         </form>
       </div>
     </div>
