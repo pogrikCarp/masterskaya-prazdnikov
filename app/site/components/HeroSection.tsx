@@ -761,7 +761,7 @@ export default function HeroSection() {
       </div>
 
       <Container>
-        <div className="relative pt-14 pb-28 sm:pt-16 sm:pb-32 lg:pt-20 lg:pb-40">
+        <div className="relative pt-40 pb-28 sm:pt-44 sm:pb-32 lg:pt-48 lg:pb-40">
           <div className="mx-auto max-w-4xl text-center">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
