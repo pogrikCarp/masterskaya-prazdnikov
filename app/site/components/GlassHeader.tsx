@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
 import { Icon } from "./Icon";
+import { useRequestModal } from "./RequestModalProvider";
 
 type NavItem = {
   label: string;
@@ -24,6 +25,7 @@ export default function GlassHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const phone = useMemo(() => "+7 (495) 777-12-34", []);
+  const { openRequestModal } = useRequestModal();
 
   const resolveHref = (href: string) => {
     if (href.startsWith("#")) return `/${href}`;
@@ -180,6 +182,16 @@ export default function GlassHeader() {
                 {phone}
               </motion.a>
 
+              <motion.button
+                type="button"
+                whileHover={{ scale: 1.04 }}
+                transition={{ duration: 0.25 }}
+                onClick={openRequestModal}
+                className="hidden sm:inline-flex h-9 items-center justify-center rounded-full bg-gradient-to-r from-[#5A3FE0] to-[#8B5CF6] px-4 text-xs font-semibold text-white shadow-[0_8px_24px_rgba(90,63,224,0.35)] transition-shadow hover:shadow-[0_12px_32px_rgba(90,63,224,0.45)]"
+              >
+                Оставить заявку
+              </motion.button>
+
               <a
                 href="#"
                 className={[
@@ -257,7 +269,18 @@ export default function GlassHeader() {
                   ))}
                 </div>
 
-                <div className="mt-3 flex items-center justify-between gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    openRequestModal();
+                  }}
+                  className="mt-3 w-full inline-flex h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#5A3FE0] to-[#8B5CF6] font-semibold text-white shadow-[0_8px_24px_rgba(90,63,224,0.3)]"
+                >
+                  Оставить заявку
+                </button>
+
+                <div className="mt-2 flex items-center justify-between gap-2">
                   <a
                     href="tel:+74957771234"
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-white text-[#2A245E] h-12 font-semibold"

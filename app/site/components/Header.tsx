@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
 import { Icon } from "./Icon";
+import { useRequestModal } from "./RequestModalProvider";
 
 type NavItem = {
   label: string;
@@ -21,6 +22,7 @@ const nav: NavItem[] = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const { openRequestModal } = useRequestModal();
 
   const phone = useMemo(() => "+7 (495) 777-12-34", []);
 
@@ -129,12 +131,13 @@ export default function Header() {
             </nav>
 
             <div className="flex items-center gap-3">
-              <Link
-                href="/#contacts"
+              <button
+                type="button"
+                onClick={openRequestModal}
                 className="hidden sm:inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#5A3FE0] to-[#8B5CF6] px-6 h-12 text-[14px] font-semibold tracking-wide text-white shadow-[0_8px_24px_rgba(90,63,224,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(90,63,224,0.45)]"
               >
-                Заказать звонок
-              </Link>
+                Оставить заявку
+              </button>
 
               <button
                 type="button"
@@ -168,10 +171,21 @@ export default function Header() {
                   ))}
                 </div>
 
-                <div className="mt-4 flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    openRequestModal();
+                  }}
+                  className="mt-4 w-full inline-flex h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#5A3FE0] to-[#8B5CF6] text-white font-semibold tracking-wide shadow-[0_8px_24px_rgba(90,63,224,0.3)]"
+                >
+                  Оставить заявку
+                </button>
+
+                <div className="mt-3 flex items-center justify-between gap-3">
                   <a
                     href="tel:+74957771234"
-                    className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#5A3FE0] to-[#8B5CF6] text-white h-12 font-semibold tracking-wide shadow-[0_8px_24px_rgba(90,63,224,0.3)]"
+                    className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#5A3FE0]/10 text-[#5A3FE0] h-12 font-semibold tracking-wide transition-colors hover:bg-[#5A3FE0]/15"
                   >
                     <Icon name="phone" className="h-4 w-4" />
                     Позвонить

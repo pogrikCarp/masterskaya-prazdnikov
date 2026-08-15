@@ -11,6 +11,7 @@ import InvitationsSection from "./site/components/InvitationsSection";
 import BusinessSection from "./site/components/BusinessSection";
 import QuestsSection from "./site/components/QuestsSection";
 import WorkshopsSection from "./site/components/WorkshopsSection";
+import ContactFormSection from "./site/components/ContactFormSection";
 
 export default function HomePage() {
   return (
@@ -36,6 +37,8 @@ export default function HomePage() {
       <InvitationsSection />
 
       <BusinessSection />
+
+      <ContactFormSection />
 
       <section className="py-10">
         <Container>

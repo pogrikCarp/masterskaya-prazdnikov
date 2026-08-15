@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import PreloaderGate from "./site/components/PreloaderGate";
+import RequestModalProvider from "./site/components/RequestModalProvider";
 
 const inter = Inter({
   subsets: ["cyrillic", "latin"],
@@ -29,7 +30,9 @@ export default function RootLayout({
         </div>
 
         <div id="site-content" className="site-content" aria-live="polite">
-          <PreloaderGate>{children}</PreloaderGate>
+          <RequestModalProvider>
+            <PreloaderGate>{children}</PreloaderGate>
+          </RequestModalProvider>
         </div>
 
         <Script id="site-preloader" strategy="afterInteractive">{`(function(){
