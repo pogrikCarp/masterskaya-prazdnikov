@@ -67,11 +67,23 @@ export default function Footer() {
             <div className="flex flex-col gap-2 py-5 sm:py-6 text-[12px] text-[#888] sm:flex-row sm:items-center sm:justify-between">
               <div>© {new Date().getFullYear()} Мастерская праздников</div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <Link
+                  href="/personal-data-policy"
+                  className="hover:text-white transition-colors"
+                >
+                  Политика обработки персональных данных
+                </Link>
+                <span aria-hidden="true">·</span>
+                <Link
+                  href="/personal-data-consent"
+                  className="hover:text-white transition-colors"
+                >
+                  Согласие на обработку персональных данных
+                </Link>
+                <span aria-hidden="true">·</span>
                 <Link href="/privacy" className="hover:text-white transition-colors">
                   Политика конфиденциальности
                 </Link>
-                <span aria-hidden="true">·</span>
-                <span>Организация праздников под ключ</span>
               </div>
             </div>
           </div>

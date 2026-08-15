@@ -13,11 +13,13 @@ export default function ContactFormSection() {
     message: "",
   });
 
+  const [consentGiven, setConsentGiven] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consentGiven) return;
     setIsSubmitting(true);
     
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -27,6 +29,7 @@ export default function ContactFormSection() {
     
     setTimeout(() => {
       setIsSubmitted(false);
+      setConsentGiven(false);
       setFormData({ name: "", phone: "", date: "", guests: "", message: "" });
     }, 3000);
   };
@@ -188,19 +191,50 @@ export default function ContactFormSection() {
                       />
                     </div>
 
+                    <label
+                      htmlFor="consent"
+                      className="flex cursor-pointer items-start gap-3 rounded-[18px] bg-white/60 px-4 py-3 ring-1 ring-black/10 transition-colors hover:bg-white/80"
+                    >
+                      <input
+                        type="checkbox"
+                        id="consent"
+                        name="consent"
+                        checked={consentGiven}
+                        onChange={(e) => setConsentGiven(e.target.checked)}
+                        required
+                        className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-black/20 accent-[var(--mp-lavender)]"
+                      />
+                      <span className="text-xs leading-relaxed text-black/60">
+                        Я даю{" "}
+                        <Link
+                          href="/personal-data-consent"
+                          target="_blank"
+                          className="font-semibold text-[var(--mp-ink)] underline underline-offset-2 hover:text-black"
+                        >
+                          согласие на обработку персональных данных
+                        </Link>{" "}
+                        и принимаю условия{" "}
+                        <Link
+                          href="/personal-data-policy"
+                          target="_blank"
+                          className="font-semibold text-[var(--mp-ink)] underline underline-offset-2 hover:text-black"
+                        >
+                          политики обработки персональных данных
+                        </Link>
+                        .
+                      </span>
+                    </label>
+
                     <button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !consentGiven}
                       className="w-full inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold bg-[var(--mp-accent)] text-[var(--mp-ink)] shadow-[0_18px_40px_rgba(255,196,0,0.25)] hover:shadow-[0_22px_50px_rgba(255,196,0,0.35)] transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? "Отправка..." : "Отправить заявку"}
                     </button>
 
                     <p className="text-xs text-center text-black/50">
-                      Нажимая кнопку, вы соглашаетесь с{" "}
-                      <Link href="/privacy" className="underline hover:text-black/70">
-                        политикой конфиденциальности
-                      </Link>
+                      Перезвоним в рабочее время и не передадим ваши контакты третьим лицам
                     </p>
                   </form>
                 )}
