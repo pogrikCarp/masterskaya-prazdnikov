@@ -8,9 +8,16 @@ export async function GET() {
   }
 
   const galleryItems = await prisma.galleryItem.findMany({
+    include: { category: true },
     orderBy: [{ order: "asc" }, { id: "desc" }],
   });
-  return NextResponse.json(galleryItems);
+
+  return NextResponse.json(
+    galleryItems.map((item) => ({
+      ...item,
+      categoryName: item.category?.name || null,
+    }))
+  );
 }
 
 export async function POST(request: Request) {
@@ -24,17 +31,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Загрузите изображение" }, { status: 400 });
     }
 
+    const categoryId = data.categoryId ? Number(data.categoryId) : null;
+    if (!categoryId) {
+      return NextResponse.json({ error: "Выберите категорию" }, { status: 400 });
+    }
+
     const galleryItem = await prisma.galleryItem.create({
       data: {
         imageUrl: data.imageUrl,
         title: data.title || null,
         description: data.description || null,
-        category: data.category || null,
-        order: Number.parseInt(data.order, 10) || 0,
+        categoryId,
+        order: Number.parseInt(String(data.order ?? "0"), 10) || 0,
         active: data.active ?? true,
       },
+      include: { category: true },
     });
-    return NextResponse.json(galleryItem);
+
+    return NextResponse.json({
+      ...galleryItem,
+      categoryName: galleryItem.category?.name || null,
+    });
   } catch (error) {
     console.error("Error creating gallery item:", error);
     return NextResponse.json({ error: "Failed to create" }, { status: 500 });
@@ -48,18 +65,29 @@ export async function PUT(request: Request) {
 
   try {
     const data = await request.json();
+    const categoryId = data.categoryId ? Number(data.categoryId) : null;
+
+    if (!categoryId) {
+      return NextResponse.json({ error: "Выберите категорию" }, { status: 400 });
+    }
+
     const galleryItem = await prisma.galleryItem.update({
       where: { id: data.id },
       data: {
         imageUrl: data.imageUrl,
         title: data.title || null,
         description: data.description || null,
-        category: data.category || null,
-        order: Number.parseInt(data.order, 10) || 0,
+        categoryId,
+        order: Number.parseInt(String(data.order ?? "0"), 10) || 0,
         active: data.active ?? true,
       },
+      include: { category: true },
     });
-    return NextResponse.json(galleryItem);
+
+    return NextResponse.json({
+      ...galleryItem,
+      categoryName: galleryItem.category?.name || null,
+    });
   } catch (error) {
     console.error("Error updating gallery item:", error);
     return NextResponse.json({ error: "Failed to update" }, { status: 500 });

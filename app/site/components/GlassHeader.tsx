@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
 import { Icon } from "./Icon";
 import { useRequestModal } from "./RequestModalProvider";
+import { SITE_PHONE_DISPLAY, SITE_PHONE_HREF } from "../content/contacts";
 
 type NavItem = {
   label: string;
@@ -24,7 +25,7 @@ const nav: NavItem[] = [
 export default function GlassHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const phone = useMemo(() => "+7 (495) 777-12-34", []);
+  const phone = useMemo(() => SITE_PHONE_DISPLAY, []);
   const { openRequestModal } = useRequestModal();
 
   const resolveHref = (href: string) => {
@@ -161,7 +162,7 @@ export default function GlassHeader() {
               <motion.a
                 whileHover={{ scale: 1.04 }}
                 transition={{ duration: 0.25 }}
-                href="tel:+74957771234"
+                href={SITE_PHONE_HREF}
                 className={[
                   "hidden sm:inline-flex",
                   "items-center",
@@ -282,7 +283,7 @@ export default function GlassHeader() {
 
                 <div className="mt-2 flex items-center justify-between gap-2">
                   <a
-                    href="tel:+74957771234"
+                    href={SITE_PHONE_HREF}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-white text-[#2A245E] h-12 font-semibold"
                   >
                     <Icon name="phone" className="h-4 w-4" />

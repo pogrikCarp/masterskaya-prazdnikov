@@ -1,5 +1,11 @@
 import Link from "next/link";
 import Container from "./Container";
+import {
+  SITE_EMAIL,
+  SITE_EMAIL_HREF,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_HREF,
+} from "../content/contacts";
 
 export default function Footer() {
   return (
@@ -24,22 +30,22 @@ export default function Footer() {
               </div>
               <div className="mt-4 grid gap-3 text-[14px] sm:text-[15px] text-[#a0a0a0]">
                 <a
-                  href="tel:+74957771234"
+                  href={SITE_PHONE_HREF}
                   className="inline-flex items-center gap-2 text-[#eaeaea] hover:text-white transition-colors"
                 >
                   <span aria-hidden="true" className="text-[#a0a0a0]">
                     ☎
                   </span>
-                  +7 (495) 777-12-34
+                  {SITE_PHONE_DISPLAY}
                 </a>
                 <a
-                  href="mailto:hello@prazdniki.studio"
+                  href={SITE_EMAIL_HREF}
                   className="inline-flex items-center gap-2 text-[#eaeaea] hover:text-white transition-colors"
                 >
                   <span aria-hidden="true" className="text-[#a0a0a0]">
                     ✉
                   </span>
-                  hello@prazdniki.studio
+                  {SITE_EMAIL}
                 </a>
                 <div className="inline-flex items-start gap-2">
                   <span aria-hidden="true" className="text-[#a0a0a0]">

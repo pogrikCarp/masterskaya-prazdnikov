@@ -17,11 +17,13 @@ export type GalleryGridItem = {
 
 export default function PhotoGrid({
   galleryItems = fallbackGalleryItems,
+  categories,
   initialFilter = "all",
   title = "Фотогалерея",
   subtitle = "Яркие кадры, живые эмоции и аккуратная визуальная подача",
 }: {
   galleryItems?: GalleryGridItem[];
+  categories?: string[];
   initialFilter?: FilterId;
   title?: string;
   subtitle?: string;
@@ -32,11 +34,13 @@ export default function PhotoGrid({
   const galleryCategories = useMemo(
     () => [
       { id: "all", label: "Все" },
-      ...Array.from(new Set(galleryItems.map((item) => item.category)))
-        .filter(Boolean)
-        .map((category) => ({ id: category, label: category })),
+      ...(categories?.length
+        ? categories.map((category) => ({ id: category, label: category }))
+        : Array.from(new Set(galleryItems.map((item) => item.category)))
+            .filter(Boolean)
+            .map((category) => ({ id: category, label: category }))),
     ],
-    [galleryItems]
+    [categories, galleryItems]
   );
 
   const items = useMemo(() => {

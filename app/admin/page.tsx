@@ -23,8 +23,17 @@ type BaseEntity = {
   maxAge?: number | null;
   popular: boolean;
   active: boolean;
-  category?: string | null;
+  categoryId?: number | null;
+  categoryName?: string | null;
   order?: number;
+};
+
+type GalleryCategory = {
+  id: number;
+  name: string;
+  order: number;
+  active: boolean;
+  _count?: { items: number };
 };
 
 type EntityConfig = {
@@ -117,11 +126,13 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
 function EntityModal({
   entity,
   entityType,
+  categories,
   onClose,
   onSave,
 }: {
   entity: BaseEntity | null;
   entityType: EntityType;
+  categories: GalleryCategory[];
   onClose: () => void;
   onSave: () => void;
 }) {
@@ -129,7 +140,14 @@ function EntityModal({
   const priceField = config.priceField;
   const [form, setForm] = useState<Partial<BaseEntity>>(
     entity || (config.isGallery
-      ? { title: "", description: "", category: "", order: 0, active: true, popular: false }
+      ? {
+          title: "",
+          description: "",
+          categoryId: categories[0]?.id || null,
+          order: 0,
+          active: true,
+          popular: false,
+        }
       : { name: "", description: "", popular: false, active: true })
   );
   const [uploading, setUploading] = useState(false);
@@ -253,14 +271,36 @@ function EntityModal({
           {config.isGallery && (
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Категория</label>
-                <input
-                  type="text"
-                  value={form.category || ""}
-                  onChange={(e) => handleChange("category", e.target.value)}
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Категория *
+                </label>
+                <select
+                  value={form.categoryId || ""}
+                  onChange={(e) =>
+                    handleChange(
+                      "categoryId",
+                      e.target.value ? Number(e.target.value) : null
+                    )
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                  placeholder="Например: Детские праздники"
-                />
+                  required
+                >
+                  <option value="" disabled>
+                    Выберите категорию
+                  </option>
+                  {categories
+                    .filter((category) => category.active || category.id === form.categoryId)
+                    .map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                </select>
+                {categories.length === 0 && (
+                  <p className="mt-1 text-xs text-amber-600">
+                    Сначала создайте категорию в блоке выше.
+                  </p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Порядок</label>
@@ -378,10 +418,296 @@ function EntityModal({
   );
 }
 
+function GalleryCategoriesPanel({ onChanged }: { onChanged: () => void }) {
+  const [categories, setCategories] = useState<GalleryCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
+  const [order, setOrder] = useState(0);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editOrder, setEditOrder] = useState(0);
+
+  const fetchCategories = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/gallery-categories");
+      if (res.ok) {
+        setCategories(await res.json());
+      }
+    } catch (err) {
+      console.error("Error fetching gallery categories:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/admin/gallery-categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, order, active: true }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Не удалось создать категорию");
+        return;
+      }
+
+      setName("");
+      setOrder(0);
+      await fetchCategories();
+      onChanged();
+    } catch {
+      setError("Ошибка соединения");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const startEdit = (category: GalleryCategory) => {
+    setEditingId(category.id);
+    setEditName(category.name);
+    setEditOrder(category.order);
+    setError("");
+  };
+
+  const handleUpdate = async (category: GalleryCategory) => {
+    setSaving(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/admin/gallery-categories", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: category.id,
+          name: editName,
+          order: editOrder,
+          active: category.active,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Не удалось сохранить категорию");
+        return;
+      }
+
+      setEditingId(null);
+      await fetchCategories();
+      onChanged();
+    } catch {
+      setError("Ошибка соединения");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const toggleActive = async (category: GalleryCategory) => {
+    try {
+      const res = await fetch("/api/admin/gallery-categories", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: category.id,
+          name: category.name,
+          order: category.order,
+          active: !category.active,
+        }),
+      });
+      if (res.ok) {
+        await fetchCategories();
+        onChanged();
+      }
+    } catch (err) {
+      console.error("Toggle category error:", err);
+    }
+  };
+
+  const handleDelete = async (category: GalleryCategory) => {
+    if (
+      !confirm(
+        `Удалить категорию «${category.name}»? Фото останутся, но без категории.`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/admin/gallery-categories?id=${category.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        await fetchCategories();
+        onChanged();
+      }
+    } catch (err) {
+      console.error("Delete category error:", err);
+    }
+  };
+
+  return (
+    <div className="mb-6 rounded-lg border border-indigo-100 bg-indigo-50/60 p-5">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900">Категории галереи</h3>
+          <p className="text-sm text-gray-600">
+            Создайте категории, затем выбирайте их при загрузке фото. Фильтры на сайте
+            обновятся автоматически.
+          </p>
+        </div>
+      </div>
+
+      <form onSubmit={handleCreate} className="mt-4 flex flex-col gap-3 sm:flex-row">
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Например: Детские праздники"
+          className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          required
+        />
+        <input
+          type="number"
+          value={order}
+          onChange={(e) => setOrder(Number(e.target.value) || 0)}
+          placeholder="Порядок"
+          className="w-full rounded-lg border border-gray-300 px-4 py-2 sm:w-28 focus:ring-2 focus:ring-indigo-500"
+        />
+        <button
+          type="submit"
+          disabled={saving}
+          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+        >
+          {saving ? "Сохранение..." : "+ Категория"}
+        </button>
+      </form>
+
+      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+
+      {loading ? (
+        <div className="mt-4 text-sm text-gray-500">Загрузка категорий...</div>
+      ) : categories.length === 0 ? (
+        <div className="mt-4 text-sm text-amber-700">
+          Пока нет категорий. Создайте хотя бы одну, чтобы добавлять фото в галерею.
+        </div>
+      ) : (
+        <div className="mt-4 overflow-x-auto rounded-lg bg-white ring-1 ring-black/5">
+          <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left font-medium text-gray-500">Название</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500">Порядок</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500">Фото</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500">Статус</th>
+                <th className="px-4 py-3 text-right font-medium text-gray-500">Действия</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {categories.map((category) => (
+                <tr key={category.id}>
+                  <td className="px-4 py-3">
+                    {editingId === category.id ? (
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        className="w-full rounded border border-gray-300 px-2 py-1"
+                      />
+                    ) : (
+                      <span className="font-medium text-gray-900">{category.name}</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {editingId === category.id ? (
+                      <input
+                        type="number"
+                        value={editOrder}
+                        onChange={(e) => setEditOrder(Number(e.target.value) || 0)}
+                        className="w-20 rounded border border-gray-300 px-2 py-1"
+                      />
+                    ) : (
+                      category.order
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">{category._count?.items ?? 0}</td>
+                  <td className="px-4 py-3">
+                    <button
+                      type="button"
+                      onClick={() => toggleActive(category)}
+                      className={`rounded-full px-2 py-1 text-xs font-medium ${
+                        category.active
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {category.active ? "Активна" : "Скрыта"}
+                    </button>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    {editingId === category.id ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleUpdate(category)}
+                          className="mr-3 text-indigo-600 hover:text-indigo-900"
+                        >
+                          Сохранить
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditingId(null)}
+                          className="text-gray-500 hover:text-gray-800"
+                        >
+                          Отмена
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => startEdit(category)}
+                          className="mr-3 text-indigo-600 hover:text-indigo-900"
+                        >
+                          Изменить
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(category)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          Удалить
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const [activeTab, setActiveTab] = useState<EntityType>("animators");
   const [data, setData] = useState<BaseEntity[]>([]);
+  const [categories, setCategories] = useState<GalleryCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalEntity, setModalEntity] = useState<BaseEntity | null | undefined>(undefined);
 
@@ -398,6 +724,18 @@ export default function AdminPage() {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  const fetchCategories = useCallback(async () => {
+    if (!authenticated) return;
+    try {
+      const res = await fetch("/api/admin/gallery-categories");
+      if (res.ok) {
+        setCategories(await res.json());
+      }
+    } catch (error) {
+      console.error("Error fetching gallery categories:", error);
+    }
+  }, [authenticated]);
 
   const fetchData = useCallback(async () => {
     if (!authenticated) return;
@@ -418,6 +756,12 @@ export default function AdminPage() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (activeTab === "gallery") {
+      fetchCategories();
+    }
+  }, [activeTab, fetchCategories]);
 
   const handleLogout = async () => {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -482,12 +826,27 @@ export default function AdminPage() {
           </nav>
         </div>
 
+        {activeTab === "gallery" && (
+          <GalleryCategoriesPanel
+            onChanged={() => {
+              fetchCategories();
+              fetchData();
+            }}
+          />
+        )}
+
         <div className="bg-white shadow rounded-lg overflow-hidden">
           <div className="px-4 py-5 sm:px-6 border-b border-gray-200 flex justify-between items-center">
             <h2 className="text-lg font-medium text-gray-900">{config.title}</h2>
             <button
               onClick={() => setModalEntity(null)}
-              className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700"
+              disabled={activeTab === "gallery" && categories.filter((c) => c.active).length === 0}
+              className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+              title={
+                activeTab === "gallery" && categories.filter((c) => c.active).length === 0
+                  ? "Сначала создайте категорию"
+                  : undefined
+              }
             >
               + Добавить
             </button>
@@ -533,7 +892,9 @@ export default function AdminPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         {config.isGallery ? (
-                          <span>{item.category || "Без категории"} · {item.order ?? 0}</span>
+                          <span>
+                            {item.categoryName || "Без категории"} · {item.order ?? 0}
+                          </span>
                         ) : (
                           <>
                             {(item[config.priceField!] ?? 0).toLocaleString()} ₽
@@ -584,6 +945,7 @@ export default function AdminPage() {
         <EntityModal
           entity={modalEntity}
           entityType={activeTab}
+          categories={categories}
           onClose={() => setModalEntity(undefined)}
           onSave={fetchData}
         />

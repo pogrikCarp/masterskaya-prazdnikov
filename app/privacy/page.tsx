@@ -183,7 +183,7 @@ export default function PrivacyPolicyPage() {
                 <li>запросить исправление, удаление или блокирование персональных данных;</li>
                 <li>
                   отозвать согласие на обработку персональных данных, отправив письменный запрос
-                  на email: hello@prazdniki.studio.
+                  на email: masterskaya.prazdnik@yandex.ru.
                 </li>
               </ul>
             </div>
@@ -208,8 +208,8 @@ export default function PrivacyPolicyPage() {
                 согласие на обработку персональных данных, свяжитесь с нами:
               </p>
               <ul className="mt-2 list-disc space-y-1 pl-5">
-                <li>email: hello@prazdniki.studio;</li>
-                <li>телефон: +7 (495) 777‑12‑34;</li>
+                <li>email: masterskaya.prazdnik@yandex.ru;</li>
+                <li>телефон: +7 (985) 625‑45‑49;</li>
                 <li>
                   юридический адрес: <Fill>[указать юридический адрес компании]</Fill>.
                 </li>

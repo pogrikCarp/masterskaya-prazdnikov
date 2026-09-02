@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
 import { Icon } from "./Icon";
 import { useRequestModal } from "./RequestModalProvider";
+import { SITE_PHONE_DISPLAY, SITE_PHONE_HREF } from "../content/contacts";
 
 type NavItem = {
   label: string;
@@ -24,7 +25,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const { openRequestModal } = useRequestModal();
 
-  const phone = useMemo(() => "+7 (495) 777-12-34", []);
+  const phone = useMemo(() => SITE_PHONE_DISPLAY, []);
 
   const resolveHref = (href: string) => {
     if (href.startsWith("#")) return `/${href}`;
@@ -81,7 +82,7 @@ export default function Header() {
             </div>
             <div className="flex items-center gap-3">
               <a
-                href="tel:+74957771234"
+                href={SITE_PHONE_HREF}
                 className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 font-medium tracking-wide text-white ring-1 ring-white/20 transition-all duration-300 hover:bg-white/25 hover:ring-white/30"
               >
                 <Icon name="phone" className="h-4 w-4" />
@@ -184,7 +185,7 @@ export default function Header() {
 
                 <div className="mt-3 flex items-center justify-between gap-3">
                   <a
-                    href="tel:+74957771234"
+                    href={SITE_PHONE_HREF}
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-[#5A3FE0]/10 text-[#5A3FE0] h-12 font-semibold tracking-wide transition-colors hover:bg-[#5A3FE0]/15"
                   >
                     <Icon name="phone" className="h-4 w-4" />

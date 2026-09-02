@@ -7,10 +7,17 @@ import prisma from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function GalleryPage() {
-  const galleryFromDatabase = await prisma.galleryItem.findMany({
-    where: { active: true },
-    orderBy: [{ order: "asc" }, { id: "desc" }],
-  });
+  const [galleryFromDatabase, categories] = await Promise.all([
+    prisma.galleryItem.findMany({
+      where: { active: true },
+      include: { category: true },
+      orderBy: [{ order: "asc" }, { id: "desc" }],
+    }),
+    prisma.galleryCategory.findMany({
+      where: { active: true },
+      orderBy: [{ order: "asc" }, { name: "asc" }],
+    }),
+  ]);
 
   const galleryItems = galleryFromDatabase.length
     ? galleryFromDatabase.map((item) => ({
@@ -18,10 +25,15 @@ export default async function GalleryPage() {
         src: item.imageUrl,
         thumb: item.imageUrl,
         alt: item.title || "Фотография с праздника",
-        category: item.category || "Без категории",
+        category: item.category?.name || "Без категории",
         place: item.description || "",
       }))
     : fallbackGalleryItems;
+
+  const categoryLabels =
+    categories.length > 0
+      ? categories.map((category) => category.name)
+      : undefined;
 
   return (
     <SiteShell>
@@ -39,6 +51,7 @@ export default async function GalleryPage() {
 
             <PhotoGrid
               galleryItems={galleryItems}
+              categories={categoryLabels}
               title=""
               subtitle=""
             />

@@ -142,7 +142,7 @@ const sections: LegalSection[] = [
       <>
         <p>
           Согласие может быть отозвано в любой момент. Для этого направьте письменное
-          заявление на hello@prazdniki.studio с пометкой «Отзыв согласия на обработку
+          заявление на masterskaya.prazdnik@yandex.ru с пометкой «Отзыв согласия на обработку
           персональных данных» либо по адресу Оператора.
         </p>
         <p>
@@ -210,8 +210,8 @@ export default function PersonalDataConsentPage() {
             <li>
               Адрес: <Fill>[указать юридический адрес]</Fill>
             </li>
-            <li>E‑mail: hello@prazdniki.studio</li>
-            <li>Телефон: +7 (495) 777‑12‑34</li>
+            <li>E‑mail: masterskaya.prazdnik@yandex.ru</li>
+            <li>Телефон: +7 (985) 625‑45‑49</li>
           </ul>
         </>
       }
