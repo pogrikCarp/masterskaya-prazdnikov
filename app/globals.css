@@ -73,6 +73,19 @@ html.is-preloading .site-content {
   }
 }
 
+@keyframes mp-show-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.mp-show-progress {
+  animation: mp-show-progress 5.2s linear forwards;
+}
+
 img,
 video {
   max-width: 100%;
