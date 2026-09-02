@@ -62,6 +62,7 @@ export default function ShowsCarouselSection() {
       loading={loading}
       emptyText="Нет шоу-программ"
       accent="rose"
+      layout="fullBleed"
     />
   );
 }

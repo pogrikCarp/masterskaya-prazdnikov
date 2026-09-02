@@ -1,7 +1,6 @@
 import SiteShell from "../site/components/SiteShell";
 import Container from "../site/components/Container";
 import PhotoGrid from "../site/components/PhotoGrid";
-import { galleryItems as fallbackGalleryItems } from "../site/content/gallery";
 import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -19,21 +18,16 @@ export default async function GalleryPage() {
     }),
   ]);
 
-  const galleryItems = galleryFromDatabase.length
-    ? galleryFromDatabase.map((item) => ({
-        id: String(item.id),
-        src: item.imageUrl,
-        thumb: item.imageUrl,
-        alt: item.title || "Фотография с праздника",
-        category: item.category?.name || "Без категории",
-        place: item.description || "",
-      }))
-    : fallbackGalleryItems;
+  const galleryItems = galleryFromDatabase.map((item) => ({
+    id: String(item.id),
+    src: item.imageUrl,
+    thumb: item.imageUrl,
+    alt: item.title || "Фотография с праздника",
+    category: item.category?.name || "Без категории",
+    place: item.description || "",
+  }));
 
-  const categoryLabels =
-    categories.length > 0
-      ? categories.map((category) => category.name)
-      : undefined;
+  const categoryLabels = categories.map((category) => category.name);
 
   return (
     <SiteShell>
@@ -45,13 +39,14 @@ export default async function GalleryPage() {
                 Фотогалерея
               </h1>
               <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl mx-auto">
-                Подборка снимков в едином стиле: свет, эмоции, детали декора и динамика.
+                Реальные кадры с праздников. Категории и фото добавляются из админ-панели.
               </p>
             </div>
 
             <PhotoGrid
               galleryItems={galleryItems}
               categories={categoryLabels}
+              emptyText="Пока нет фотографий. Добавьте категорию и фото во вкладке «Галерея» в /admin."
               title=""
               subtitle=""
             />
