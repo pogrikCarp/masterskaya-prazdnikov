@@ -45,7 +45,11 @@ DATABASE_URL="postgresql://masterskaya:CHANGE_THIS_TO_A_LONG_RANDOM_PASSWORD@127
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=CHANGE_THIS_TO_A_DIFFERENT_LONG_RANDOM_PASSWORD
 SESSION_SECRET=CHANGE_THIS_TO_A_LONG_RANDOM_SESSION_SECRET
+SITE_URL=https://masterskaya-prazdnika-msk.ru
+NEXT_PUBLIC_SITE_URL=https://masterskaya-prazdnika-msk.ru
 ```
+
+`SITE_URL` is also written automatically by `deploy/setup-domain.sh`.
 
 Generate a suitable password on the server:
 
@@ -87,6 +91,27 @@ Or append the contents of `masterskaya_github_actions.pub` to:
 Copy the complete contents of `~/.ssh/masterskaya_github_actions` (the private key)
 to the GitHub repository secret named `SSH_PRIVATE_KEY`. Never commit or share this
 private key.
+
+## Domain + HTTPS (after DNS is ready)
+
+In reg.ru create A records `@` and `www` → server IP. When DNS resolves, on the server:
+
+```bash
+cd /opt/myapp
+git pull origin main
+bash deploy/setup-domain.sh masterskaya-prazdnika-msk.ru masterskaya.prazdnik@yandex.ru
+```
+
+The script will:
+
+1. verify DNS points to this server;
+2. configure Nginx for the domain (+ `www`);
+3. issue Let's Encrypt SSL via certbot;
+4. write `SITE_URL` / `NEXT_PUBLIC_SITE_URL` into `/opt/myapp/.env`;
+5. rebuild and restart the app.
+
+After that the site is ready for SEO tuning (`app/site/content/seo.ts`, page titles, etc.).
+Check: `https://DOMAIN/robots.txt` and `https://DOMAIN/sitemap.xml`.
 
 ## Routine deployment
 

@@ -1,26 +1,11 @@
 "use client";
 
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode } from "react";
 
+/**
+ * Раньше скрывал children до site:loaded (плохо для SEO/SSR).
+ * Контент в DOM всегда; визуально скрывает CSS html.is-preloading .site-content.
+ */
 export default function PreloaderGate({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const root = document.documentElement;
-
-    const check = () => {
-      if (!root.classList.contains("is-preloading")) setReady(true);
-    };
-
-    check();
-
-    const onLoaded = () => setReady(true);
-
-    window.addEventListener("site:loaded", onLoaded);
-    return () => window.removeEventListener("site:loaded", onLoaded);
-  }, []);
-
-  if (!ready) return null;
-
   return children;
 }

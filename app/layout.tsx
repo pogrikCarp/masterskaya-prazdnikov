@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import PreloaderGate from "./site/components/PreloaderGate";
 import RequestModalProvider from "./site/components/RequestModalProvider";
+import { getSiteUrl, siteSeo } from "./site/content/seo";
 
 const inter = Inter({
   subsets: ["cyrillic", "latin"],
@@ -11,9 +12,36 @@ const inter = Inter({
   display: "swap",
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  title: "Мастерская праздников",
-  description: "Праздники под ключ: шоу, декор и фотогалерея. Placeholder-контент.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteSeo.defaultTitle,
+    template: siteSeo.titleTemplate,
+  },
+  description: siteSeo.description,
+  applicationName: siteSeo.name,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: siteSeo.locale,
+    url: siteUrl,
+    siteName: siteSeo.name,
+    title: siteSeo.defaultTitle,
+    description: siteSeo.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteSeo.defaultTitle,
+    description: siteSeo.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: "/favicon.svg",
   },
