@@ -68,7 +68,7 @@ export default function QuestsSection() {
       className="relative overflow-x-clip py-16 sm:py-20"
       style={{
         background:
-          "linear-gradient(180deg, rgba(251,243,244,0) 0%, rgba(130,230,200,0.10) 35%, rgba(141,124,255,0.08) 100%)",
+          "linear-gradient(180deg, rgb(var(--mp-bg-rgb)) 0%, rgb(var(--mp-bg-rgb)) 18%, rgba(141,124,255,0.07) 100%)",
       }}
     >
       <Container className="max-w-[1320px]">
@@ -79,7 +79,7 @@ export default function QuestsSection() {
             </div>
             <h2 className="mt-3 text-[34px] font-black tracking-tight text-[var(--mp-ink)] sm:text-[48px]">
               Квесты с историей,
-              <span className="block text-black/40">а не набор конкурсов</span>
+              <span className="block">а не набор конкурсов</span>
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-black/55 sm:text-base">
               Легенда, испытания и финал с наградой — дети проживают приключение, а не просто

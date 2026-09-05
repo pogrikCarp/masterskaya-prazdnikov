@@ -71,7 +71,7 @@ export default function ShowsCarouselSection() {
             </div>
             <h2 className="mt-3 text-[36px] font-black tracking-tight sm:text-[52px]">
               Шоу, от которых
-              <span className="block text-black/40">ахает весь зал</span>
+              <span className="block">ахает весь зал</span>
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-black/55 sm:text-base">
               Бумага, пузыри, свет и музыка — короткие вау‑номера, которые держат темп праздника.
@@ -164,11 +164,10 @@ export default function ShowsCarouselSection() {
                       ) : (
                         <div className="absolute inset-0 bg-[linear-gradient(135deg,#c084fc,#8d7cff)]" />
                       )}
-                      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.58)_48%,rgba(255,255,255,0.22)_100%)]" />
-                      <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(255,255,255,0.55)_100%)]" />
+                      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,251,252,0.28)_0%,transparent_55%)]" />
 
                       <Container className="relative flex min-h-[62vh] items-end pb-10 sm:min-h-[68vh] sm:pb-14">
-                        <div className="max-w-2xl">
+                        <div className="max-w-2xl rounded-[28px] bg-white/78 p-5 shadow-[0_18px_50px_rgba(43,43,43,0.10)] ring-1 ring-white/70 backdrop-blur-md sm:p-8">
                           <div className="flex flex-wrap items-center gap-2">
                             <span className={badgeClassName("onDark")}>
                               {item.duration} мин
@@ -183,7 +182,7 @@ export default function ShowsCarouselSection() {
                           </h3>
 
                           {item.description ? (
-                            <p className="mt-4 max-w-lg text-sm leading-relaxed text-black/55 sm:text-base line-clamp-3">
+                            <p className="mt-4 max-w-lg text-sm leading-relaxed text-black/70 sm:text-base line-clamp-3">
                               {item.description}
                             </p>
                           ) : null}
