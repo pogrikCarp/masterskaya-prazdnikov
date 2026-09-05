@@ -349,7 +349,7 @@ export default function CatalogCarouselSection({
           </div>
 
           {canScroll ? (
-            <div className="mt-5 flex items-center justify-center gap-2">
+            <div className="mt-5 flex flex-wrap items-center justify-center">
               {items.map((item, i) => (
                 <button
                   key={item.id}
@@ -357,12 +357,16 @@ export default function CatalogCarouselSection({
                   onClick={() => goTo(i)}
                   aria-label={`Слайд ${i + 1}`}
                   aria-current={i === index}
-                  className={`h-1.5 rounded-full transition-all ${
-                    i === index
-                      ? "w-8 bg-[var(--mp-ink)]"
-                      : "w-3 bg-black/15 hover:bg-black/25"
-                  }`}
-                />
+                  className="inline-flex h-11 items-center px-1"
+                >
+                  <span
+                    className={`block h-1.5 rounded-full transition-all ${
+                      i === index
+                        ? "w-8 bg-[var(--mp-ink)]"
+                        : "w-3 bg-black/15 hover:bg-black/25"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           ) : null}

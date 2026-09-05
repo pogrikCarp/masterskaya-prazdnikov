@@ -11,7 +11,7 @@ export default function PremiumParallaxWaveSection() {
     <section className="relative overflow-hidden bg-[var(--mp-bg)]">
 
       <Container className="max-w-[1320px]">
-        <div className="relative z-10 py-16 sm:py-20 pb-52 sm:pb-64">
+        <div className="relative z-10 pt-16 sm:pt-20 pb-20 sm:pb-24">
           
           <AboutSection></AboutSection>
 

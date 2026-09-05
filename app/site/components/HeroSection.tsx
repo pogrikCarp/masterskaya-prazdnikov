@@ -826,7 +826,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease, delay: 0.08 }}
-              className="mt-2 text-[42px] leading-[1.02] font-extrabold tracking-tight text-white sm:text-[64px]"
+              className="mt-2 text-[clamp(30px,8vw,42px)] leading-[1.05] font-extrabold tracking-tight text-white sm:text-[64px] sm:leading-[1.02]"
             >
               Подарите ребенку сказку,
               <br />

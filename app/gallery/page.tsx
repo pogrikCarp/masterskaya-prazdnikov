@@ -35,7 +35,7 @@ export default async function GalleryPage() {
         <Container>
           <div className="rounded-[34px] bg-white/70 ring-1 ring-black/10 px-6 py-10 sm:px-10">
             <div className="text-center">
-              <h1 className="mt-4 text-[40px] sm:text-[54px] font-black tracking-tight text-[var(--mp-ink)]">
+              <h1 className="mt-4 text-[32px] sm:text-[54px] font-black tracking-tight text-[var(--mp-ink)]">
                 Фотогалерея
               </h1>
               <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl mx-auto">

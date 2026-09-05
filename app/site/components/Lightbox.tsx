@@ -66,20 +66,20 @@ export default function Lightbox({
     >
       <div className="absolute inset-0 flex items-center justify-center p-4">
         <div className="relative w-full max-w-5xl">
-          <button
-            type="button"
-            onClick={onClose}
-            className="absolute -top-14 right-0 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
-            aria-label="Закрыть"
-          >
-            <Icon name="close" className="h-5 w-5" />
-          </button>
-
           <div className="relative overflow-hidden rounded-[28px] ring-1 ring-white/15 bg-black">
+            <button
+              type="button"
+              onClick={onClose}
+              className="absolute right-3 top-3 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur hover:bg-black/60"
+              aria-label="Закрыть"
+            >
+              <Icon name="close" className="h-5 w-5" />
+            </button>
+
             <img
               src={item.src}
               alt={item.alt}
-              className="max-h-[78vh] w-full select-none object-contain"
+              className="max-h-[72vh] w-full select-none object-contain sm:max-h-[78vh]"
               draggable={false}
             />
 
@@ -124,7 +124,7 @@ export default function Lightbox({
             </button>
           </div>
 
-          <div className="mt-4 flex items-center justify-center gap-2 text-xs text-white/60">
+          <div className="mt-4 hidden items-center justify-center gap-2 text-xs text-white/60 sm:flex">
             <span>← →</span>
             <span>листалка</span>
             <span className="mx-2">•</span>

@@ -109,7 +109,7 @@ export default function RequestModalProvider({ children }: { children: ReactNode
                 </div>
                 <h2
                   id="request-modal-title"
-                  className="mt-4 text-[26px] font-black tracking-tight text-[var(--mp-ink)] sm:text-[30px]"
+                  className="mt-4 text-[22px] font-black tracking-tight text-[var(--mp-ink)] sm:text-[30px]"
                 >
                   Оставьте заявку
                 </h2>

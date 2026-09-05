@@ -133,6 +133,7 @@ video {
 
 /* Prevent long words/URLs from breaking layout */
 p,
+li,
 h1,
 h2,
 h3,
@@ -140,4 +141,13 @@ h4,
 h5,
 h6 {
   overflow-wrap: anywhere;
+}
+
+/* iOS Safari zooms the page when a focused field is smaller than 16px */
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
 }

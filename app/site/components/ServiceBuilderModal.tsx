@@ -291,7 +291,7 @@ export default function ServiceBuilderModal({
               </div>
             </div>
 
-            <div className="relative px-6 sm:px-8 pb-6 sm:pb-8 overflow-y-auto">
+            <div className="relative min-h-0 flex-1 overflow-y-auto px-6 sm:px-8 pb-6 sm:pb-8">
               {loading ? (
                 <div className="flex items-center justify-center py-20">
                   <div className="h-10 w-10 animate-spin rounded-full border-4 border-[rgb(var(--mp-lavender-rgb)_/_0.3)] border-t-[rgb(var(--mp-lavender-rgb))]" />

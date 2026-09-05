@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { buttonClassName } from "./Button";
 
+/** 16px обязателен: iOS Safari зумит страницу при фокусе на поле с меньшим шрифтом */
 const inputClass =
-  "mt-2 w-full rounded-[18px] bg-white/70 px-5 py-3 text-sm text-[var(--mp-ink)] ring-1 ring-black/10 placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--mp-lavender-rgb)_/_1)]";
+  "mt-2 w-full rounded-[18px] bg-white/70 px-5 py-3 text-[16px] text-[var(--mp-ink)] ring-1 ring-black/10 placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--mp-lavender-rgb)_/_1)]";
 
 const labelClass = "block text-sm font-semibold text-[var(--mp-ink)]";
 
@@ -173,7 +174,7 @@ export default function RequestForm({
           checked={consentGiven}
           onChange={(e) => setConsentGiven(e.target.checked)}
           required
-          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-black/20 accent-[var(--mp-lavender)]"
+          className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded border-black/20 accent-[var(--mp-lavender)]"
         />
         <span className="text-xs leading-relaxed text-black/60">
           Я даю{" "}

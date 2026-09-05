@@ -90,6 +90,15 @@ export default function GlassHeader() {
     return () => window.removeEventListener("click", onClick);
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
   const surfaceClass = scrolled
     ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.80)_100%)] ring-1 ring-black/10 shadow-[0_16px_50px_rgba(0,0,0,0.18)]"
     : "bg-[linear-gradient(180deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.08)_100%)] ring-1 ring-white/20";
@@ -170,7 +179,7 @@ export default function GlassHeader() {
                   "gap-2",
                   "rounded-full",
                   "px-3",
-                  "h-9",
+                  "h-11",
                   "font-semibold",
                   "text-xs",
                   "ring-1",
@@ -189,7 +198,7 @@ export default function GlassHeader() {
                 whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.25 }}
                 onClick={openRequestModal}
-                className={`hidden sm:inline-flex ${buttonClassName({ variant: "primary", size: "sm" })}`}
+                className={`hidden sm:inline-flex ${buttonClassName({ variant: "primary", size: "md" })}`}
               >
                 Оставить заявку
               </motion.button>
@@ -198,8 +207,8 @@ export default function GlassHeader() {
                 href="#"
                 className={[
                   "hidden sm:inline-flex",
-                  "h-9",
-                  "w-9",
+                  "h-11",
+                  "w-11",
                   "items-center",
                   "justify-center",
                   "rounded-full",
@@ -217,8 +226,8 @@ export default function GlassHeader() {
                 href="#"
                 className={[
                   "hidden sm:inline-flex",
-                  "h-9",
-                  "w-9",
+                  "h-11",
+                  "w-11",
                   "items-center",
                   "justify-center",
                   "rounded-full",
@@ -250,7 +259,9 @@ export default function GlassHeader() {
 
           {open && (
             <div className="lg:hidden px-4 pb-4" data-site-mobile>
-              <div className={`rounded-[22px] p-2 ${mobilePanelClass}`}>
+              <div
+                className={`max-h-[calc(100dvh-7rem)] overflow-y-auto rounded-[22px] p-2 ${mobilePanelClass}`}
+              >
                 <div className="grid gap-1">
                   {nav.map((item) => (
                     <Link

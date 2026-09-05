@@ -46,7 +46,7 @@ const AboutStructuredSection = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="relative -mt-px w-full bg-[var(--mp-bg)] py-16 sm:py-20"
+      className="relative -mt-px w-full bg-[var(--mp-bg)] pb-16 sm:pb-20"
     >
       <Container className="max-w-[1800px] px-0 sm:px-0">
         <motion.div

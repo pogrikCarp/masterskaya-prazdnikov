@@ -177,7 +177,7 @@ export default function ShowsCarouselSection() {
                             ) : null}
                           </div>
 
-                          <h3 className="mt-5 text-[40px] font-black leading-[0.95] tracking-tight sm:text-[64px]">
+                          <h3 className="mt-5 text-[clamp(28px,8vw,40px)] font-black leading-[1] tracking-tight sm:text-[64px] sm:leading-[0.95]">
                             {item.name}
                           </h3>
 
@@ -220,17 +220,22 @@ export default function ShowsCarouselSection() {
                   <div className="text-xs font-semibold tracking-wide text-white/40">
                     {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap items-center">
                     {items.map((item, i) => (
                       <button
                         key={item.id}
                         type="button"
                         onClick={() => goTo(i)}
-                        className={`h-1.5 rounded-full transition-all ${
-                          i === index ? "w-10 bg-[#FFC400]" : "w-3 bg-white/20 hover:bg-white/35"
-                        }`}
+                        className="inline-flex h-11 items-center px-1"
                         aria-label={`Шоу ${i + 1}`}
-                      />
+                        aria-current={i === index}
+                      >
+                        <span
+                          className={`block h-1.5 rounded-full transition-all ${
+                            i === index ? "w-10 bg-[#FFC400]" : "w-3 bg-white/20 hover:bg-white/35"
+                          }`}
+                        />
+                      </button>
                     ))}
                   </div>
                 </div>

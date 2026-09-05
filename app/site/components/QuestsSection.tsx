@@ -210,12 +210,12 @@ export default function QuestsSection() {
           )}
 
           {items.length > 1 ? (
-            <div className="mt-6 flex items-center justify-between gap-4">
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={prev}
-                  className={buttonClassName({ variant: "outline", size: "sm" })}
+                  className={buttonClassName({ variant: "outline", size: "md" })}
                 >
                   <Chevron dir="left" />
                   Назад
@@ -223,7 +223,7 @@ export default function QuestsSection() {
                 <button
                   type="button"
                   onClick={next}
-                  className={buttonClassName({ variant: "outline", size: "sm" })}
+                  className={buttonClassName({ variant: "outline", size: "md" })}
                 >
                   Дальше
                   <Chevron dir="right" />
@@ -234,17 +234,22 @@ export default function QuestsSection() {
                 <div className="hidden text-xs font-semibold text-black/35 sm:block">
                   {active ? active.name : ""}
                 </div>
-                <div className="flex gap-1.5">
+                <div className="flex flex-wrap items-center">
                   {items.map((item, i) => (
                     <button
                       key={item.id}
                       type="button"
                       onClick={() => goTo(i)}
                       aria-label={`Квест ${i + 1}`}
-                      className={`h-2 rounded-full transition-all ${
-                        i === index ? "w-7 bg-[#2F9B7A]" : "w-2 bg-black/15 hover:bg-black/25"
-                      }`}
-                    />
+                      aria-current={i === index}
+                      className="inline-flex h-11 items-center px-1"
+                    >
+                      <span
+                        className={`block h-2 rounded-full transition-all ${
+                          i === index ? "w-7 bg-[#2F9B7A]" : "w-2 bg-black/15 hover:bg-black/25"
+                        }`}
+                      />
+                    </button>
                   ))}
                 </div>
               </div>

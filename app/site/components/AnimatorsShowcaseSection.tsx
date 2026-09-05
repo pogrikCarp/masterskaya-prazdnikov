@@ -84,7 +84,7 @@ export default function AnimatorsShowcaseSection({
         <Container className="max-w-[1320px]">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-3xl">
-            <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
+            <h2 className="text-[28px] sm:text-[34px] md:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
               Аниматоры - те самые любимые герои, только вживую
             </h2>
             <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl">

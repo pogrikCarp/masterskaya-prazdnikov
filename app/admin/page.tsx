@@ -269,7 +269,7 @@ function EntityModal({
           )}
 
           {config.isGallery && (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Категория *
@@ -327,7 +327,7 @@ function EntityModal({
           )}
 
           {config.hasAge && (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Мин. возраст</label>
                 <input
@@ -351,7 +351,7 @@ function EntityModal({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Изображение</label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
               {(uploadedImageUrl || form.imageUrl) && (
                 <img
                   src={uploadedImageUrl || form.imageUrl || ""}
@@ -364,7 +364,7 @@ function EntityModal({
                 <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
               </label>
               {selectedFileName && (
-                <span className="max-w-40 truncate text-xs text-gray-500">
+                <span className="w-full min-w-0 truncate text-xs text-gray-500 sm:w-auto sm:max-w-40">
                   {uploadedImageUrl ? "Загружено: " : "Выбрано: "}
                   {selectedFileName}
                 </span>
