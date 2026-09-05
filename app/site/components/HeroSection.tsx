@@ -8,7 +8,7 @@ import AnimatedBackground from "./AnimatedBackground";
 import FloatingParticles from "./FloatingParticles";
 import GlassHeader from "./GlassHeader";
 import WaveDivider from "./WaveDivider";
-import FoldSparkleButton from "./FoldSparkleButton";
+import Button from "./Button";
 
 import Among2 from "../../img/Among2.png";
 import Logo from "../../img/mastprasnPOSLEDN.png";
@@ -848,14 +848,17 @@ export default function HeroSection() {
               transition={{ duration: 0.9, ease, delay: 0.18 }}
               className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center"
             >
-              <FoldSparkleButton
-                label="Подобрать программу"
+              <Button
+                type="button"
+                size="lg"
                 onClick={() => {
                   document
                     .getElementById("service-builder")
                     ?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }}
-              />
+              >
+                Подобрать программу
+              </Button>
             </motion.div>
 
             <motion.div

@@ -1,5 +1,6 @@
 import Container from "./Container";
 import { buttonClassName } from "./Button";
+import Reveal from "./Reveal";
 
 export default function BusinessSection() {
   const telegramText =
@@ -9,7 +10,7 @@ export default function BusinessSection() {
   return (
     <section id="business" className="py-14 bg-[linear-gradient(180deg,rgba(130,230,200,0.08)_0%,rgb(var(--mp-bg-rgb)_/_0)_100%)]">
       <Container className="max-w-[1320px]">
-        <div className="relative overflow-hidden rounded-[40px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] p-8 sm:p-12">
+        <Reveal className="relative overflow-hidden rounded-[40px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] p-8 sm:p-12">
           <div className="absolute inset-0 bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.22)_0%,rgba(255,255,255,0.85)_55%,rgba(130,230,200,0.18)_100%)]" />
           <div className="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.24)] blur-3xl" />
           <div className="absolute -bottom-28 -right-28 h-96 w-96 rounded-full bg-white/70 blur-3xl" />
@@ -124,7 +125,7 @@ export default function BusinessSection() {
               </a>
             </div>
           </div>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

@@ -1,6 +1,7 @@
 import Container from "./Container";
 import Image from "next/image";
 import { buttonClassName } from "./Button";
+import Reveal from "./Reveal";
 
 import PriglImage from "../../img/prigl2.png";
 
@@ -12,7 +13,7 @@ export default function InvitationsSection() {
   return (
     <section id="invitations" className="py-14">
       <Container className="max-w-[1320px]">
-        <div className="relative overflow-hidden rounded-[40px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] p-8 sm:p-12">
+        <Reveal className="relative overflow-hidden rounded-[40px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] p-8 sm:p-12">
           <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(175,206,188,0.35)_0%,rgba(255,255,255,0.88)_55%,rgba(175,206,188,0.18)_100%)]" />
           <div className="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-[#afcebc]/25 blur-3xl" />
           <div className="absolute -bottom-28 -right-28 h-96 w-96 rounded-full bg-white/70 blur-3xl" />
@@ -103,7 +104,7 @@ export default function InvitationsSection() {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

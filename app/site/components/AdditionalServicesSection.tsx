@@ -64,16 +64,16 @@ export default function AdditionalServicesSection() {
           {services.map((service, idx) => (
             <motion.div
               key={service.title}
-              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 54 }}
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.35 }}
               transition={
-                reduceMotion ? { duration: 0 } : { duration: 0.85, ease, delay: idx * 0.08 }
+                reduceMotion ? { duration: 0 } : { duration: 0.5, ease, delay: idx * 0.05 }
               }
             >
               <Link
                 href={service.href ?? "/services"}
-                className="group block relative overflow-hidden rounded-[34px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] transition-all hover:shadow-[0_32px_100px_rgba(17,24,39,0.14)]"
+                className="mp-card-lift group block relative overflow-hidden rounded-[34px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] hover:shadow-[0_32px_100px_rgba(17,24,39,0.14)]"
               >
                 <div className="absolute inset-0 opacity-90 bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.34)_0%,rgba(255,255,255,0.86)_52%,rgba(214,249,239,0.48)_100%)]" />
                 <div className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.22)] blur-3xl" />

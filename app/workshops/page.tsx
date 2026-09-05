@@ -46,7 +46,7 @@ export default async function WorkshopsPage() {
                         от {workshop.minAge}+ лет
                       </div>
                       {workshop.popular && (
-                        <div className="shrink-0 rounded-full bg-[rgba(255,107,138,0.85)] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-white">
+                        <div className="shrink-0 rounded-full bg-[var(--mp-ink)] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-white">
                           Хит
                         </div>
                       )}

@@ -12,6 +12,7 @@ import BusinessSection from "./site/components/BusinessSection";
 import QuestsSection from "./site/components/QuestsSection";
 import WorkshopsSection from "./site/components/WorkshopsSection";
 import ContactFormSection from "./site/components/ContactFormSection";
+import Reveal from "./site/components/Reveal";
 
 export default function HomePage() {
   return (
@@ -42,7 +43,7 @@ export default function HomePage() {
 
       <section className="py-10">
         <Container>
-          <div className="rounded-[40px] bg-[#0B0B0B] text-white p-6 sm:p-10 lg:p-14 overflow-hidden relative">
+          <Reveal className="rounded-[40px] bg-[#0B0B0B] text-white p-6 sm:p-10 lg:p-14 overflow-hidden relative">
             <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-[#FF6B8A]/30 blur-3xl" />
             <div className="absolute -right-16 top-10 h-72 w-72 rounded-full bg-[#FFD23A]/25 blur-3xl" />
 
@@ -60,7 +61,7 @@ export default function HomePage() {
                 </ButtonLink>
               </div>
             </div>
-          </div>
+          </Reveal>
         </Container>
       </section>
     </SiteShell>

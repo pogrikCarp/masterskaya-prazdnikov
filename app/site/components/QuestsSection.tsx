@@ -74,7 +74,7 @@ export default function QuestsSection() {
       <Container className="max-w-[1320px]">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#2F9B7A]">
+            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--mp-lavender)]">
               Adventure quest
             </div>
             <h2 className="mt-3 text-[34px] font-black tracking-tight text-[var(--mp-ink)] sm:text-[48px]">
@@ -99,7 +99,7 @@ export default function QuestsSection() {
         >
           {loading ? (
             <div className="flex h-[520px] items-center justify-center rounded-[32px] bg-white/60 ring-1 ring-black/5">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-[rgba(47,155,122,0.2)] border-t-[#2F9B7A]" />
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-[rgb(var(--mp-lavender-rgb)_/_0.2)] border-t-[var(--mp-lavender)]" />
             </div>
           ) : items.length === 0 ? (
             <div className="rounded-[32px] bg-white/60 py-16 text-center text-black/45 ring-1 ring-black/5">
@@ -156,7 +156,7 @@ export default function QuestsSection() {
                     <div className="relative order-2 flex flex-col justify-between bg-[linear-gradient(165deg,rgba(255,255,255,0.96)_0%,rgba(245,252,249,0.96)_100%)] p-7 sm:p-10 lg:order-1 lg:col-span-5">
                       <div>
                         <div className="flex items-center justify-between gap-3">
-                          <div className="text-[13px] font-bold tracking-[0.18em] text-[#2F9B7A]">
+                          <div className="text-[13px] font-bold tracking-[0.18em] text-[var(--mp-lavender)]">
                             {String(i + 1).padStart(2, "0")}
                           </div>
                           {item.popular ? (
@@ -246,7 +246,7 @@ export default function QuestsSection() {
                     >
                       <span
                         className={`block h-2 rounded-full transition-all ${
-                          i === index ? "w-7 bg-[#2F9B7A]" : "w-2 bg-black/15 hover:bg-black/25"
+                          i === index ? "w-7 bg-[var(--mp-lavender)]" : "w-2 bg-black/15 hover:bg-black/25"
                         }`}
                       />
                     </button>

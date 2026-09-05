@@ -410,7 +410,7 @@ export default function CatalogCarouselSection({
               <motion.article
                 key={item.id}
                 data-catalog-card
-                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
                 whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={

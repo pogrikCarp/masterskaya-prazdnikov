@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
-import { ButtonLink } from "./Button";
+import { ButtonLink, badgeClassName } from "./Button";
 
 type Animator = {
   id: number;
@@ -134,10 +134,10 @@ export default function AnimatorsShowcaseSection({
                 {popular.map((c, idx) => (
                   <motion.div
                     key={c.title}
-                    initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 54 }}
+                    initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
                     whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.35 }}
-                    transition={reduceMotion ? { duration: 0 } : { duration: 0.85, ease, delay: idx * 0.06 }}
+                    transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease, delay: idx * 0.05 }}
                     className="shrink-0 w-[min(340px,84vw)] sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)] snap-start"
                     data-animator-card
                   >
@@ -152,7 +152,7 @@ export default function AnimatorsShowcaseSection({
                             {c.title}
                           </div>
                           {c.tag ? (
-                            <div className="shrink-0 rounded-full bg-[rgba(255,107,138,0.85)] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-white shadow-[0_14px_30px_rgba(255,107,138,0.25)]">
+                            <div className={`shrink-0 ${badgeClassName("hit")}`}>
                               {c.tag}
                             </div>
                           ) : null}

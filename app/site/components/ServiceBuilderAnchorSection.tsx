@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Container from "./Container";
 import Button from "./Button";
+import Reveal from "./Reveal";
 import ServiceBuilderModal from "./ServiceBuilderModal";
 
 export default function ServiceBuilderAnchorSection() {
@@ -14,7 +15,7 @@ export default function ServiceBuilderAnchorSection() {
       className="py-16"
     >
       <Container className="max-w-[1320px]">
-        <div className="relative overflow-hidden rounded-[40px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)]">
+        <Reveal className="relative overflow-hidden rounded-[40px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)]">
           <div className="absolute inset-0 opacity-90 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgb(var(--mp-lavender-rgb)_/_0.10)_100%)]" />
           <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.20)] blur-3xl" />
           <div className="absolute -bottom-28 -right-28 h-80 w-80 rounded-full bg-white/75 blur-3xl" />
@@ -74,7 +75,7 @@ export default function ServiceBuilderAnchorSection() {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
 
       </Container>
 

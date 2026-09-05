@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import PreloaderGate from "./site/components/PreloaderGate";
@@ -9,6 +9,12 @@ import { getSiteUrl, siteSeo } from "./site/content/seo";
 const inter = Inter({
   subsets: ["cyrillic", "latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const manrope = Manrope({
+  subsets: ["cyrillic", "latin"],
+  variable: "--font-manrope",
   display: "swap",
 });
 
@@ -52,7 +58,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru" className="is-preloading">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${manrope.variable} font-sans antialiased`}>
         <div id="site-preloader" className="site-preloader" aria-hidden="true">
           <div className="site-preloader__spinner" />
         </div>

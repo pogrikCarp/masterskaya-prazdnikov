@@ -11,7 +11,7 @@ export type ButtonVariant =
 export type ButtonSize = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all outline-none focus-visible:ring-2 focus-visible:ring-[rgba(255,196,0,0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mp-bg)] active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[rgba(255,196,0,0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mp-bg)] hover:-translate-y-px active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<ButtonVariant, string> = {
   primary:

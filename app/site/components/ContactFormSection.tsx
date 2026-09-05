@@ -1,5 +1,6 @@
 import Container from "./Container";
 import RequestForm from "./RequestForm";
+import Reveal from "./Reveal";
 
 const advantages = [
   { title: "Быстрый ответ", text: "Перезвоним в течение 15 минут" },
@@ -14,7 +15,7 @@ export default function ContactFormSection() {
       className="scroll-mt-28 py-16 bg-[linear-gradient(180deg,rgb(var(--mp-bg-rgb)_/_0)_0%,rgb(var(--mp-lavender-rgb)_/_0.12)_100%)]"
     >
       <Container className="max-w-[1320px]">
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+        <Reveal className="grid gap-10 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-5">
             <div className="inline-flex rounded-full bg-white/70 px-4 py-2 text-xs font-semibold text-black/70 ring-1 ring-black/10">
               Обратная связь
@@ -65,7 +66,7 @@ export default function ContactFormSection() {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

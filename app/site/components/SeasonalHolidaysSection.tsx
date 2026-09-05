@@ -55,13 +55,13 @@ export default function SeasonalHolidaysSection() {
           {holidays.map((holiday, idx) => (
             <motion.div
               key={holiday.title}
-              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 54 }}
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.35 }}
               transition={
-                reduceMotion ? { duration: 0 } : { duration: 0.85, ease, delay: idx * 0.08 }
+                reduceMotion ? { duration: 0 } : { duration: 0.5, ease, delay: idx * 0.05 }
               }
-              className="group relative overflow-hidden rounded-[34px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] transition-all hover:shadow-[0_32px_100px_rgba(17,24,39,0.14)]"
+              className="mp-card-lift group relative overflow-hidden rounded-[34px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] hover:shadow-[0_32px_100px_rgba(17,24,39,0.14)]"
             >
               <div className="absolute inset-0 opacity-90 bg-[linear-gradient(135deg,rgba(255,107,138,0.25)_0%,rgba(255,255,255,0.85)_55%,rgba(255,196,0,0.22)_100%)]" />
               <div className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-[#FF6B8A]/28 blur-3xl" />
