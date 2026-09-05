@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Container from "./Container";
+import Button, { ButtonLink, badgeClassName } from "./Button";
 import { useRequestModal } from "./RequestModalProvider";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -195,12 +196,9 @@ export default function CatalogCarouselSection({
             <NavControl direction="next" onClick={next} tone="light" />
           </>
         ) : null}
-        <Link
-          href={allHref}
-          className="inline-flex h-11 items-center justify-center rounded-2xl bg-[var(--mp-ink)] px-5 text-sm font-semibold text-white transition hover:opacity-90"
-        >
+        <ButtonLink href={allHref} variant="secondary" size="md">
           {allLabel}
-        </Link>
+        </ButtonLink>
       </div>
     </div>
   );
@@ -297,9 +295,7 @@ export default function CatalogCarouselSection({
                       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,10,24,0.08)_0%,transparent_40%,rgba(12,10,24,0.58)_100%)]" />
 
                       {item.popular ? (
-                        <div
-                          className={`absolute right-4 top-4 rounded-full ${palette.badge} px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-white sm:right-6 sm:top-6`}
-                        >
+                        <div className={`absolute right-4 top-4 sm:right-6 sm:top-6 ${badgeClassName("hit")}`}>
                           Хит
                         </div>
                       ) : null}
@@ -312,26 +308,19 @@ export default function CatalogCarouselSection({
 
                           <div className="mt-4 flex flex-wrap gap-2">
                             {(item.meta || []).map((chip) => (
-                              <span
-                                key={chip}
-                                className="rounded-full bg-white/12 px-3 py-1.5 text-xs font-semibold text-white/85 ring-1 ring-white/18 backdrop-blur"
-                              >
+                              <span key={chip} className={badgeClassName("onDark")}>
                                 {chip}
                               </span>
                             ))}
-                            <span className="rounded-full bg-[var(--mp-accent)] px-3 py-1.5 text-xs font-bold text-[var(--mp-ink)]">
+                            <span className={badgeClassName("price")}>
                               {item.price.toLocaleString()} ₽
                             </span>
                           </div>
 
                           <div className="mt-5 flex flex-wrap items-center gap-3">
-                            <button
-                              type="button"
-                              onClick={openRequestModal}
-                              className="inline-flex h-11 items-center justify-center rounded-2xl bg-white px-5 text-sm font-semibold text-[var(--mp-ink)] transition hover:bg-white/90"
-                            >
+                            <Button type="button" size="md" onClick={openRequestModal}>
                               Оставить заявку
-                            </button>
+                            </Button>
                             <Link
                               href={allHref}
                               className="text-sm font-semibold text-white/70 underline-offset-2 transition hover:text-white hover:underline"
@@ -401,12 +390,9 @@ export default function CatalogCarouselSection({
               </>
             ) : null}
 
-            <Link
-              href={allHref}
-              className="inline-flex h-11 items-center justify-center rounded-2xl bg-[var(--mp-ink)] px-5 text-sm font-semibold text-white transition hover:opacity-90"
-            >
+            <ButtonLink href={allHref} variant="secondary" size="md">
               {allLabel}
-            </Link>
+            </ButtonLink>
           </div>
         </div>
 
@@ -451,9 +437,7 @@ export default function CatalogCarouselSection({
                     )}
 
                     {item.popular ? (
-                      <div
-                        className={`absolute right-3 top-3 rounded-full ${palette.badge} px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white`}
-                      >
+                      <div className={`absolute right-3 top-3 ${badgeClassName("hit")}`}>
                         Хит
                       </div>
                     ) : null}

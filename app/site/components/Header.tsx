@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import Container from "./Container";
+import { buttonClassName } from "./Button";
 import { Icon } from "./Icon";
 import { useRequestModal } from "./RequestModalProvider";
 import { SITE_PHONE_DISPLAY, SITE_PHONE_HREF } from "../content/contacts";
@@ -135,7 +136,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={openRequestModal}
-                className="hidden sm:inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#5A3FE0] to-[#8B5CF6] px-6 h-12 text-[14px] font-semibold tracking-wide text-white shadow-[0_8px_24px_rgba(90,63,224,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(90,63,224,0.45)]"
+                className={`hidden sm:inline-flex ${buttonClassName({ variant: "primary", size: "lg" })}`}
               >
                 Оставить заявку
               </button>
@@ -178,7 +179,11 @@ export default function Header() {
                     setOpen(false);
                     openRequestModal();
                   }}
-                  className="mt-4 w-full inline-flex h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#5A3FE0] to-[#8B5CF6] text-white font-semibold tracking-wide shadow-[0_8px_24px_rgba(90,63,224,0.3)]"
+                  className={buttonClassName({
+                    variant: "primary",
+                    size: "lg",
+                    className: "mt-4 w-full",
+                  })}
                 >
                   Оставить заявку
                 </button>

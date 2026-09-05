@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Container from "./Container";
+import Button from "./Button";
 import ServiceBuilderModal from "./ServiceBuilderModal";
 
 export default function ServiceBuilderAnchorSection() {
@@ -57,19 +58,14 @@ export default function ServiceBuilderAnchorSection() {
                 </div>
 
                 <div className="rounded-[28px] bg-white/70 ring-1 ring-black/10 p-5 h-full shadow-[0_20px_55px_rgba(17,24,39,0.08)] flex flex-col justify-between">
-                  <button
+                  <Button
                     type="button"
+                    size="lg"
+                    className="w-full"
                     onClick={() => setOpen(true)}
-                    className="group relative w-full overflow-hidden inline-flex h-14 sm:h-16 items-center justify-center gap-3 rounded-2xl px-8 sm:px-10 text-sm sm:text-[15px] font-semibold text-white bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.92)_0%,rgb(var(--mp-lavender-rgb)_/_0.72)_42%,rgba(255,107,138,0.90)_100%)] bg-[length:220%_220%] bg-[position:0%_50%] shadow-[0_24px_70px_rgba(17,24,39,0.18)] ring-1 ring-white/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_30px_90px_rgba(17,24,39,0.22)] hover:bg-[position:100%_50%] active:translate-y-0"
                   >
-                    <span className="pointer-events-none absolute inset-0 rounded-2xl bg-[linear-gradient(180deg,rgba(255,255,255,0.34)_0%,rgba(255,255,255,0.12)_28%,rgba(0,0,0,0.12)_100%)]" />
-                    <span className="pointer-events-none absolute -top-10 left-6 h-16 w-44 rotate-[18deg] rounded-2xl bg-white/30 blur-2xl transition-transform duration-500 group-hover:translate-x-10" />
-                    <span className="pointer-events-none absolute -inset-1 rounded-2xl bg-white/10 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
-                    <span className="relative">Собрать свой праздник</span>
-                    <span className="relative inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-white/18 ring-1 ring-white/30 transition-transform duration-300 group-hover:translate-x-0.5">
-                      <span className="text-lg leading-none">→</span>
-                    </span>
-                  </button>
+                    Собрать свой праздник
+                  </Button>
 
                   <div className="mt-3 text-center text-xs text-black/50">
                     Займёт не больше 2 минут · Бесплатно · Без обязательств

@@ -1,5 +1,5 @@
 import Container from "./Container";
-import Link from "next/link";
+import { buttonClassName } from "./Button";
 
 export default function BusinessSection() {
   const telegramText =
@@ -114,17 +114,14 @@ export default function BusinessSection() {
             </div>
 
             <div className="mt-8 flex justify-center">
-              <Link
+              <a
                 href={telegramHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex h-14 sm:h-16 min-w-[260px] items-center justify-center rounded-full px-8 sm:px-10 text-sm sm:text-[15px] font-semibold text-white bg-[linear-gradient(135deg,rgba(175,206,188,0.92)_0%,rgb(var(--mp-lavender-rgb)_/_0.72)_48%,rgba(255,107,138,0.88)_100%)] bg-[length:220%_220%] bg-[position:0%_50%] shadow-[0_24px_70px_rgba(17,24,39,0.18)] ring-1 ring-white/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_30px_90px_rgba(17,24,39,0.22)] hover:bg-[position:100%_50%] active:translate-y-0"
+                className={buttonClassName({ variant: "primary", size: "lg" })}
               >
-                <span className="pointer-events-none absolute inset-0 rounded-full bg-[linear-gradient(180deg,rgba(255,255,255,0.34)_0%,rgba(255,255,255,0.12)_28%,rgba(0,0,0,0.12)_100%)]" />
-                <span className="pointer-events-none absolute -top-10 left-6 h-16 w-44 rotate-[18deg] rounded-full bg-white/30 blur-2xl transition-transform duration-500 group-hover:translate-x-10" />
-                <span className="pointer-events-none absolute -inset-1 rounded-full bg-white/10 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
-                <span className="relative">Обсудить сотрудничество</span>
-              </Link>
+                Обсудить сотрудничество
+              </a>
             </div>
           </div>
         </div>

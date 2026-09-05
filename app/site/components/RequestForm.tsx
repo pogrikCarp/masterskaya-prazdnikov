@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { buttonClassName } from "./Button";
 
 const inputClass =
   "mt-2 w-full rounded-[18px] bg-white/70 px-5 py-3 text-sm text-[var(--mp-ink)] ring-1 ring-black/10 placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--mp-lavender-rgb)_/_1)]";
@@ -198,7 +199,12 @@ export default function RequestForm({
       <button
         type="submit"
         disabled={isSubmitting || !consentGiven}
-        className="w-full inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold bg-[var(--mp-accent)] text-[var(--mp-ink)] shadow-[0_18px_40px_rgba(255,196,0,0.25)] hover:shadow-[0_22px_50px_rgba(255,196,0,0.35)] transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+        className={buttonClassName({
+          variant: "primary",
+          size: "lg",
+          className:
+            "w-full shadow-[0_18px_40px_rgba(255,196,0,0.25)] hover:shadow-[0_22px_50px_rgba(255,196,0,0.35)] disabled:opacity-50 disabled:cursor-not-allowed",
+        })}
       >
         {isSubmitting ? "Отправка..." : "Отправить заявку"}
       </button>

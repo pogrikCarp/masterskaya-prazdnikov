@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Container from "./Container";
+import Button, { ButtonLink, badgeClassName, buttonClassName } from "./Button";
 import { useRequestModal } from "./RequestModalProvider";
 import { useLoopCarousel } from "./useLoopCarousel";
 
@@ -86,12 +87,9 @@ export default function QuestsSection() {
             </p>
           </div>
 
-          <Link
-            href="/quests"
-            className="inline-flex h-11 items-center self-start rounded-2xl bg-[var(--mp-ink)] px-5 text-sm font-semibold text-white transition hover:opacity-90 sm:self-auto"
-          >
+          <ButtonLink href="/quests" variant="secondary" size="md">
             Все квесты
-          </Link>
+          </ButtonLink>
         </div>
 
         <div
@@ -162,9 +160,7 @@ export default function QuestsSection() {
                             {String(i + 1).padStart(2, "0")}
                           </div>
                           {item.popular ? (
-                            <span className="rounded-full bg-[#2F9B7A] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-                              Хит
-                            </span>
+                            <span className={badgeClassName("hit")}>Хит</span>
                           ) : null}
                         </div>
 
@@ -183,26 +179,22 @@ export default function QuestsSection() {
                         )}
 
                         <div className="mt-6 flex flex-wrap gap-2">
-                          <span className="rounded-full bg-black/[0.04] px-3 py-1.5 text-xs font-semibold text-black/60 ring-1 ring-black/5">
+                          <span className={badgeClassName("neutral")}>
                             от {item.minAge}+ лет
                           </span>
-                          <span className="rounded-full bg-black/[0.04] px-3 py-1.5 text-xs font-semibold text-black/60 ring-1 ring-black/5">
+                          <span className={badgeClassName("neutral")}>
                             {item.duration} мин
                           </span>
-                          <span className="rounded-full bg-[var(--mp-accent)] px-3 py-1.5 text-xs font-bold text-[var(--mp-ink)]">
+                          <span className={badgeClassName("price")}>
                             {item.price.toLocaleString()} ₽
                           </span>
                         </div>
                       </div>
 
                       <div className="mt-8 flex flex-wrap items-center gap-3">
-                        <button
-                          type="button"
-                          onClick={openRequestModal}
-                          className="inline-flex h-11 items-center rounded-2xl bg-[var(--mp-ink)] px-5 text-sm font-semibold text-white transition hover:opacity-90"
-                        >
+                        <Button type="button" size="md" onClick={openRequestModal}>
                           Забронировать квест
-                        </button>
+                        </Button>
                         <Link
                           href="/quests"
                           className="text-sm font-semibold text-black/45 underline-offset-2 hover:text-black/70 hover:underline"
@@ -223,7 +215,7 @@ export default function QuestsSection() {
                 <button
                   type="button"
                   onClick={prev}
-                  className="inline-flex h-10 items-center gap-2 rounded-2xl bg-white/80 px-3 text-sm font-semibold text-black/65 ring-1 ring-black/8 transition hover:bg-white hover:text-black"
+                  className={buttonClassName({ variant: "outline", size: "sm" })}
                 >
                   <Chevron dir="left" />
                   Назад
@@ -231,7 +223,7 @@ export default function QuestsSection() {
                 <button
                   type="button"
                   onClick={next}
-                  className="inline-flex h-10 items-center gap-2 rounded-2xl bg-white/80 px-3 text-sm font-semibold text-black/65 ring-1 ring-black/8 transition hover:bg-white hover:text-black"
+                  className={buttonClassName({ variant: "outline", size: "sm" })}
                 >
                   Дальше
                   <Chevron dir="right" />

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Container from "./Container";
+import Button, { ButtonLink, badgeClassName } from "./Button";
 import { useRequestModal } from "./RequestModalProvider";
 import { useLoopCarousel } from "./useLoopCarousel";
 
@@ -98,12 +98,9 @@ export default function ShowsCarouselSection() {
                 </button>
               </div>
             ) : null}
-            <Link
-              href="/shows"
-              className="inline-flex h-11 items-center rounded-full bg-[#FFC400] px-5 text-sm font-bold text-[#1A1400] transition hover:brightness-105"
-            >
+            <ButtonLink href="/shows" variant="onDark" size="md">
               Все шоу
-            </Link>
+            </ButtonLink>
           </div>
         </div>
       </Container>
@@ -172,13 +169,11 @@ export default function ShowsCarouselSection() {
                       <Container className="relative flex min-h-[62vh] items-end pb-10 sm:min-h-[68vh] sm:pb-14">
                         <div className="max-w-2xl">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white/80 ring-1 ring-white/15">
+                            <span className={badgeClassName("onDark")}>
                               {item.duration} мин
                             </span>
                             {item.popular ? (
-                              <span className="rounded-full bg-[#FF6B8A] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
-                                Хит
-                              </span>
+                              <span className={badgeClassName("hit")}>Хит</span>
                             ) : null}
                           </div>
 
@@ -193,13 +188,9 @@ export default function ShowsCarouselSection() {
                           ) : null}
 
                           <div className="mt-7 flex flex-wrap items-center gap-3">
-                            <button
-                              type="button"
-                              onClick={openRequestModal}
-                              className="inline-flex h-12 items-center rounded-full bg-[#FFC400] px-6 text-sm font-bold text-[#1A1400] transition hover:brightness-105"
-                            >
+                            <Button type="button" size="lg" onClick={openRequestModal}>
                               Заказать шоу
-                            </button>
+                            </Button>
                             <div className="text-lg font-black text-white">
                               {item.price.toLocaleString()} ₽
                             </div>
