@@ -204,7 +204,7 @@ export default function RequestForm({
           variant: "primary",
           size: "lg",
           className:
-            "w-full shadow-[0_18px_40px_rgba(255,196,0,0.25)] hover:shadow-[0_22px_50px_rgba(255,196,0,0.35)] disabled:opacity-50 disabled:cursor-not-allowed",
+            "w-full disabled:opacity-50 disabled:cursor-not-allowed",
         })}
       >
         {isSubmitting ? "Отправка..." : "Отправить заявку"}

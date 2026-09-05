@@ -6,11 +6,13 @@
   --mp-text: #2b2b2b;
   --mp-ink: #2b2b2b;
 
-  --mp-accent: #ffc400;
-  --mp-accent-2: #ff6b8a;
+  --mp-accent: #8d7cff;
+  --mp-accent-2: #ff8aa8;
   --mp-lavender: #8d7cff;
   --mp-lavender-rgb: 141 124 255;
   --mp-mint: #82e6c8;
+  --mp-btn: linear-gradient(135deg, #9b7cff 0%, #c084fc 48%, #ff8aa8 100%);
+  --mp-btn-shadow: 0 14px 32px rgba(141, 124, 255, 0.28);
 
   --mp-card: rgba(255, 255, 255, 0.72);
   --mp-border: rgba(0, 0, 0, 0.10);

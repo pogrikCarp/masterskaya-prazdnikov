@@ -91,7 +91,7 @@ export default function PhotoGrid({
                 onClick={() => setFilter(c.id)}
                 className={`h-10 rounded-full px-4 text-sm font-semibold transition-all ring-1 ring-black/10 ${
                   active
-                    ? "bg-[var(--mp-accent)] text-[var(--mp-ink)] shadow-[0_12px_24px_rgba(255,196,0,0.18)]"
+                    ? "text-white shadow-[var(--mp-btn-shadow)] [background-image:var(--mp-btn)]"
                     : "bg-white/70 text-[var(--mp-text)] hover:bg-white"
                 }`}
               >

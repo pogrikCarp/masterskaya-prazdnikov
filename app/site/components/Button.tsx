@@ -11,19 +11,19 @@ export type ButtonVariant =
 export type ButtonSize = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[rgba(255,196,0,0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mp-bg)] hover:-translate-y-px active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[rgba(141,124,255,0.4)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--mp-bg)] hover:-translate-y-px active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "bg-[var(--mp-accent)] text-[var(--mp-ink)] shadow-[0_12px_28px_rgba(255,196,0,0.22)] hover:brightness-[0.97]",
+    "text-white shadow-[var(--mp-btn-shadow)] hover:brightness-[1.04] [background-image:var(--mp-btn)]",
   secondary:
-    "bg-[var(--mp-ink)] text-white hover:opacity-90",
+    "bg-white/80 text-[var(--mp-ink)] ring-1 ring-[rgb(var(--mp-lavender-rgb)_/_0.22)] hover:bg-white hover:ring-[rgb(var(--mp-lavender-rgb)_/_0.4)]",
   outline:
-    "bg-white/80 text-[var(--mp-ink)] ring-1 ring-black/10 hover:bg-white",
+    "bg-white/80 text-[var(--mp-ink)] ring-1 ring-[rgb(var(--mp-lavender-rgb)_/_0.22)] hover:bg-white",
   ghost:
-    "bg-transparent text-[var(--mp-ink)] hover:bg-black/[0.05]",
+    "bg-transparent text-[var(--mp-ink)] hover:bg-[rgb(var(--mp-lavender-rgb)_/_0.08)]",
   onDark:
-    "bg-white/10 text-white ring-1 ring-white/20 hover:bg-white/16",
+    "text-white shadow-[var(--mp-btn-shadow)] hover:brightness-[1.04] [background-image:var(--mp-btn)]",
 };
 
 const sizes: Record<ButtonSize, string> = {
@@ -78,19 +78,18 @@ export function ButtonLink({
   );
 }
 
-/** Единые бейджи метаданных / «Хит» */
 export function badgeClassName(
   tone: "neutral" | "hit" | "price" | "onDark" = "neutral",
   className = ""
 ) {
   const tones: Record<string, string> = {
     neutral:
-      "rounded-full bg-black/[0.04] px-3 py-1.5 text-xs font-semibold text-black/60 ring-1 ring-black/5",
-    hit: "rounded-full bg-[var(--mp-ink)] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white",
+      "rounded-full bg-white/70 px-3 py-1.5 text-xs font-semibold text-black/60 ring-1 ring-[rgb(var(--mp-lavender-rgb)_/_0.14)]",
+    hit: "rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white [background-image:var(--mp-btn)]",
     price:
-      "rounded-full bg-[var(--mp-accent)] px-3 py-1.5 text-xs font-bold text-[var(--mp-ink)]",
+      "rounded-full bg-white px-3 py-1.5 text-xs font-bold text-[var(--mp-lavender)] ring-1 ring-[rgb(var(--mp-lavender-rgb)_/_0.18)]",
     onDark:
-      "rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white/80 ring-1 ring-white/15",
+      "rounded-full bg-white/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--mp-ink)] ring-1 ring-white/50",
   };
   return `${tones[tone]} ${className}`.trim();
 }

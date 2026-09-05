@@ -43,15 +43,15 @@ export default function HomePage() {
 
       <section className="py-10">
         <Container>
-          <Reveal className="rounded-[40px] bg-[#0B0B0B] text-white p-6 sm:p-10 lg:p-14 overflow-hidden relative">
-            <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-[#FF6B8A]/30 blur-3xl" />
-            <div className="absolute -right-16 top-10 h-72 w-72 rounded-full bg-[#FFD23A]/25 blur-3xl" />
+          <Reveal className="relative overflow-hidden rounded-[40px] bg-white/75 p-6 text-[var(--mp-ink)] ring-1 ring-[rgb(var(--mp-lavender-rgb)_/_0.12)] shadow-[0_24px_70px_rgba(141,124,255,0.10)] sm:p-10 lg:p-14">
+            <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.22)] blur-3xl" />
+            <div className="absolute -right-16 top-10 h-72 w-72 rounded-full bg-[rgba(255,138,168,0.18)] blur-3xl" />
 
             <div className="relative text-center">
               <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight">
                 Посмотрите, как проходит праздник
               </h2>
-              <p className="mt-3 text-sm sm:text-base text-white/70 max-w-2xl mx-auto">
+              <p className="mt-3 text-sm sm:text-base text-black/55 max-w-2xl mx-auto">
                 Визуальный стиль — ключ к «вау‑эффекту». Подборка фото и видео помогает
                 выбрать формат без лишних звонков.
               </p>

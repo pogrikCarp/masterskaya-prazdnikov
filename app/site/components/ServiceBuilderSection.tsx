@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Container from "./Container";
+import { buttonClassName } from "./Button";
 
 type ServiceOption = {
   id: string;
@@ -208,7 +209,11 @@ export default function ServiceBuilderSection() {
 
                       <button
                         type="button"
-                        className="mt-6 w-full inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold bg-[var(--mp-accent)] text-[var(--mp-ink)] shadow-[0_18px_40px_rgba(255,196,0,0.25)] hover:shadow-[0_22px_50px_rgba(255,196,0,0.35)] transition-shadow"
+                        className={buttonClassName({
+                          variant: "primary",
+                          size: "lg",
+                          className: "mt-6 w-full",
+                        })}
                       >
                         Оформить заказ
                       </button>

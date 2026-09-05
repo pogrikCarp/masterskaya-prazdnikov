@@ -59,31 +59,32 @@ export default function ShowsCarouselSection() {
   }, []);
 
   return (
-    <section id="shows" className="relative overflow-x-clip bg-[#0B0B0F] py-16 text-white sm:py-20">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_420px_at_15%_0%,rgba(255,107,138,0.22),transparent_60%),radial-gradient(700px_360px_at_90%_20%,rgba(255,196,0,0.14),transparent_55%)]" />
+    <section id="shows" className="relative bg-[var(--mp-bg)] px-4 py-6 sm:px-6 sm:py-8">
+      <div className="relative overflow-hidden rounded-[32px] bg-white/75 py-16 text-[var(--mp-ink)] shadow-[0_24px_70px_rgba(141,124,255,0.10)] ring-1 ring-[rgb(var(--mp-lavender-rgb)_/_0.10)] sm:rounded-[40px] sm:py-20">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_420px_at_12%_0%,rgba(141,124,255,0.16),transparent_58%),radial-gradient(700px_360px_at_92%_18%,rgba(255,138,168,0.12),transparent_55%)]" />
 
       <Container className="relative max-w-[1320px]">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
-            <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#FFC400]">
+            <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--mp-lavender)]">
               Live show
             </div>
             <h2 className="mt-3 text-[36px] font-black tracking-tight sm:text-[52px]">
               Шоу, от которых
-              <span className="block text-white/55">ахает весь зал</span>
+              <span className="block text-black/40">ахает весь зал</span>
             </h2>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/55 sm:text-base">
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-black/55 sm:text-base">
               Бумага, пузыри, свет и музыка — короткие вау‑номера, которые держат темп праздника.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
             {items.length > 1 ? (
-              <div className="flex items-center gap-1 rounded-full bg-white/5 p-1 ring-1 ring-white/10">
+              <div className="flex items-center gap-1 rounded-full bg-white/80 p-1 ring-1 ring-[rgb(var(--mp-lavender-rgb)_/_0.16)]">
                 <button
                   type="button"
                   onClick={prev}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/55 transition hover:bg-white hover:text-[var(--mp-ink)]"
                   aria-label="Предыдущее шоу"
                 >
                   <Chevron dir="left" />
@@ -91,14 +92,14 @@ export default function ShowsCarouselSection() {
                 <button
                   type="button"
                   onClick={next}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-black/55 transition hover:bg-white hover:text-[var(--mp-ink)]"
                   aria-label="Следующее шоу"
                 >
                   <Chevron dir="right" />
                 </button>
               </div>
             ) : null}
-            <ButtonLink href="/shows" variant="onDark" size="md">
+            <ButtonLink href="/shows" variant="secondary" size="md">
               Все шоу
             </ButtonLink>
           </div>
@@ -112,11 +113,11 @@ export default function ShowsCarouselSection() {
       >
         {loading ? (
           <div className="flex h-[58vh] items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/15 border-t-[#FFC400]" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[rgb(var(--mp-lavender-rgb)_/_0.2)] border-t-[var(--mp-lavender)]" />
           </div>
         ) : items.length === 0 ? (
           <Container>
-            <div className="rounded-[28px] bg-white/5 py-16 text-center text-white/45 ring-1 ring-white/10">
+            <div className="rounded-[28px] bg-white/70 py-16 text-center text-black/40 ring-1 ring-black/5">
               Нет шоу-программ
             </div>
           </Container>
@@ -161,10 +162,10 @@ export default function ShowsCarouselSection() {
                           loading={i === 0 ? "eager" : "lazy"}
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-[linear-gradient(135deg,#FF6B8A,#5A3FE0)]" />
+                        <div className="absolute inset-0 bg-[linear-gradient(135deg,#c084fc,#8d7cff)]" />
                       )}
-                      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,8,12,0.88)_0%,rgba(8,8,12,0.45)_48%,rgba(8,8,12,0.25)_100%)]" />
-                      <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(8,8,12,0.75)_100%)]" />
+                      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.58)_48%,rgba(255,255,255,0.22)_100%)]" />
+                      <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(255,255,255,0.55)_100%)]" />
 
                       <Container className="relative flex min-h-[62vh] items-end pb-10 sm:min-h-[68vh] sm:pb-14">
                         <div className="max-w-2xl">
@@ -182,7 +183,7 @@ export default function ShowsCarouselSection() {
                           </h3>
 
                           {item.description ? (
-                            <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/65 sm:text-base line-clamp-3">
+                            <p className="mt-4 max-w-lg text-sm leading-relaxed text-black/55 sm:text-base line-clamp-3">
                               {item.description}
                             </p>
                           ) : null}
@@ -191,7 +192,7 @@ export default function ShowsCarouselSection() {
                             <Button type="button" size="lg" onClick={openRequestModal}>
                               Заказать шоу
                             </Button>
-                            <div className="text-lg font-black text-white">
+                            <div className="text-lg font-black text-[var(--mp-ink)]">
                               {item.price.toLocaleString()} ₽
                             </div>
                           </div>
@@ -203,10 +204,10 @@ export default function ShowsCarouselSection() {
               </div>
 
               {items.length > 1 ? (
-                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10">
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[rgb(var(--mp-lavender-rgb)_/_0.16)]">
                   <div
                     key={index}
-                    className={`h-full origin-left bg-[#FFC400] ${
+                    className={`h-full origin-left bg-[var(--mp-lavender)] ${
                       reduceMotion ? "" : "mp-show-progress"
                     }`}
                   />
@@ -217,7 +218,7 @@ export default function ShowsCarouselSection() {
             {items.length > 1 ? (
               <Container className="mt-5">
                 <div className="flex items-center justify-between gap-4">
-                  <div className="text-xs font-semibold tracking-wide text-white/40">
+                  <div className="text-xs font-semibold tracking-wide text-black/35">
                     {String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
                   </div>
                   <div className="flex flex-wrap items-center">
@@ -232,7 +233,7 @@ export default function ShowsCarouselSection() {
                       >
                         <span
                           className={`block h-1.5 rounded-full transition-all ${
-                            i === index ? "w-10 bg-[#FFC400]" : "w-3 bg-white/20 hover:bg-white/35"
+                            i === index ? "w-10 bg-[var(--mp-lavender)]" : "w-3 bg-black/15 hover:bg-black/25"
                           }`}
                         />
                       </button>
@@ -243,6 +244,7 @@ export default function ShowsCarouselSection() {
             ) : null}
           </>
         )}
+      </div>
       </div>
     </section>
   );
