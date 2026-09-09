@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import CatalogCarouselSection, {
-  type CatalogCardItem,
-} from "./CatalogCarouselSection";
+import CatalogCardsSection from "./CatalogCardsSection";
+import { type CatalogCardItem } from "./CatalogCarouselSection";
 import {
   DEFAULT_HOME_CONTENT,
   WORKSHOPS_SECTION,
@@ -62,7 +61,7 @@ export default function WorkshopsSection({
   }, []);
 
   return (
-    <CatalogCarouselSection
+    <CatalogCardsSection
       id="workshops"
       title={section.title}
       subtitle={section.subtitle ?? ""}

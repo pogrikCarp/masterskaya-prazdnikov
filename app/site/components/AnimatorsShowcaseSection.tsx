@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import CatalogCarouselSection, {
-  type CatalogCardItem,
-} from "./CatalogCarouselSection";
+import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import Container from "./Container";
+import { ButtonLink, badgeClassName } from "./Button";
+import NavControl from "./CarouselNav";
 import {
   ANIMATORS_SECTION,
   DEFAULT_HOME_CONTENT,
@@ -20,6 +21,14 @@ type Animator = {
   active: boolean;
 };
 
+type AnimatorCard = {
+  title: string;
+  tag?: string;
+  image: string | null;
+};
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
 export default function AnimatorsShowcaseSection({
   showAllLink = true,
   section = DEFAULT_HOME_CONTENT[ANIMATORS_SECTION],
@@ -27,7 +36,9 @@ export default function AnimatorsShowcaseSection({
   showAllLink?: boolean;
   section?: HomeSectionContent;
 }) {
-  const [items, setItems] = useState<CatalogCardItem[]>([]);
+  const reduceMotion = useReducedMotion();
+  const popularScrollerRef = useRef<HTMLDivElement | null>(null);
+  const [popular, setPopular] = useState<AnimatorCard[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,15 +47,11 @@ export default function AnimatorsShowcaseSection({
         const res = await fetch("/api/animators");
         if (res.ok) {
           const data: Animator[] = await res.json();
-          setItems(
-            data.map((animator) => ({
-              id: animator.id,
-              title: animator.name,
-              imageUrl: animator.imageUrl,
-              price: animator.pricePerHour,
-              priceSuffix: "/час",
-              popular: animator.popular,
-              description: animator.description,
+          setPopular(
+            data.map((a) => ({
+              title: a.name,
+              tag: a.popular ? "хит" : undefined,
+              image: a.imageUrl,
             }))
           );
         }
@@ -54,20 +61,137 @@ export default function AnimatorsShowcaseSection({
         setLoading(false);
       }
     }
-
     fetchAnimators();
   }, []);
 
+  const scrollPopularByAmount = (dir: -1 | 1) => {
+    const el = popularScrollerRef.current;
+    if (!el) return;
+
+    const firstCard = el.querySelector<HTMLElement>("[data-animator-card]");
+    const styles = window.getComputedStyle(el);
+    const gap = Number.parseFloat(styles.columnGap || styles.gap || "0") || 0;
+    const amount = firstCard
+      ? firstCard.offsetWidth + gap
+      : Math.max(320, Math.round(el.clientWidth * 0.9));
+
+    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+  };
+
+  const onScrollerWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    const isVerticalScroll =
+      !event.shiftKey && Math.abs(event.deltaY) >= Math.abs(event.deltaX);
+
+    if (!isVerticalScroll) return;
+
+    event.preventDefault();
+    window.scrollBy({ top: event.deltaY, behavior: "auto" });
+  };
+
   return (
-    <CatalogCarouselSection
-      id="services"
-      title={section.title}
-      subtitle={section.subtitle ?? ""}
-      allHref={showAllLink ? "/animators" : undefined}
-      allLabel={showAllLink ? "Все аниматоры" : undefined}
-      items={items}
-      loading={loading}
-      emptyText="Нет аниматоров"
-    />
+    <section id="services" className="py-14">
+      <Container className="max-w-[1320px]">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
+              {section.title}
+            </h2>
+            {section.subtitle ? (
+              <p className="mt-3 text-sm sm:text-base text-black/55">{section.subtitle}</p>
+            ) : null}
+          </div>
+
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <NavControl
+              direction="prev"
+              onClick={() => scrollPopularByAmount(-1)}
+              label="Прокрутить аниматоров влево"
+            />
+            <NavControl
+              direction="next"
+              onClick={() => scrollPopularByAmount(1)}
+              label="Прокрутить аниматоров вправо"
+            />
+            {showAllLink ? (
+              <ButtonLink href="/animators" variant="primary" size="md">
+                Все аниматоры
+              </ButtonLink>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="relative mt-10 overflow-x-hidden">
+          <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-14 bg-[linear-gradient(90deg,var(--mp-bg)_0%,rgb(var(--mp-bg-rgb)_/_0)_100%)]" />
+          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-14 bg-[linear-gradient(270deg,var(--mp-bg)_0%,rgb(var(--mp-bg-rgb)_/_0)_100%)]" />
+          <div className="pointer-events-none absolute bottom-0 left-0 z-10 h-12 w-full bg-[linear-gradient(180deg,rgb(var(--mp-bg-rgb)_/_0)_0%,var(--mp-bg)_100%)]" />
+
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-[rgb(var(--mp-lavender-rgb)_/_0.3)] border-t-[rgb(var(--mp-lavender-rgb))]" />
+            </div>
+          ) : popular.length === 0 ? (
+            <div className="text-center py-20 text-black/50">Нет аниматоров</div>
+          ) : (
+            <div
+              ref={popularScrollerRef}
+              onWheel={onScrollerWheel}
+              className="flex items-stretch gap-5 overflow-x-auto px-6 pb-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth snap-x snap-mandatory scroll-px-6 focus:outline-none"
+            >
+              {popular.map((c, idx) => (
+                <motion.div
+                  key={c.title}
+                  initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                  whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease, delay: idx * 0.05 }}
+                  className="shrink-0 w-[min(340px,84vw)] sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)] snap-start"
+                  data-animator-card
+                >
+                  <div className="group relative overflow-hidden rounded-[34px] bg-white/70 shadow-[0_26px_80px_rgba(17,24,39,0.10)]">
+                    <div className="absolute inset-0 opacity-90 bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.42)_0%,rgba(255,255,255,0.85)_55%,rgba(214,249,239,0.55)_100%)]" />
+                    <div className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.35)] blur-3xl" />
+                    <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-white/70 blur-3xl" />
+
+                    <div className="relative p-7 sm:p-8">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-h-[44px] sm:min-h-[56px] text-lg sm:text-xl font-black tracking-tight text-[var(--mp-ink)] leading-tight">
+                          {c.title}
+                        </div>
+                        {c.tag ? (
+                          <div className={`shrink-0 ${badgeClassName("hit")}`}>{c.tag}</div>
+                        ) : null}
+                      </div>
+
+                      <div className="mt-6 rounded-[28px] bg-white/55 ring-1 ring-white/70 p-6 sm:p-7">
+                        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[22px] bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.0)_62%),linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.24)_0%,rgba(255,107,138,0.10)_50%,rgba(125,211,252,0.12)_100%)] ring-1 ring-white/60">
+                          {c.image ? (
+                            <img
+                              src={c.image}
+                              alt={c.title}
+                              className="absolute inset-0 h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center text-4xl text-black/30">
+                              🎭
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mt-6 flex items-center justify-between">
+                        <div className="text-sm text-black/60">Фото героя</div>
+                        <div className="text-sm font-semibold text-[var(--mp-ink)] transition-transform group-hover:translate-x-[2px]">
+                          Подробнее
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </Container>
+    </section>
   );
 }
