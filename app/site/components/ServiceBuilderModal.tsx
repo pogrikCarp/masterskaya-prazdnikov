@@ -55,6 +55,9 @@ const DURATION_OPTIONS = [
   { value: 3, label: "3 часа" },
 ];
 
+const selectClass =
+  "w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 text-sm font-medium text-[var(--mp-ink)] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--mp-lavender-rgb))]";
+
 export default function ServiceBuilderModal({
   open,
   onClose,
@@ -79,15 +82,17 @@ export default function ServiceBuilderModal({
   const [selectedShows, setSelectedShows] = useState<Set<number>>(new Set());
   const [selectedServices, setSelectedServices] = useState<Set<number>>(new Set());
 
-  // Fetch data from API
+  const asList = <T,>(payload: unknown): T[] => (Array.isArray(payload) ? payload : []);
+
+  // Fetch data from API — полный каталог из админки, не только «хиты»
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [animatorsRes, questsRes, showsRes, masterClassesRes, servicesRes] = await Promise.all([
-        fetch("/api/animators?popular=true"),
-        fetch("/api/quests?popular=true"),
+        fetch("/api/animators"),
+        fetch("/api/quests"),
         fetch("/api/shows"),
-        fetch("/api/master-classes?popular=true"),
+        fetch("/api/master-classes"),
         fetch("/api/additional-services"),
       ]);
 
@@ -99,13 +104,18 @@ export default function ServiceBuilderModal({
         servicesRes.json(),
       ]);
 
-      setAnimators(animatorsData);
-      setQuests(questsData);
-      setShows(showsData);
-      setMasterClasses(masterClassesData);
-      setAdditionalServices(servicesData);
+      setAnimators(asList<Animator>(animatorsData));
+      setQuests(asList<Quest>(questsData));
+      setShows(asList<Show>(showsData));
+      setMasterClasses(asList<MasterClass>(masterClassesData));
+      setAdditionalServices(asList<AdditionalService>(servicesData));
     } catch (error) {
       console.error("Error fetching data:", error);
+      setAnimators([]);
+      setQuests([]);
+      setShows([]);
+      setMasterClasses([]);
+      setAdditionalServices([]);
     } finally {
       setLoading(false);
     }
@@ -309,47 +319,26 @@ export default function ServiceBuilderModal({
                         <div className="mt-1 text-sm text-black/60">Выберите персонажа для праздника</div>
                       </div>
 
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        {animators.map((animator) => (
-                          <button
-                            key={animator.id}
-                            type="button"
-                            onClick={() =>
-                              setSelectedAnimator(selectedAnimator === animator.id ? null : animator.id)
-                            }
-                            className={`relative overflow-hidden rounded-[24px] p-5 text-left transition-all ${
-                              selectedAnimator === animator.id
-                                ? "bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.22)_0%,rgba(255,255,255,0.95)_100%)] ring-2 ring-[rgb(var(--mp-lavender-rgb)_/_1)] shadow-[0_18px_50px_rgb(var(--mp-lavender-rgb)_/_0.22)]"
-                                : "bg-white/70 ring-1 ring-black/10 hover:bg-white hover:shadow-[0_12px_35px_rgba(17,24,39,0.08)]"
-                            }`}
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="flex-1">
-                                <div className="text-base font-black tracking-tight text-[var(--mp-ink)]">
-                                  {animator.name}
-                                </div>
-                                <div className="mt-1 text-sm text-black/60">
-                                  {animator.description || "Популярный персонаж"}
-                                </div>
-                              </div>
-                              <div className="shrink-0 text-base font-black text-[var(--mp-ink)]">
-                                {animator.pricePerHour.toLocaleString()} ₽/ч
-                              </div>
-                            </div>
-                            {selectedAnimator === animator.id && (
-                              <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_1)] text-white">
-                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </div>
-                            )}
-                          </button>
-                        ))}
-                      </div>
+                      {animators.length === 0 ? (
+                        <div className="rounded-xl bg-white/70 px-4 py-3 text-sm text-black/50 ring-1 ring-black/10">
+                          Аниматоры появятся после добавления в админке
+                        </div>
+                      ) : (
+                        <select
+                          value={selectedAnimator ?? ""}
+                          onChange={(e) =>
+                            setSelectedAnimator(e.target.value ? Number(e.target.value) : null)
+                          }
+                          className={selectClass}
+                        >
+                          <option value="">Выберите аниматора</option>
+                          {animators.map((animator) => (
+                            <option key={animator.id} value={animator.id}>
+                              {animator.name} — {animator.pricePerHour.toLocaleString("ru-RU")} ₽/ч
+                            </option>
+                          ))}
+                        </select>
+                      )}
 
                       {selectedAnimator && (
                         <div className="mt-4 flex flex-wrap gap-4">
@@ -393,12 +382,12 @@ export default function ServiceBuilderModal({
                       <select
                         value={selectedQuest ?? ""}
                         onChange={(e) => setSelectedQuest(e.target.value ? Number(e.target.value) : null)}
-                        className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 text-sm font-medium text-[var(--mp-ink)] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--mp-lavender-rgb))]"
+                        className={selectClass}
                       >
                         <option value="">Без квеста</option>
                         {quests.map((quest) => (
                           <option key={quest.id} value={quest.id}>
-                            {quest.name} — {quest.price.toLocaleString()} ₽
+                            {quest.name} — {quest.price.toLocaleString("ru-RU")} ₽
                           </option>
                         ))}
                       </select>
@@ -418,12 +407,12 @@ export default function ServiceBuilderModal({
                         onChange={(e) =>
                           setSelectedMasterClass(e.target.value ? Number(e.target.value) : null)
                         }
-                        className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 text-sm font-medium text-[var(--mp-ink)] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--mp-lavender-rgb))]"
+                        className={selectClass}
                       >
                         <option value="">Без мастер-класса</option>
                         {masterClasses.map((mc) => (
                           <option key={mc.id} value={mc.id}>
-                            {mc.name} — {mc.price.toLocaleString()} ₽
+                            {mc.name} — {mc.price.toLocaleString("ru-RU")} ₽
                           </option>
                         ))}
                       </select>
@@ -438,45 +427,41 @@ export default function ServiceBuilderModal({
                         <div className="mt-1 text-sm text-black/60">Выберите одно или несколько шоу</div>
                       </div>
 
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        {shows.map((show) => (
-                          <button
-                            key={show.id}
-                            type="button"
-                            onClick={() => toggleShow(show.id)}
-                            className={`relative overflow-hidden rounded-[24px] p-5 text-left transition-all ${
-                              selectedShows.has(show.id)
-                                ? "bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.22)_0%,rgba(255,255,255,0.95)_100%)] ring-2 ring-[rgb(var(--mp-lavender-rgb)_/_1)] shadow-[0_18px_50px_rgb(var(--mp-lavender-rgb)_/_0.22)]"
-                                : "bg-white/70 ring-1 ring-black/10 hover:bg-white hover:shadow-[0_12px_35px_rgba(17,24,39,0.08)]"
-                            }`}
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="flex-1">
-                                <div className="text-base font-black tracking-tight text-[var(--mp-ink)]">
+                      {shows.length === 0 ? (
+                        <div className="rounded-xl bg-white/70 px-4 py-3 text-sm text-black/50 ring-1 ring-black/10">
+                          Шоу появятся после добавления в админке
+                        </div>
+                      ) : (
+                        <div className="overflow-hidden rounded-xl bg-white/80 ring-1 ring-black/10">
+                          {shows.map((show, idx) => {
+                            const checked = selectedShows.has(show.id);
+                            return (
+                              <label
+                                key={show.id}
+                                className={`flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors ${
+                                  idx > 0 ? "border-t border-black/8" : ""
+                                } ${checked ? "bg-[rgb(var(--mp-lavender-rgb)_/_0.10)]" : "hover:bg-black/[0.03]"}`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={() => toggleShow(show.id)}
+                                  className="h-5 w-5 shrink-0 rounded border-black/20 accent-[var(--mp-lavender)]"
+                                />
+                                <span className="min-w-0 flex-1 text-sm font-semibold text-[var(--mp-ink)]">
                                   {show.name}
-                                </div>
-                                <div className="mt-1 text-sm text-black/60">
-                                  {show.description || `${show.duration} мин`}
-                                </div>
-                              </div>
-                              <div className="shrink-0 text-base font-black text-[var(--mp-ink)]">
-                                {show.price.toLocaleString()} ₽
-                              </div>
-                            </div>
-                            {selectedShows.has(show.id) && (
-                              <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_1)] text-white">
-                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </div>
-                            )}
-                          </button>
-                        ))}
-                      </div>
+                                  <span className="mt-0.5 block text-xs font-normal text-black/50">
+                                    {show.description || `${show.duration} мин`}
+                                  </span>
+                                </span>
+                                <span className="shrink-0 text-sm font-black text-[var(--mp-ink)]">
+                                  {show.price.toLocaleString("ru-RU")} ₽
+                                </span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
 
                     {/* Дополнительные услуги */}
@@ -488,45 +473,43 @@ export default function ServiceBuilderModal({
                         <div className="mt-1 text-sm text-black/60">Сделайте праздник ещё ярче</div>
                       </div>
 
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        {additionalServices.map((service) => (
-                          <button
-                            key={service.id}
-                            type="button"
-                            onClick={() => toggleService(service.id)}
-                            className={`relative overflow-hidden rounded-[24px] p-5 text-left transition-all ${
-                              selectedServices.has(service.id)
-                                ? "bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.22)_0%,rgba(255,255,255,0.95)_100%)] ring-2 ring-[rgb(var(--mp-lavender-rgb)_/_1)] shadow-[0_18px_50px_rgb(var(--mp-lavender-rgb)_/_0.22)]"
-                                : "bg-white/70 ring-1 ring-black/10 hover:bg-white hover:shadow-[0_12px_35px_rgba(17,24,39,0.08)]"
-                            }`}
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="flex-1">
-                                <div className="text-base font-black tracking-tight text-[var(--mp-ink)]">
+                      {additionalServices.length === 0 ? (
+                        <div className="rounded-xl bg-white/70 px-4 py-3 text-sm text-black/50 ring-1 ring-black/10">
+                          Доп. услуги появятся после добавления в админке
+                        </div>
+                      ) : (
+                        <div className="overflow-hidden rounded-xl bg-white/80 ring-1 ring-black/10">
+                          {additionalServices.map((service, idx) => {
+                            const checked = selectedServices.has(service.id);
+                            return (
+                              <label
+                                key={service.id}
+                                className={`flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors ${
+                                  idx > 0 ? "border-t border-black/8" : ""
+                                } ${checked ? "bg-[rgb(var(--mp-lavender-rgb)_/_0.10)]" : "hover:bg-black/[0.03]"}`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={() => toggleService(service.id)}
+                                  className="h-5 w-5 shrink-0 rounded border-black/20 accent-[var(--mp-lavender)]"
+                                />
+                                <span className="min-w-0 flex-1 text-sm font-semibold text-[var(--mp-ink)]">
                                   {service.name}
-                                </div>
-                                <div className="mt-1 text-sm text-black/60">
-                                  {service.description || "Дополнительная услуга"}
-                                </div>
-                              </div>
-                              <div className="shrink-0 text-base font-black text-[var(--mp-ink)]">
-                                {service.price.toLocaleString()} ₽
-                              </div>
-                            </div>
-                            {selectedServices.has(service.id) && (
-                              <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_1)] text-white">
-                                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </div>
-                            )}
-                          </button>
-                        ))}
-                      </div>
+                                  {service.description ? (
+                                    <span className="mt-0.5 block text-xs font-normal text-black/50">
+                                      {service.description}
+                                    </span>
+                                  ) : null}
+                                </span>
+                                <span className="shrink-0 text-sm font-black text-[var(--mp-ink)]">
+                                  {service.price.toLocaleString("ru-RU")} ₽
+                                </span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   </div>
 

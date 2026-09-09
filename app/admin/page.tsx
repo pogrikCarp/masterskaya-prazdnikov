@@ -8,7 +8,8 @@ type EntityType =
   | "shows"
   | "master-classes"
   | "additional-services"
-  | "gallery";
+  | "gallery"
+  | "home-content";
 
 type BaseEntity = {
   id: number;
@@ -42,6 +43,7 @@ type EntityConfig = {
   hasDuration: boolean;
   hasAge: boolean;
   isGallery?: boolean;
+  isHomeContent?: boolean;
 };
 
 const ENTITY_CONFIG: Record<EntityType, EntityConfig> = {
@@ -51,6 +53,13 @@ const ENTITY_CONFIG: Record<EntityType, EntityConfig> = {
   "master-classes": { title: "Мастер-классы", priceField: "price", hasDuration: true, hasAge: true },
   "additional-services": { title: "Дополнительные услуги", priceField: "price", hasDuration: false, hasAge: false },
   gallery: { title: "Галерея", priceField: null, hasDuration: false, hasAge: false, isGallery: true },
+  "home-content": {
+    title: "Главная страница",
+    priceField: null,
+    hasDuration: false,
+    hasAge: false,
+    isHomeContent: true,
+  },
 };
 
 function LoginForm({ onLogin }: { onLogin: () => void }) {
@@ -703,6 +712,371 @@ function GalleryCategoriesPanel({ onChanged }: { onChanged: () => void }) {
   );
 }
 
+type HomeCard = {
+  id: number;
+  sectionKey: string;
+  icon: string | null;
+  title: string;
+  text: string;
+  order: number;
+  active: boolean;
+};
+
+type HomeSection = {
+  key: string;
+  title: string;
+  subtitle: string | null;
+  cards: HomeCard[];
+};
+
+const HOME_SECTION_HINTS: Record<string, { label: string; iconHint: string }> = {
+  story: {
+    label: "Блок «Ваш праздник — наша история»",
+    iconHint: "Эмодзи, например ✨ или ❤️",
+  },
+  why: {
+    label: "Блок «Почему нас называют лучшими»",
+    iconHint: "balloon, note, bulb, masks или эмодзи",
+  },
+};
+
+const inputClass =
+  "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500";
+
+function HomeCardRow({
+  card,
+  iconHint,
+  onSaved,
+}: {
+  card: HomeCard;
+  iconHint: string;
+  onSaved: () => void;
+}) {
+  const [form, setForm] = useState(card);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setForm(card);
+  }, [card]);
+
+  const dirty =
+    form.icon !== card.icon ||
+    form.title !== card.title ||
+    form.text !== card.text ||
+    form.order !== card.order ||
+    form.active !== card.active;
+
+  const save = async () => {
+    setSaving(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/home-content", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Не удалось сохранить карточку");
+        return;
+      }
+      onSaved();
+    } catch {
+      setError("Ошибка соединения");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const remove = async () => {
+    if (!confirm(`Удалить карточку «${card.title}»?`)) return;
+    try {
+      const res = await fetch(`/api/admin/home-content?id=${card.id}`, { method: "DELETE" });
+      if (res.ok) onSaved();
+    } catch (err) {
+      console.error("Delete home card error:", err);
+    }
+  };
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white p-4">
+      <div className="grid gap-3 sm:grid-cols-[7rem_1fr_5rem]">
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">Иконка</label>
+          <input
+            type="text"
+            value={form.icon || ""}
+            onChange={(e) => setForm({ ...form, icon: e.target.value })}
+            placeholder={iconHint}
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">Заголовок</label>
+          <input
+            type="text"
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs font-medium text-gray-500">Порядок</label>
+          <input
+            type="number"
+            value={form.order}
+            onChange={(e) => setForm({ ...form, order: Number(e.target.value) || 0 })}
+            className={inputClass}
+          />
+        </div>
+      </div>
+
+      <div className="mt-3">
+        <label className="mb-1 block text-xs font-medium text-gray-500">Текст</label>
+        <textarea
+          value={form.text}
+          onChange={(e) => setForm({ ...form, text: e.target.value })}
+          rows={4}
+          className={inputClass}
+        />
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-4">
+        <label className="flex cursor-pointer items-center gap-2">
+          <input
+            type="checkbox"
+            checked={form.active}
+            onChange={(e) => setForm({ ...form, active: e.target.checked })}
+            className="h-4 w-4 rounded border-gray-300 text-indigo-600"
+          />
+          <span className="text-sm">Показывать на сайте</span>
+        </label>
+
+        <div className="ml-auto flex items-center gap-3">
+          <button
+            type="button"
+            onClick={remove}
+            className="text-sm text-red-600 hover:text-red-900"
+          >
+            Удалить
+          </button>
+          <button
+            type="button"
+            onClick={save}
+            disabled={saving || !dirty}
+            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          >
+            {saving ? "Сохранение..." : "Сохранить"}
+          </button>
+        </div>
+      </div>
+
+      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+function HomeSectionPanel({
+  section,
+  onChanged,
+}: {
+  section: HomeSection;
+  onChanged: () => void;
+}) {
+  const hints = HOME_SECTION_HINTS[section.key] ?? {
+    label: section.key,
+    iconHint: "Эмодзи",
+  };
+
+  const [title, setTitle] = useState(section.title);
+  const [savingTitle, setSavingTitle] = useState(false);
+  const [error, setError] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [newCard, setNewCard] = useState({ icon: "", title: "", text: "" });
+
+  useEffect(() => {
+    setTitle(section.title);
+  }, [section.title]);
+
+  const saveTitle = async () => {
+    setSavingTitle(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/home-content", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: section.key, title, subtitle: section.subtitle }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Не удалось сохранить заголовок");
+        return;
+      }
+      onChanged();
+    } catch {
+      setError("Ошибка соединения");
+    } finally {
+      setSavingTitle(false);
+    }
+  };
+
+  const addCard = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAdding(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/home-content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sectionKey: section.key,
+          icon: newCard.icon,
+          title: newCard.title,
+          text: newCard.text,
+          order: section.cards.length,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Не удалось добавить карточку");
+        return;
+      }
+      setNewCard({ icon: "", title: "", text: "" });
+      onChanged();
+    } catch {
+      setError("Ошибка соединения");
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  return (
+    <div className="mb-8 rounded-lg bg-white p-5 shadow">
+      <h3 className="text-lg font-semibold text-gray-900">{hints.label}</h3>
+
+      <div className="mt-4">
+        <label className="mb-1 block text-sm font-medium text-gray-700">Заголовок блока</label>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className={inputClass}
+          />
+          <button
+            type="button"
+            onClick={saveTitle}
+            disabled={savingTitle || title === section.title}
+            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 sm:w-40"
+          >
+            {savingTitle ? "Сохранение..." : "Сохранить"}
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-5 space-y-3">
+        {section.cards.map((card) => (
+          <HomeCardRow
+            key={card.id}
+            card={card}
+            iconHint={hints.iconHint}
+            onSaved={onChanged}
+          />
+        ))}
+      </div>
+
+      <form onSubmit={addCard} className="mt-5 rounded-lg border border-dashed border-indigo-300 bg-indigo-50/50 p-4">
+        <div className="text-sm font-medium text-gray-700">Новая карточка</div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-[7rem_1fr]">
+          <input
+            type="text"
+            value={newCard.icon}
+            onChange={(e) => setNewCard({ ...newCard, icon: e.target.value })}
+            placeholder={hints.iconHint}
+            className={inputClass}
+          />
+          <input
+            type="text"
+            value={newCard.title}
+            onChange={(e) => setNewCard({ ...newCard, title: e.target.value })}
+            placeholder="Заголовок"
+            className={inputClass}
+            required
+          />
+        </div>
+        <textarea
+          value={newCard.text}
+          onChange={(e) => setNewCard({ ...newCard, text: e.target.value })}
+          placeholder="Текст карточки"
+          rows={3}
+          className={`${inputClass} mt-3`}
+          required
+        />
+        <button
+          type="submit"
+          disabled={adding}
+          className="mt-3 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+        >
+          {adding ? "Добавление..." : "+ Добавить карточку"}
+        </button>
+      </form>
+
+      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+function HomeContentTab() {
+  const [sections, setSections] = useState<HomeSection[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchSections = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/home-content");
+      if (!res.ok) {
+        setError("Не удалось загрузить блоки главной страницы");
+        return;
+      }
+      setSections(await res.json());
+    } catch {
+      setError("Ошибка соединения");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSections();
+  }, [fetchSections]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-600" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="rounded-lg bg-white p-6 text-center text-red-600 shadow">{error}</div>;
+  }
+
+  return (
+    <div>
+      <p className="mb-5 text-sm text-gray-600">
+        Тексты этих блоков видны на главной странице. Изменения появляются на сайте в течение минуты.
+      </p>
+      {sections.map((section) => (
+        <HomeSectionPanel key={section.key} section={section} onChanged={fetchSections} />
+      ))}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const [activeTab, setActiveTab] = useState<EntityType>("animators");
@@ -739,6 +1113,11 @@ export default function AdminPage() {
 
   const fetchData = useCallback(async () => {
     if (!authenticated) return;
+    if (ENTITY_CONFIG[activeTab].isHomeContent) {
+      setData([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch(`/api/admin/${activeTab}`);
@@ -835,6 +1214,9 @@ export default function AdminPage() {
           />
         )}
 
+        {config.isHomeContent ? (
+          <HomeContentTab />
+        ) : (
         <div className="bg-white shadow rounded-lg overflow-hidden">
           <div className="px-4 py-5 sm:px-6 border-b border-gray-200 flex justify-between items-center">
             <h2 className="text-lg font-medium text-gray-900">{config.title}</h2>
@@ -939,6 +1321,7 @@ export default function AdminPage() {
             </div>
           )}
         </div>
+        )}
       </div>
 
       {modalEntity !== undefined && (

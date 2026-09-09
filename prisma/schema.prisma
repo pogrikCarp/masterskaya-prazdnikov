@@ -106,6 +106,31 @@ model GalleryItem {
   updatedAt   DateTime         @updatedAt
 }
 
+// Заголовки редактируемых блоков главной страницы
+model HomeSection {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  title     String
+  subtitle  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Карточки внутри блоков главной страницы
+model HomeCard {
+  id         Int      @id @default(autoincrement())
+  sectionKey String
+  icon       String?
+  title      String
+  text       String
+  order      Int      @default(0)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([sectionKey, order])
+}
+
 // Администраторы
 model Admin {
   id          Int      @id @default(autoincrement())

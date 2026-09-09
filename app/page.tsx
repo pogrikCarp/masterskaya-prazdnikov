@@ -13,14 +13,23 @@ import QuestsSection from "./site/components/QuestsSection";
 import WorkshopsSection from "./site/components/WorkshopsSection";
 import ContactFormSection from "./site/components/ContactFormSection";
 import Reveal from "./site/components/Reveal";
+import { STORY_SECTION, WHY_SECTION } from "@/lib/home-content";
+import { getHomeSection } from "@/lib/home-content.server";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const [storySection, whySection] = await Promise.all([
+    getHomeSection(STORY_SECTION),
+    getHomeSection(WHY_SECTION),
+  ]);
+
   return (
     <SiteShell showHeader={false}>
       <HeroSection />
 
       <div id="about" className="scroll-mt-24" />
-      <PremiumParallaxWaveSection />
+      <PremiumParallaxWaveSection storySection={storySection} whySection={whySection} />
 
       <AnimatorsShowcaseSection />
 
