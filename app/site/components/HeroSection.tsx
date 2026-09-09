@@ -889,7 +889,7 @@ export default function HeroSection({
               transition={{ duration: 0.9, ease, delay: 0.22 }}
               className="mt-12 mx-auto grid w-full max-w-[560px] grid-cols-1 gap-4 sm:grid-cols-2"
             >
-              {section.cards.map((stat) => (
+              {(section.cards ?? []).map((stat) => (
                 <div
                   key={stat.title}
                   className="rounded-[22px] bg-white/10 ring-1 ring-white/20 p-5"

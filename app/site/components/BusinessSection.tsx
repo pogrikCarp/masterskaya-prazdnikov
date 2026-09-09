@@ -38,7 +38,7 @@ export default function BusinessSection({
             </div>
 
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {section.cards.map((card) => (
+              {(section.cards ?? []).map((card) => (
                 <div
                   key={card.title}
                   className="relative overflow-hidden rounded-[28px] bg-white/60 ring-1 ring-black/10 p-6"
@@ -55,7 +55,7 @@ export default function BusinessSection({
             </div>
 
             <div className="mt-10 grid gap-6 sm:grid-cols-3">
-              {benefitsSection.cards.map((benefit) => (
+              {(benefitsSection.cards ?? []).map((benefit) => (
                 <div key={benefit.title} className="flex items-start gap-3">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10">
                     <svg className="h-5 w-5 text-[var(--mp-ink)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">

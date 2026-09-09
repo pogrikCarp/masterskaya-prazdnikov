@@ -4,7 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import Button, { badgeClassName } from "./Button";
 import { Chevron } from "./CarouselNav";
-import { useRequestModal } from "./RequestModalProvider";
+import { useOptionalRequestModal } from "./RequestModalProvider";
+
+function formatPrice(price: unknown) {
+  const value = typeof price === "number" ? price : Number(price);
+  if (!Number.isFinite(value)) return null;
+  return value.toLocaleString("ru-RU");
+}
 
 export type CarouselSlide = {
   id: number;
@@ -29,7 +35,7 @@ export default function ImageCarousel({
   ctaLabel?: string;
 }) {
   const reduceMotion = useReducedMotion();
-  const { openRequestModal } = useRequestModal();
+  const requestModal = useOptionalRequestModal();
   const lastUserActionAtRef = useRef(0);
   const touchStartXRef = useRef<number | null>(null);
   const [index, setIndex] = useState(0);
@@ -61,7 +67,7 @@ export default function ImageCarousel({
     return () => window.clearInterval(timer);
   }, [canSlide, reduceMotion, paused, slides.length]);
 
-  if (slides.length === 0) return null;
+  if (!Array.isArray(slides) || slides.length === 0) return null;
 
   return (
     <div
@@ -151,16 +157,20 @@ export default function ImageCarousel({
                         {chip}
                       </span>
                     ))}
-                    {slide.price != null ? (
+                    {formatPrice(slide.price) ? (
                       <span className={badgeClassName("price")}>
-                        {slide.price.toLocaleString("ru-RU")} ₽
+                        {formatPrice(slide.price)} ₽
                         {slide.priceSuffix ?? ""}
                       </span>
                     ) : null}
                   </div>
 
                   <div className="mt-5">
-                    <Button type="button" size="md" onClick={openRequestModal}>
+                    <Button
+                      type="button"
+                      size="md"
+                      onClick={() => requestModal?.openRequestModal()}
+                    >
                       {ctaLabel}
                     </Button>
                   </div>

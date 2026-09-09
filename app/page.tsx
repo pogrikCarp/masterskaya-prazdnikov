@@ -35,7 +35,12 @@ export const revalidate = 60;
 
 export default async function HomePage() {
   const sections = await getHomeSections();
-  const gallerySection = sections[GALLERY_SECTION];
+  const gallerySection = sections[GALLERY_SECTION] ?? {
+    key: GALLERY_SECTION,
+    title: "Посмотрите, как проходит праздник",
+    subtitle: null,
+    cards: [],
+  };
 
   return (
     <SiteShell showHeader={false}>

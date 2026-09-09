@@ -24,7 +24,7 @@ export default function AdditionalServicesSection({
   section?: HomeSectionContent;
 }) {
   const reduceMotion = useReducedMotion();
-  const services = section.cards;
+  const services = section?.cards ?? [];
 
   return (
     <section id="additional-services" className="py-14">

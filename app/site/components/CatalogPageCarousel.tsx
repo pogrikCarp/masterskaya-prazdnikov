@@ -1,6 +1,7 @@
 "use client";
 
 import Container from "./Container";
+import ClientErrorBoundary from "./ClientErrorBoundary";
 import ImageCarousel, { type CarouselSlide } from "./ImageCarousel";
 
 export default function CatalogPageCarousel({
@@ -32,7 +33,9 @@ export default function CatalogPageCarousel({
               {emptyText}
             </div>
           ) : (
-            <ImageCarousel slides={slides} label={title} />
+            <ClientErrorBoundary>
+              <ImageCarousel slides={slides} label={title} />
+            </ClientErrorBoundary>
           )}
         </div>
       </Container>

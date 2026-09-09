@@ -27,6 +27,10 @@ export function useRequestModal() {
   return context;
 }
 
+export function useOptionalRequestModal() {
+  return useContext(RequestModalContext);
+}
+
 export default function RequestModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 

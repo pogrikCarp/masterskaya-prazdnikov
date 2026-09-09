@@ -12,7 +12,7 @@ export default function ContactFormSection({
 }: {
   section?: HomeSectionContent;
 }) {
-  const advantages = section.cards;
+  const advantages = section?.cards ?? [];
 
   return (
     <section

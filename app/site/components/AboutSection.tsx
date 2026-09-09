@@ -79,7 +79,7 @@ const AboutStructuredSection = ({
           }}
           className="mt-6 grid auto-rows-fr gap-5 md:grid-cols-2"
         >
-          {section.cards.map((card, idx) => (
+          {(section.cards ?? []).map((card, idx) => (
             <motion.div
               key={`${card.title}-${idx}`}
               variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }}

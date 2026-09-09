@@ -141,7 +141,7 @@ export default function PremiumParallaxWaveSection({
           </div>
 
           <div className="mt-6 grid auto-rows-fr gap-4 sm:grid-cols-2">
-            {whySection.cards.map((c, idx) => (
+            {(whySection.cards ?? []).map((c, idx) => (
               <motion.div
                 key={`${c.title}-${idx}`}
                 initial={

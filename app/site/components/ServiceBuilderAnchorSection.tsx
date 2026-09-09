@@ -47,7 +47,7 @@ export default function ServiceBuilderAnchorSection({
               </div>
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch">
-                {section.cards.map((step) => (
+                {(section.cards ?? []).map((step) => (
                   <div
                     key={step.title}
                     className="rounded-[28px] bg-white/70 ring-1 ring-black/10 p-5 h-full"

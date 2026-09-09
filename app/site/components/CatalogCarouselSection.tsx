@@ -2,6 +2,7 @@
 
 import Container from "./Container";
 import { ButtonLink } from "./Button";
+import ClientErrorBoundary from "./ClientErrorBoundary";
 import ImageCarousel, { type CarouselSlide } from "./ImageCarousel";
 
 export type CatalogCardItem = CarouselSlide;
@@ -57,7 +58,9 @@ export default function CatalogCarouselSection({
               {emptyText}
             </div>
           ) : (
-            <ImageCarousel slides={items} label={title} />
+            <ClientErrorBoundary>
+              <ImageCarousel slides={items} label={title} />
+            </ClientErrorBoundary>
           )}
         </div>
       </Container>

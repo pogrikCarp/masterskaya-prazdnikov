@@ -37,7 +37,7 @@ export default function InvitationsSection({
               ) : null}
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {section.cards.map((feature) => (
+                {(section.cards ?? []).map((feature) => (
                   <div key={feature.title} className="flex items-start gap-3">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10 text-xl">
                       {feature.icon ?? "•"}
