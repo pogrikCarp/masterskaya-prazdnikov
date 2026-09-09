@@ -40,7 +40,7 @@ export default function AdditionalServicesSection({
           </div>
 
           <div className="flex items-center gap-2 self-start sm:self-auto">
-            <ButtonLink href="/services" variant="secondary" size="md">
+            <ButtonLink href="/services" variant="primary" size="md">
               Все услуги
             </ButtonLink>
           </div>

@@ -147,7 +147,7 @@ export default function CatalogCarouselSection({
             <NavControl direction="next" onClick={next} tone="light" />
           </>
         ) : null}
-        <ButtonLink href={allHref} variant="secondary" size="md">
+        <ButtonLink href={allHref} variant="primary" size="md">
           {allLabel}
         </ButtonLink>
       </div>
@@ -345,7 +345,7 @@ export default function CatalogCarouselSection({
               </>
             ) : null}
 
-            <ButtonLink href={allHref} variant="secondary" size="md">
+            <ButtonLink href={allHref} variant="primary" size="md">
               {allLabel}
             </ButtonLink>
           </div>

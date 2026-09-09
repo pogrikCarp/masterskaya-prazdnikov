@@ -112,7 +112,7 @@ export default function AnimatorsShowcaseSection({
                 label="Прокрутить аниматоров вправо"
               />
               {showAllLink ? (
-                <ButtonLink href="/animators" variant="secondary" size="md">
+                <ButtonLink href="/animators" variant="primary" size="md">
                   Все аниматоры
                 </ButtonLink>
               ) : null}
