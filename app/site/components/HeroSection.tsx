@@ -733,7 +733,7 @@ export default function HeroSection() {
         className="pointer-events-none absolute inset-x-0 top-0 z-0"
       >
         <div className="relative mx-auto w-full max-w-[1200px] px-4 sm:px-6">
-          <div className="hero-top-mascot hero-top-float-left absolute top-[252px] left-[calc(max(8px,2vw)-220px)] h-[clamp(92px,12vw,140px)] w-[clamp(200px,24vw,300px)] opacity-70">
+          <div className="hero-top-mascot hero-top-float-left absolute top-[168px] left-[-28px] h-[88px] w-[150px] opacity-80 sm:top-[200px] sm:left-[-48px] sm:h-[110px] sm:w-[200px] lg:top-[252px] lg:left-[calc(max(8px,2vw)-220px)] lg:h-[clamp(92px,12vw,140px)] lg:w-[clamp(200px,24vw,300px)] lg:opacity-70">
             <div className="hero-top-float-layer h-full w-full">
               <div className="hero-top-tilt-left h-full w-full">
                 <div ref={leftMascotRef} className="hero-top-jitter h-full w-full">
@@ -753,7 +753,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div className="hero-top-mascot hero-top-float absolute top-[92px] right-[calc(max(8px,2vw)-160px)] h-[clamp(92px,12vw,140px)] w-[clamp(200px,24vw,300px)] opacity-70">
+          <div className="hero-top-mascot hero-top-float absolute top-[76px] right-[-24px] h-[88px] w-[150px] opacity-80 sm:top-[84px] sm:right-[-36px] sm:h-[110px] sm:w-[200px] lg:top-[92px] lg:right-[calc(max(8px,2vw)-160px)] lg:h-[clamp(92px,12vw,140px)] lg:w-[clamp(200px,24vw,300px)] lg:opacity-70">
             <div className="hero-top-float-layer h-full w-full">
               <div ref={rightMascotRef} className="hero-top-jitter h-full w-full">
                 <Image
@@ -772,8 +772,23 @@ export default function HeroSection() {
       </div>
 
       <Container>
-        <div className="relative pt-14 pb-28 sm:pt-16 sm:pb-32 lg:pt-20 lg:pb-40">
+        <div className="relative pt-20 pb-28 sm:pt-16 sm:pb-32 lg:pt-20 lg:pb-40">
           <div className="mx-auto max-w-4xl text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease }}
+              className="mb-4 flex justify-center lg:hidden"
+            >
+              <Image
+                src={LogoForm}
+                alt="Мастерская праздников"
+                width={88}
+                height={88}
+                priority
+                className="h-[72px] w-[72px] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.28)] sm:h-20 sm:w-20"
+              />
+            </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
