@@ -70,8 +70,6 @@ export default function QuestsSection({
       items={items}
       loading={loading}
       emptyText="Нет квестов"
-      accent="lavender"
-      layout="fullBleed"
     />
   );
 }

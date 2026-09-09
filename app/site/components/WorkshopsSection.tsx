@@ -71,7 +71,6 @@ export default function WorkshopsSection({
       items={items}
       loading={loading}
       emptyText="Нет мастер-классов"
-      accent="lavender"
     />
   );
 }
