@@ -29,16 +29,20 @@ export default function AdditionalServicesSection({
   return (
     <section id="additional-services" className="py-14">
       <Container className="max-w-[1320px]">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-3xl">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
             <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
               {section.title}
             </h2>
             {section.subtitle ? (
-              <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl">
-                {section.subtitle}
-              </p>
+              <p className="mt-3 text-sm sm:text-base text-black/55">{section.subtitle}</p>
             ) : null}
+          </div>
+
+          <div className="flex items-center gap-2 self-start sm:self-auto">
+            <ButtonLink href="/services" variant="secondary" size="md">
+              Все услуги
+            </ButtonLink>
           </div>
         </div>
 
@@ -85,12 +89,6 @@ export default function AdditionalServicesSection({
               </Link>
             </motion.div>
           ))}
-        </div>
-
-        <div className="mt-10 flex justify-end">
-          <ButtonLink href="/services" variant="secondary" size="lg">
-            Смотреть ещё
-          </ButtonLink>
         </div>
       </Container>
     </section>

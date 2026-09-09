@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
 import { ButtonLink, badgeClassName } from "./Button";
+import NavControl from "./CarouselNav";
 import {
   ANIMATORS_SECTION,
   DEFAULT_HOME_CONTENT,
@@ -89,37 +90,32 @@ export default function AnimatorsShowcaseSection({
     <>
       <section id="services" className="py-14">
         <Container className="max-w-[1320px]">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="max-w-3xl">
-            <h2 className="text-[28px] sm:text-[34px] md:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-              {section.title}
-            </h2>
-            {section.subtitle ? (
-              <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl">
-                {section.subtitle}
-              </p>
-            ) : null}
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
+                {section.title}
+              </h2>
+              {section.subtitle ? (
+                <p className="mt-3 text-sm sm:text-base text-black/55">{section.subtitle}</p>
+              ) : null}
             </div>
 
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
+            <div className="flex items-center gap-2 self-start sm:self-auto">
+              <NavControl
+                direction="prev"
                 onClick={() => scrollPopularByAmount(-1)}
-                className="group relative inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white/75 ring-1 ring-white/60 shadow-[0_18px_45px_rgba(17,24,39,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_22px_60px_rgba(17,24,39,0.12)] active:translate-y-0"
-                aria-label="Прокрутить популярные влево"
-              >
-                <span className="pointer-events-none absolute -left-8 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full bg-[rgba(255,255,255,0.65)] blur-xl transition-transform duration-500 group-hover:translate-x-10" />
-                <span className="relative text-lg leading-none text-black/70 transition-transform duration-300 group-hover:-translate-x-[1px]">‹</span>
-              </button>
-              <button
-                type="button"
+                label="Прокрутить аниматоров влево"
+              />
+              <NavControl
+                direction="next"
                 onClick={() => scrollPopularByAmount(1)}
-                className="group relative inline-flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white/75 ring-1 ring-white/60 shadow-[0_18px_45px_rgba(17,24,39,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_22px_60px_rgba(17,24,39,0.12)] active:translate-y-0"
-                aria-label="Прокрутить популярные вправо"
-              >
-                <span className="pointer-events-none absolute -left-8 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full bg-[rgba(255,255,255,0.65)] blur-xl transition-transform duration-500 group-hover:translate-x-10" />
-                <span className="relative text-lg leading-none text-black/70 transition-transform duration-300 group-hover:translate-x-[1px]">›</span>
-              </button>
+                label="Прокрутить аниматоров вправо"
+              />
+              {showAllLink ? (
+                <ButtonLink href="/animators" variant="secondary" size="md">
+                  Все аниматоры
+                </ButtonLink>
+              ) : null}
             </div>
           </div>
 
@@ -197,13 +193,6 @@ export default function AnimatorsShowcaseSection({
             )}
           </div>
 
-          {showAllLink ? (
-            <div className="mt-6 flex justify-start px-6">
-              <ButtonLink href="/animators" variant="secondary" size="lg">
-                Все аниматоры
-              </ButtonLink>
-            </div>
-          ) : null}
         </Container>
       </section>
     </>
