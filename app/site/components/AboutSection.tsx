@@ -46,7 +46,7 @@ const AboutStructuredSection = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="relative -mt-px w-full bg-[var(--mp-bg)] pb-16 sm:pb-20"
+      className="relative -mt-px w-full bg-[var(--mp-bg)] pb-6 sm:pb-8"
     >
       <Container className="max-w-[1800px] px-0 sm:px-0">
         <motion.div
@@ -78,12 +78,12 @@ const AboutStructuredSection = () => {
               },
             },
           }}
-          className="mt-12 grid gap-8 md:grid-cols-2"
+          className="mt-6 grid gap-5 md:grid-cols-2"
         >
           {/* Блок 1: О миссии */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }}
-            className="rounded-[22px] p-8 ring-1 ring-black/10 shadow-[0_18px_50px_rgba(0,0,0,0.08)] bg-[linear-gradient(135deg,#f4dee1_0%,rgba(255,255,255,0.78)_55%,rgba(244,222,225,0.55)_100%)]"
+            className="rounded-[22px] p-6 sm:p-7 ring-1 ring-black/10 shadow-[0_18px_50px_rgba(0,0,0,0.08)] bg-[linear-gradient(135deg,#f4dee1_0%,rgba(255,255,255,0.78)_55%,rgba(244,222,225,0.55)_100%)]"
           >
             <div className="flex items-center gap-3">
               <span className="text-[32px] leading-none">
@@ -94,7 +94,7 @@ const AboutStructuredSection = () => {
               </h3>
             </div>
 
-            <p className="mt-4 text-lg sm:text-[19px] leading-relaxed text-black/60">
+            <p className="mt-3 text-base sm:text-[17px] leading-relaxed text-black/60">
               В&nbsp;
               <span className="font-bold">«Мастерской праздника Орлихиной и Сергиенко»</span>
               &nbsp;мы не просто проводим праздники, а создаем историю, которая понравится именно вашему ребёнку. Наша цель — счастливый именинник и отдохнувшие родители, которые могут спокойно пообщаться, пока мы берем все заботы на себя.
@@ -104,7 +104,7 @@ const AboutStructuredSection = () => {
           {/* Блок 2: Об индивидуальном подходе */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }}
-            className="rounded-[22px] p-8 ring-1 ring-black/10 shadow-[0_18px_50px_rgba(0,0,0,0.08)] bg-[linear-gradient(135deg,#f4dee1_0%,rgba(255,255,255,0.78)_55%,rgba(244,222,225,0.55)_100%)]"
+            className="rounded-[22px] p-6 sm:p-7 ring-1 ring-black/10 shadow-[0_18px_50px_rgba(0,0,0,0.08)] bg-[linear-gradient(135deg,#f4dee1_0%,rgba(255,255,255,0.78)_55%,rgba(244,222,225,0.55)_100%)]"
           >
             <div className="flex items-center gap-3">
               <span className="text-[32px] leading-none">
@@ -114,7 +114,7 @@ const AboutStructuredSection = () => {
                 Индивидуальный подход
               </h3>
             </div>
-            <p className="mt-4 text-lg sm:text-[19px] leading-relaxed text-black/60">
+            <p className="mt-3 text-base sm:text-[17px] leading-relaxed text-black/60">
               В основе нашей работы — индивидуальный подход. Мы не используем шаблонные сценарии. Перед программой мы общаемся с Вами, чтобы узнать характер, интересы и особенности вашего ребенка. Это позволяет нам подобрать аниматора, который говорит с ребенком на одном языке, и создать сценарий, который вовлечет всех гостей.
             </p>
           </motion.div>

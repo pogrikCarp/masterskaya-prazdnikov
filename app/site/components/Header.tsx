@@ -84,9 +84,11 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <a
                 href={SITE_PHONE_HREF}
-                className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 font-medium tracking-wide text-white ring-1 ring-white/20 transition-all duration-300 hover:bg-white/25 hover:ring-white/30"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-white/15 px-4 py-2 font-medium tracking-wide text-white ring-1 ring-white/20 transition-all duration-300 hover:bg-white/25 hover:ring-white/30"
               >
-                <Icon name="phone" className="h-4 w-4" />
+                <span className="mp-phone-icon inline-flex">
+                  <Icon name="phone" className="h-4 w-4" />
+                </span>
                 {phone}
               </a>
               <a

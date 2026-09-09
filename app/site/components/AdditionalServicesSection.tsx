@@ -1,49 +1,53 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Container from "./Container";
 import { ButtonLink } from "./Button";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const services = [
-  {
-    title: "Аквагрим",
-    description: "Профессиональный аквагрим — любой образ от простого до сложного.",
-    icon: "🎨",
-  },
-  {
-    title: "Пригласительные для вашего праздника",
-    description: "Красивый дизайн в стиле праздника — печатные или электронные.",
-    icon: "💌",
-    href: "#invitations",
-  },
-  {
-    title: "Календарные праздники",
-    description: "Сезонные программы: Новый год, Масленица, 8 Марта и другие даты.",
-    icon: "🎉",
-    href: "#seasonal-holidays",
-  },
-  {
-    title: "Фигуры из шаров",
-    description: "Твистинг — создаём фигуры из шаров: животные, цветы, мечи.",
-    icon: "🎈",
-  },
-  {
-    title: "Фотограф",
-    description: "Репортажная съёмка праздника — живые эмоции и кадры.",
-    icon: "📸",
-  },
-  {
-    title: "Ведущий",
-    description: "Профессиональный ведущий для программы любого формата.",
-    icon: "🎤",
-  },
-];
+type AdditionalService = {
+  id: number;
+  name: string;
+  description: string | null;
+  imageUrl: string | null;
+  price: number;
+  popular: boolean;
+};
+
+function formatPrice(price: number) {
+  if (!price) return "по запросу";
+  return `от ${price.toLocaleString("ru-RU")} ₽`;
+}
 
 export default function AdditionalServicesSection() {
   const reduceMotion = useReducedMotion();
+  const [services, setServices] = useState<AdditionalService[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchServices() {
+      try {
+        const popularRes = await fetch("/api/additional-services?popular=true");
+        let data: AdditionalService[] = popularRes.ok ? await popularRes.json() : [];
+
+        if (data.length === 0) {
+          const allRes = await fetch("/api/additional-services");
+          if (allRes.ok) data = await allRes.json();
+        }
+
+        setServices(data.slice(0, 6));
+      } catch (error) {
+        console.error("Error fetching additional services:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchServices();
+  }, []);
 
   return (
     <section id="additional-services" className="py-14">
@@ -60,49 +64,66 @@ export default function AdditionalServicesSection() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((service, idx) => (
-            <motion.div
-              key={service.title}
-              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-              whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={
-                reduceMotion ? { duration: 0 } : { duration: 0.5, ease, delay: idx * 0.05 }
-              }
-            >
-              <Link
-                href={service.href ?? "/services"}
-                className="mp-card-lift group block relative overflow-hidden rounded-[34px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] hover:shadow-[0_32px_100px_rgba(17,24,39,0.14)]"
+        {loading ? (
+          <div className="mt-10 text-center text-black/50">Загрузка…</div>
+        ) : services.length === 0 ? (
+          <div className="mt-10 text-center text-black/50">Нет дополнительных услуг</div>
+        ) : (
+          <div className="mt-10 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {services.map((service, idx) => (
+              <motion.div
+                key={service.id}
+                className="h-full"
+                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={
+                  reduceMotion ? { duration: 0 } : { duration: 0.5, ease, delay: idx * 0.05 }
+                }
               >
-                <div className="absolute inset-0 opacity-90 bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.34)_0%,rgba(255,255,255,0.86)_52%,rgba(214,249,239,0.48)_100%)]" />
-                <div className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.22)] blur-3xl" />
-                <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-white/70 blur-3xl" />
+                <Link
+                  href="/services"
+                  className="mp-card-lift group flex h-full flex-col overflow-hidden rounded-[34px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] hover:shadow-[0_32px_100px_rgba(17,24,39,0.14)]"
+                >
+                  <div className="relative flex min-h-0 flex-1 flex-col p-6">
+                    <div className="absolute inset-0 opacity-90 bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.34)_0%,rgba(255,255,255,0.86)_52%,rgba(214,249,239,0.48)_100%)]" />
+                    <div className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.22)] blur-3xl" />
+                    <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-white/70 blur-3xl" />
 
-                <div className="relative p-7">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-[22px] bg-white/70 ring-1 ring-black/10 text-3xl">
-                    {service.icon}
-                  </div>
+                    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[20px] bg-white/70 ring-1 ring-black/10">
+                      {service.imageUrl ? (
+                        <img
+                          src={service.imageUrl}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-2xl" aria-hidden="true">
+                          🎉
+                        </span>
+                      )}
+                    </div>
 
-                  <div className="mt-5 text-lg font-black tracking-tight text-[var(--mp-ink)] leading-tight">
-                    {service.title}
-                  </div>
+                    <div className="relative mt-4 min-h-[3.2rem] text-lg font-black tracking-tight text-[var(--mp-ink)] leading-tight line-clamp-2">
+                      {service.name}
+                    </div>
 
-                  <p className="mt-3 text-sm text-black/60 leading-relaxed">
-                    {service.description}
-                  </p>
+                    <p className="relative mt-2 min-h-[3.75rem] text-sm text-black/60 leading-relaxed line-clamp-3">
+                      {service.description || "Добавим к программе по вашему запросу."}
+                    </p>
 
-                  <div className="mt-5 flex items-center justify-between">
-                    <div className="text-sm text-black/60">от 2 000 ₽</div>
-                    <div className="text-sm font-semibold text-[var(--mp-ink)] group-hover:translate-x-[2px] transition-transform">
-                      Подробнее
+                    <div className="relative mt-auto flex items-center justify-between pt-5">
+                      <div className="text-sm text-black/60">{formatPrice(service.price)}</div>
+                      <div className="text-sm font-semibold text-[var(--mp-ink)] transition-transform group-hover:translate-x-[2px]">
+                        Подробнее
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         <div className="mt-10 flex justify-end">
           <ButtonLink href="/services" variant="secondary" size="lg">

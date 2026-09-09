@@ -20,8 +20,6 @@ export default function RequestForm({
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    date: "",
-    guests: "",
     message: "",
   });
 
@@ -48,7 +46,7 @@ export default function RequestForm({
     setTimeout(() => {
       setIsSubmitted(false);
       setConsentGiven(false);
-      setFormData({ name: "", phone: "", date: "", guests: "", message: "" });
+      setFormData({ name: "", phone: "", message: "" });
     }, 3000);
   };
 
@@ -114,39 +112,6 @@ export default function RequestForm({
           placeholder="+7 (___) ___-__-__"
         />
       </div>
-
-      {variant === "full" ? (
-        <div className="grid gap-5 sm:grid-cols-2">
-          <div>
-            <label htmlFor={`date-${variant}`} className={labelClass}>
-              Дата праздника
-            </label>
-            <input
-              type="date"
-              id={`date-${variant}`}
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className={inputClass}
-            />
-          </div>
-
-          <div>
-            <label htmlFor={`guests-${variant}`} className={labelClass}>
-              Количество гостей
-            </label>
-            <input
-              type="number"
-              id={`guests-${variant}`}
-              name="guests"
-              value={formData.guests}
-              onChange={handleChange}
-              className={inputClass}
-              placeholder="Примерно"
-            />
-          </div>
-        </div>
-      ) : null}
 
       <div>
         <label htmlFor={`message-${variant}`} className={labelClass}>

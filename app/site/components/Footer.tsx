@@ -31,9 +31,9 @@ export default function Footer() {
               <div className="mt-4 grid gap-3 text-[14px] sm:text-[15px] text-black/55">
                 <a
                   href={SITE_PHONE_HREF}
-                  className="inline-flex items-center gap-2 text-[var(--mp-ink)] transition-colors hover:text-[var(--mp-lavender)]"
+                  className="inline-flex items-center gap-2 whitespace-nowrap text-[var(--mp-ink)] transition-colors hover:text-[var(--mp-lavender)]"
                 >
-                  <span aria-hidden="true" className="text-black/40">
+                  <span aria-hidden="true" className="mp-phone-icon text-black/40">
                     ☎
                   </span>
                   {SITE_PHONE_DISPLAY}
@@ -62,9 +62,6 @@ export default function Footer() {
               </div>
               <div className="mt-4 text-[14px] sm:text-[15px] leading-relaxed text-black/55">
                 Ежедневно 09:00–21:00
-                <div className="mt-3">
-                  Перезвоним в течение дня и предложим 2–3 варианта программы.
-                </div>
               </div>
             </div>
           </div>

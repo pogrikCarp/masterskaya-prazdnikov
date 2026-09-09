@@ -137,38 +137,35 @@ export default function GlassHeader() {
         />
         <Container>
           <div
-            className={`flex items-center justify-between gap-4 px-4 sm:px-6 ${
+            className={`flex items-center gap-3 px-4 sm:px-6 ${
               scrolled ? "py-2" : "py-3"
-            } relative`}
+            }`}
           >
-            <div className="w-11 shrink-0" aria-hidden="true" />
-
-            <nav className="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
-              <div className="flex items-center justify-center gap-3">
-                {nav.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={resolveHref(item.href)}
-                    onClick={onAnchorClick(item.href)}
-                    className={[
-                      "whitespace-nowrap",
-                      "px-3",
-                      "py-2",
-                      "text-sm",
-                      "font-semibold",
-                      "transition-colors",
-                      scrolled
-                        ? "text-black/70 hover:text-black"
-                        : "text-white/80 hover:text-white",
-                    ].join(" ")}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
+            <nav className="hidden min-w-0 flex-1 overflow-hidden lg:flex items-center justify-start gap-0.5 xl:justify-center xl:gap-1">
+              {nav.map((item) => (
+                <Link
+                  key={item.href}
+                  href={resolveHref(item.href)}
+                  onClick={onAnchorClick(item.href)}
+                  className={[
+                    "whitespace-nowrap",
+                    "px-2",
+                    "xl:px-3",
+                    "py-2",
+                    "text-sm",
+                    "font-semibold",
+                    "transition-colors",
+                    scrolled
+                      ? "text-black/70 hover:text-black"
+                      : "text-white/80 hover:text-white",
+                  ].join(" ")}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="ml-auto flex items-center gap-2 shrink-0">
               <motion.a
                 whileHover={{ scale: 1.04 }}
                 transition={{ duration: 0.25 }}
@@ -178,19 +175,32 @@ export default function GlassHeader() {
                   "items-center",
                   "gap-2",
                   "rounded-full",
-                  "px-3",
                   "h-11",
                   "font-semibold",
                   "text-xs",
                   "ring-1",
-                  "transition-colors",
+                  "transition-[background-color,padding,box-shadow] duration-300",
+                  scrolled ? "px-2.5" : "px-3",
                   scrolled
                     ? "bg-black/[0.05] text-[var(--mp-ink)] ring-black/10 hover:bg-black/[0.08]"
                     : "bg-white/14 text-white ring-white/20 hover:bg-white/18",
                 ].join(" ")}
               >
-                <Icon name="phone" className="h-4 w-4" />
-                {phone}
+                <span className="mp-phone-icon inline-flex">
+                  <Icon name="phone" className="h-4 w-4" />
+                </span>
+                <motion.span
+                  initial={false}
+                  animate={{
+                    width: scrolled ? 0 : "auto",
+                    opacity: scrolled ? 0 : 1,
+                    marginLeft: scrolled ? -8 : 0,
+                  }}
+                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                  className="overflow-hidden whitespace-nowrap"
+                >
+                  {phone}
+                </motion.span>
               </motion.a>
 
               <motion.button

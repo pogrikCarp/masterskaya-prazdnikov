@@ -156,6 +156,11 @@ h6 {
   overflow-wrap: anywhere;
 }
 
+a[href^="tel"] {
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .mp-card-lift {
     transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease;
@@ -163,6 +168,34 @@ h6 {
 
   .mp-card-lift:hover {
     transform: translateY(-3px);
+  }
+
+  .mp-phone-icon {
+    transform-origin: 60% 40%;
+    animation: mp-phone-ring 2.6s ease-in-out infinite;
+  }
+}
+
+@keyframes mp-phone-ring {
+  0%,
+  62%,
+  100% {
+    transform: rotate(0deg);
+  }
+  68% {
+    transform: rotate(16deg);
+  }
+  74% {
+    transform: rotate(-12deg);
+  }
+  80% {
+    transform: rotate(10deg);
+  }
+  86% {
+    transform: rotate(-6deg);
+  }
+  92% {
+    transform: rotate(3deg);
   }
 }
 

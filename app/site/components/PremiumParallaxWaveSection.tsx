@@ -11,7 +11,7 @@ export default function PremiumParallaxWaveSection() {
     <section className="relative overflow-hidden bg-[var(--mp-bg)]">
 
       <Container className="max-w-[1320px]">
-        <div className="relative z-10 pt-16 sm:pt-20 pb-20 sm:pb-24">
+        <div className="relative z-10 pt-10 sm:pt-12 pb-12 sm:pb-14">
           
           <AboutSection></AboutSection>
 
@@ -20,7 +20,7 @@ export default function PremiumParallaxWaveSection() {
               Почему дети и родители называют наши праздники «лучшими»?
             </h2>
           </div>
-          <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1.618fr)_minmax(0,1fr)]">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {[
               {
                 t: "Гибкость форматов",
@@ -212,9 +212,7 @@ export default function PremiumParallaxWaveSection() {
                         delay: idx * 0.06,
                       }
                 }
-                className={`relative overflow-hidden rounded-[34px] bg-white/70 p-8 sm:p-9 ring-1 ring-black/10 shadow-[0_22px_70px_rgba(17,24,39,0.10)] ${
-                  idx < 2 ? "min-h-[260px]" : "min-h-[220px]"
-                }`}
+                className="relative overflow-hidden rounded-[28px] bg-white/70 p-5 sm:p-6 ring-1 ring-black/10 shadow-[0_22px_70px_rgba(17,24,39,0.10)]"
               >
                 <div className="pointer-events-none absolute inset-0 opacity-90 bg-[linear-gradient(135deg,rgba(255,107,138,0.30)_0%,rgba(255,255,255,0.86)_55%,rgba(214,249,239,0.55)_100%)]" />
                 <div className="pointer-events-none absolute -top-20 -left-20 h-64 w-64 rounded-full bg-[rgba(255,107,138,0.22)] blur-3xl" />
@@ -228,7 +226,7 @@ export default function PremiumParallaxWaveSection() {
                     <div className="text-lg font-black tracking-tight text-[var(--mp-ink)]">
                       {c.t}
                     </div>
-                    <div className="mt-3 text-[15px] sm:text-base text-black/60 leading-relaxed">{c.d}</div>
+                    <div className="mt-2 text-sm sm:text-[15px] text-black/60 leading-relaxed">{c.d}</div>
                   </div>
                 </div>
               </motion.div>
