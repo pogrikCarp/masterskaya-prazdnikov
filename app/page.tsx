@@ -13,42 +13,61 @@ import QuestsSection from "./site/components/QuestsSection";
 import WorkshopsSection from "./site/components/WorkshopsSection";
 import ContactFormSection from "./site/components/ContactFormSection";
 import Reveal from "./site/components/Reveal";
-import { STORY_SECTION, WHY_SECTION } from "@/lib/home-content";
-import { getHomeSection } from "@/lib/home-content.server";
+import {
+  ANIMATORS_SECTION,
+  BUILDER_SECTION,
+  BUSINESS_BENEFITS_SECTION,
+  BUSINESS_SECTION,
+  CONTACT_SECTION,
+  EXTRA_SERVICES_SECTION,
+  GALLERY_SECTION,
+  HERO_SECTION,
+  INVITATIONS_SECTION,
+  QUESTS_SECTION,
+  SHOWS_SECTION,
+  STORY_SECTION,
+  WHY_SECTION,
+  WORKSHOPS_SECTION,
+} from "@/lib/home-content";
+import { getHomeSections } from "@/lib/home-content.server";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [storySection, whySection] = await Promise.all([
-    getHomeSection(STORY_SECTION),
-    getHomeSection(WHY_SECTION),
-  ]);
+  const sections = await getHomeSections();
+  const gallerySection = sections[GALLERY_SECTION];
 
   return (
     <SiteShell showHeader={false}>
-      <HeroSection />
+      <HeroSection section={sections[HERO_SECTION]} />
 
       <div id="about" className="scroll-mt-24" />
-      <PremiumParallaxWaveSection storySection={storySection} whySection={whySection} />
+      <PremiumParallaxWaveSection
+        storySection={sections[STORY_SECTION]}
+        whySection={sections[WHY_SECTION]}
+      />
 
-      <AnimatorsShowcaseSection />
+      <AnimatorsShowcaseSection section={sections[ANIMATORS_SECTION]} />
 
-      <ShowsCarouselSection />
+      <ShowsCarouselSection section={sections[SHOWS_SECTION]} />
 
-      <QuestsSection />
+      <QuestsSection section={sections[QUESTS_SECTION]} />
 
-      <WorkshopsSection />
+      <WorkshopsSection section={sections[WORKSHOPS_SECTION]} />
 
-      <AdditionalServicesSection />
+      <AdditionalServicesSection section={sections[EXTRA_SERVICES_SECTION]} />
 
       <div id="pricing" className="scroll-mt-24" />
-      <ServiceBuilderAnchorSection />
+      <ServiceBuilderAnchorSection section={sections[BUILDER_SECTION]} />
 
-      <InvitationsSection />
+      <InvitationsSection section={sections[INVITATIONS_SECTION]} />
 
-      <BusinessSection />
+      <BusinessSection
+        section={sections[BUSINESS_SECTION]}
+        benefitsSection={sections[BUSINESS_BENEFITS_SECTION]}
+      />
 
-      <ContactFormSection />
+      <ContactFormSection section={sections[CONTACT_SECTION]} />
 
       <section className="py-10">
         <Container>
@@ -58,12 +77,13 @@ export default async function HomePage() {
 
             <div className="relative text-center">
               <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight">
-                Посмотрите, как проходит праздник
+                {gallerySection.title}
               </h2>
-              <p className="mt-3 text-sm sm:text-base text-black/55 max-w-2xl mx-auto">
-                Визуальный стиль — ключ к «вау‑эффекту». Подборка фото и видео помогает
-                выбрать формат без лишних звонков.
-              </p>
+              {gallerySection.subtitle ? (
+                <p className="mt-3 text-sm sm:text-base text-black/55 max-w-2xl mx-auto">
+                  {gallerySection.subtitle}
+                </p>
+              ) : null}
               <div className="mt-8 flex justify-center">
                 <ButtonLink href="/gallery" size="lg">
                   Открыть галерею

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { HOME_SECTION_META } from "@/lib/home-content";
 
 type EntityType =
   | "animators"
@@ -729,17 +730,6 @@ type HomeSection = {
   cards: HomeCard[];
 };
 
-const HOME_SECTION_HINTS: Record<string, { label: string; iconHint: string }> = {
-  story: {
-    label: "Блок «Ваш праздник — наша история»",
-    iconHint: "Эмодзи, например ✨ или ❤️",
-  },
-  why: {
-    label: "Блок «Почему нас называют лучшими»",
-    iconHint: "balloon, note, bulb, masks или эмодзи",
-  },
-};
-
 const inputClass =
   "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500";
 
@@ -884,12 +874,15 @@ function HomeSectionPanel({
   section: HomeSection;
   onChanged: () => void;
 }) {
-  const hints = HOME_SECTION_HINTS[section.key] ?? {
+  const meta = HOME_SECTION_META[section.key] ?? {
     label: section.key,
     iconHint: "Эмодзи",
+    hasCards: true,
+    hasSubtitle: true,
   };
 
   const [title, setTitle] = useState(section.title);
+  const [subtitle, setSubtitle] = useState(section.subtitle ?? "");
   const [savingTitle, setSavingTitle] = useState(false);
   const [error, setError] = useState("");
   const [adding, setAdding] = useState(false);
@@ -897,7 +890,11 @@ function HomeSectionPanel({
 
   useEffect(() => {
     setTitle(section.title);
-  }, [section.title]);
+    setSubtitle(section.subtitle ?? "");
+  }, [section.title, section.subtitle]);
+
+  const headerDirty =
+    title !== section.title || subtitle !== (section.subtitle ?? "");
 
   const saveTitle = async () => {
     setSavingTitle(true);
@@ -906,7 +903,7 @@ function HomeSectionPanel({
       const res = await fetch("/api/admin/home-content", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key: section.key, title, subtitle: section.subtitle }),
+        body: JSON.stringify({ key: section.key, title, subtitle }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -952,78 +949,105 @@ function HomeSectionPanel({
   };
 
   return (
-    <div className="mb-8 rounded-lg bg-white p-5 shadow">
-      <h3 className="text-lg font-semibold text-gray-900">{hints.label}</h3>
+    <details className="mb-4 rounded-lg bg-white shadow [&_summary::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer items-center justify-between gap-4 p-5">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900">{meta.label}</h3>
+          <p className="mt-1 line-clamp-1 text-sm text-gray-500">{section.title}</p>
+        </div>
+        <span className="shrink-0 text-sm text-gray-400">
+          {meta.hasCards ? `${section.cards.length} карт.` : "текст"}
+        </span>
+      </summary>
 
-      <div className="mt-4">
+      <div className="border-t border-gray-100 p-5">
         <label className="mb-1 block text-sm font-medium text-gray-700">Заголовок блока</label>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className={inputClass}
-          />
-          <button
-            type="button"
-            onClick={saveTitle}
-            disabled={savingTitle || title === section.title}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 sm:w-40"
-          >
-            {savingTitle ? "Сохранение..." : "Сохранить"}
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-5 space-y-3">
-        {section.cards.map((card) => (
-          <HomeCardRow
-            key={card.id}
-            card={card}
-            iconHint={hints.iconHint}
-            onSaved={onChanged}
-          />
-        ))}
-      </div>
-
-      <form onSubmit={addCard} className="mt-5 rounded-lg border border-dashed border-indigo-300 bg-indigo-50/50 p-4">
-        <div className="text-sm font-medium text-gray-700">Новая карточка</div>
-        <div className="mt-3 grid gap-3 sm:grid-cols-[7rem_1fr]">
-          <input
-            type="text"
-            value={newCard.icon}
-            onChange={(e) => setNewCard({ ...newCard, icon: e.target.value })}
-            placeholder={hints.iconHint}
-            className={inputClass}
-          />
-          <input
-            type="text"
-            value={newCard.title}
-            onChange={(e) => setNewCard({ ...newCard, title: e.target.value })}
-            placeholder="Заголовок"
-            className={inputClass}
-            required
-          />
-        </div>
-        <textarea
-          value={newCard.text}
-          onChange={(e) => setNewCard({ ...newCard, text: e.target.value })}
-          placeholder="Текст карточки"
-          rows={3}
-          className={`${inputClass} mt-3`}
-          required
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className={inputClass}
         />
+
+        {meta.hasSubtitle ? (
+          <div className="mt-3">
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              Подпись под заголовком
+            </label>
+            <textarea
+              value={subtitle}
+              onChange={(e) => setSubtitle(e.target.value)}
+              rows={2}
+              className={inputClass}
+            />
+          </div>
+        ) : null}
+
         <button
-          type="submit"
-          disabled={adding}
+          type="button"
+          onClick={saveTitle}
+          disabled={savingTitle || !headerDirty}
           className="mt-3 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
         >
-          {adding ? "Добавление..." : "+ Добавить карточку"}
+          {savingTitle ? "Сохранение..." : "Сохранить заголовок"}
         </button>
-      </form>
 
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-    </div>
+        {meta.hasCards ? (
+          <>
+            <div className="mt-5 space-y-3">
+              {section.cards.map((card) => (
+                <HomeCardRow
+                  key={card.id}
+                  card={card}
+                  iconHint={meta.iconHint}
+                  onSaved={onChanged}
+                />
+              ))}
+            </div>
+
+            <form
+              onSubmit={addCard}
+              className="mt-5 rounded-lg border border-dashed border-indigo-300 bg-indigo-50/50 p-4"
+            >
+              <div className="text-sm font-medium text-gray-700">Новая карточка</div>
+              <div className="mt-3 grid gap-3 sm:grid-cols-[7rem_1fr]">
+                <input
+                  type="text"
+                  value={newCard.icon}
+                  onChange={(e) => setNewCard({ ...newCard, icon: e.target.value })}
+                  placeholder={meta.iconHint}
+                  className={inputClass}
+                />
+                <input
+                  type="text"
+                  value={newCard.title}
+                  onChange={(e) => setNewCard({ ...newCard, title: e.target.value })}
+                  placeholder="Заголовок"
+                  className={inputClass}
+                  required
+                />
+              </div>
+              <textarea
+                value={newCard.text}
+                onChange={(e) => setNewCard({ ...newCard, text: e.target.value })}
+                placeholder="Текст карточки"
+                rows={3}
+                className={`${inputClass} mt-3`}
+              />
+              <button
+                type="submit"
+                disabled={adding}
+                className="mt-3 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              >
+                {adding ? "Добавление..." : "+ Добавить карточку"}
+              </button>
+            </form>
+          </>
+        ) : null}
+
+        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      </div>
+    </details>
   );
 }
 
@@ -1068,7 +1092,8 @@ function HomeContentTab() {
   return (
     <div>
       <p className="mb-5 text-sm text-gray-600">
-        Тексты этих блоков видны на главной странице. Изменения появляются на сайте в течение минуты.
+        Блоки идут в том же порядке, что и на главной странице. Нажмите на блок, чтобы
+        открыть тексты. Изменения появляются на сайте в течение минуты.
       </p>
       {sections.map((section) => (
         <HomeSectionPanel key={section.key} section={section} onChanged={fetchSections} />

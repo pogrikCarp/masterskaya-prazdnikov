@@ -1,13 +1,9 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import {
-  DEFAULT_HOME_CONTENT,
-  STORY_SECTION,
-  WHY_SECTION,
-} from "@/lib/home-content";
+import { DEFAULT_HOME_CONTENT, HOME_SECTION_KEYS } from "@/lib/home-content";
 
-const SECTION_KEYS = [STORY_SECTION, WHY_SECTION];
+const SECTION_KEYS = HOME_SECTION_KEYS;
 
 function isKnownKey(key: unknown): key is string {
   return typeof key === "string" && SECTION_KEYS.includes(key);
@@ -24,7 +20,7 @@ async function ensureSeeded(key: string) {
     create: { key, title: defaults.title, subtitle: defaults.subtitle },
   });
 
-  if (existing === 0) {
+  if (existing === 0 && defaults.cards.length > 0) {
     await prisma.homeCard.createMany({
       data: defaults.cards.map((card, idx) => ({
         sectionKey: key,
@@ -118,11 +114,8 @@ export async function POST(request: Request) {
     const title = String(data.title || "").trim();
     const text = String(data.text || "").trim();
 
-    if (!title || !text) {
-      return NextResponse.json(
-        { error: "Заполните заголовок и текст карточки" },
-        { status: 400 }
-      );
+    if (!title) {
+      return NextResponse.json({ error: "Заполните заголовок карточки" }, { status: 400 });
     }
 
     const card = await prisma.homeCard.create({
@@ -160,11 +153,8 @@ export async function PUT(request: Request) {
     const title = String(data.title || "").trim();
     const text = String(data.text || "").trim();
 
-    if (!title || !text) {
-      return NextResponse.json(
-        { error: "Заполните заголовок и текст карточки" },
-        { status: 400 }
-      );
+    if (!title) {
+      return NextResponse.json({ error: "Заполните заголовок карточки" }, { status: 400 });
     }
 
     const card = await prisma.homeCard.update({

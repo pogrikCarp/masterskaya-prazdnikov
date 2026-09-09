@@ -4,46 +4,27 @@ import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import Container from "./Container";
 import { ButtonLink } from "./Button";
+import {
+  DEFAULT_HOME_CONTENT,
+  EXTRA_SERVICES_SECTION,
+  type HomeSectionContent,
+} from "@/lib/home-content";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const services = [
-  {
-    title: "Аквагрим",
-    description: "Профессиональный аквагрим — любой образ от простого до сложного.",
-    icon: "🎨",
-  },
-  {
-    title: "Пригласительные для вашего праздника",
-    description: "Красивый дизайн в стиле праздника — печатные или электронные.",
-    icon: "💌",
-    href: "#invitations",
-  },
-  {
-    title: "Календарные праздники",
-    description: "Сезонные программы: Новый год, Масленица, 8 Марта и другие даты.",
-    icon: "🎉",
-    href: "#seasonal-holidays",
-  },
-  {
-    title: "Фигуры из шаров",
-    description: "Твистинг — создаём фигуры из шаров: животные, цветы, мечи.",
-    icon: "🎈",
-  },
-  {
-    title: "Фотограф",
-    description: "Репортажная съёмка праздника — живые эмоции и кадры.",
-    icon: "📸",
-  },
-  {
-    title: "Ведущий",
-    description: "Профессиональный ведущий для программы любого формата.",
-    icon: "🎤",
-  },
-];
+/** Услуги, у которых есть свой блок на странице */
+const SERVICE_ANCHORS: Record<string, string> = {
+  "Пригласительные для вашего праздника": "#invitations",
+  "Календарные праздники": "#seasonal-holidays",
+};
 
-export default function AdditionalServicesSection() {
+export default function AdditionalServicesSection({
+  section = DEFAULT_HOME_CONTENT[EXTRA_SERVICES_SECTION],
+}: {
+  section?: HomeSectionContent;
+}) {
   const reduceMotion = useReducedMotion();
+  const services = section.cards;
 
   return (
     <section id="additional-services" className="py-14">
@@ -51,12 +32,13 @@ export default function AdditionalServicesSection() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl">
             <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-              Дополнительные услуги
+              {section.title}
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl">
-              Добавьте к празднику дополнительные опции — соберите идеальную программу под
-              ваш бюджет.
-            </p>
+            {section.subtitle ? (
+              <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl">
+                {section.subtitle}
+              </p>
+            ) : null}
           </div>
         </div>
 
@@ -73,7 +55,7 @@ export default function AdditionalServicesSection() {
               }
             >
               <Link
-                href={service.href ?? "/services"}
+                href={SERVICE_ANCHORS[service.title] ?? "/services"}
                 className="mp-card-lift group flex h-full flex-col overflow-hidden rounded-[34px] bg-white/70 ring-1 ring-black/10 shadow-[0_26px_80px_rgba(17,24,39,0.10)] hover:shadow-[0_32px_100px_rgba(17,24,39,0.14)]"
               >
                 <div className="relative flex h-full flex-col p-7">
@@ -90,7 +72,7 @@ export default function AdditionalServicesSection() {
                   </div>
 
                   <p className="relative mt-3 min-h-[3.75rem] text-sm text-black/60 leading-relaxed line-clamp-3">
-                    {service.description}
+                    {service.text}
                   </p>
 
                   <div className="relative mt-auto flex items-center justify-between pt-5">

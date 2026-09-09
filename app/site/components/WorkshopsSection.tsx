@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import CatalogCarouselSection, {
   type CatalogCardItem,
 } from "./CatalogCarouselSection";
+import {
+  DEFAULT_HOME_CONTENT,
+  WORKSHOPS_SECTION,
+  type HomeSectionContent,
+} from "@/lib/home-content";
 
 type MasterClass = {
   id: number;
@@ -17,7 +22,11 @@ type MasterClass = {
   active: boolean;
 };
 
-export default function WorkshopsSection() {
+export default function WorkshopsSection({
+  section = DEFAULT_HOME_CONTENT[WORKSHOPS_SECTION],
+}: {
+  section?: HomeSectionContent;
+}) {
   const [items, setItems] = useState<CatalogCardItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -55,8 +64,8 @@ export default function WorkshopsSection() {
   return (
     <CatalogCarouselSection
       id="workshops"
-      title="Мастер‑классы"
-      subtitle="Коротко, ярко и с результатом: ребёнок уходит с готовой работой."
+      title={section.title}
+      subtitle={section.subtitle ?? ""}
       allHref="/workshops"
       allLabel="Все мастер‑классы"
       items={items}

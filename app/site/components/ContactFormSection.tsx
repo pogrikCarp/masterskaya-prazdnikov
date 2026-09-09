@@ -1,14 +1,19 @@
 import Container from "./Container";
 import RequestForm from "./RequestForm";
 import Reveal from "./Reveal";
+import {
+  CONTACT_SECTION,
+  DEFAULT_HOME_CONTENT,
+  type HomeSectionContent,
+} from "@/lib/home-content";
 
-const advantages = [
-  { title: "Быстрый ответ", text: "Перезвоним в течение 15 минут" },
-  { title: "Индивидуальный подход", text: "Учтём все ваши пожелания" },
-  { title: "Прозрачная стоимость", text: "Без скрытых платежей" },
-];
+export default function ContactFormSection({
+  section = DEFAULT_HOME_CONTENT[CONTACT_SECTION],
+}: {
+  section?: HomeSectionContent;
+}) {
+  const advantages = section.cards;
 
-export default function ContactFormSection() {
   return (
     <section
       id="contact-form"
@@ -21,12 +26,11 @@ export default function ContactFormSection() {
               Обратная связь
             </div>
             <h2 className="mt-4 text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-              Поможем организовать праздник
+              {section.title}
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-black/60">
-              Оставьте заявку — мы свяжемся с вами в течение 15 минут, обсудим детали и
-              подберём идеальную программу под ваш бюджет и пожелания.
-            </p>
+            {section.subtitle ? (
+              <p className="mt-4 text-sm sm:text-base text-black/60">{section.subtitle}</p>
+            ) : null}
 
             <div className="mt-8 space-y-4">
               {advantages.map((advantage) => (

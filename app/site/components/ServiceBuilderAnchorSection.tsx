@@ -5,8 +5,17 @@ import Container from "./Container";
 import Button from "./Button";
 import Reveal from "./Reveal";
 import ServiceBuilderModal from "./ServiceBuilderModal";
+import {
+  BUILDER_SECTION,
+  DEFAULT_HOME_CONTENT,
+  type HomeSectionContent,
+} from "@/lib/home-content";
 
-export default function ServiceBuilderAnchorSection() {
+export default function ServiceBuilderAnchorSection({
+  section = DEFAULT_HOME_CONTENT[BUILDER_SECTION],
+}: {
+  section?: HomeSectionContent;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -23,12 +32,13 @@ export default function ServiceBuilderAnchorSection() {
           <div className="relative p-8 sm:p-12">
             <div className="text-center">
               <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-                Соберите идеальный праздник за пару минут
+                {section.title}
               </h2>
-              <p className="mt-4 text-base sm:text-lg text-black/60 max-w-3xl mx-auto leading-relaxed">
-                Выбирайте формат, возраст и дополнительные опции — мы сразу покажем итоговую стоимость
-                и подскажем лучшие сочетания.
-              </p>
+              {section.subtitle ? (
+                <p className="mt-4 text-base sm:text-lg text-black/60 max-w-3xl mx-auto leading-relaxed">
+                  {section.subtitle}
+                </p>
+              ) : null}
             </div>
 
             <div className="mt-10">
@@ -37,26 +47,20 @@ export default function ServiceBuilderAnchorSection() {
               </div>
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch">
-                <div className="rounded-[28px] bg-white/70 ring-1 ring-black/10 p-5 h-full">
-                  <div className="text-2xl">🎉</div>
-                  <div className="mt-3 text-sm font-extrabold text-[var(--mp-ink)]">
-                    Выберите базовую программу
+                {section.cards.map((step) => (
+                  <div
+                    key={step.title}
+                    className="rounded-[28px] bg-white/70 ring-1 ring-black/10 p-5 h-full"
+                  >
+                    {step.icon ? <div className="text-2xl">{step.icon}</div> : null}
+                    <div className="mt-3 text-sm font-extrabold text-[var(--mp-ink)]">
+                      {step.title}
+                    </div>
+                    {step.text ? (
+                      <div className="mt-2 text-sm text-black/55">{step.text}</div>
+                    ) : null}
                   </div>
-                </div>
-
-                <div className="rounded-[28px] bg-white/70 ring-1 ring-black/10 p-5 h-full">
-                  <div className="text-2xl">🧪</div>
-                  <div className="mt-3 text-sm font-extrabold text-[var(--mp-ink)]">
-                    Добавьте шоу, анимацию или мастер‑класс
-                  </div>
-                </div>
-
-                <div className="rounded-[28px] bg-white/70 ring-1 ring-black/10 p-5 h-full">
-                  <div className="text-2xl">💰</div>
-                  <div className="mt-3 text-sm font-extrabold text-[var(--mp-ink)]">
-                    Сразу увидите итоговую стоимость
-                  </div>
-                </div>
+                ))}
 
                 <div className="rounded-[28px] bg-white/70 ring-1 ring-black/10 p-5 h-full shadow-[0_20px_55px_rgba(17,24,39,0.08)] flex flex-col justify-between">
                   <Button

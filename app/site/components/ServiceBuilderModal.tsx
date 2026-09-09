@@ -145,11 +145,17 @@ export default function ServiceBuilderModal({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
 
-  const toggleShow = (id: number) => {
-    const newSet = new Set(selectedShows);
-    if (newSet.has(id)) newSet.delete(id);
-    else newSet.add(id);
-    setSelectedShows(newSet);
+  const addShow = (id: number) => {
+    if (!id) return;
+    const next = new Set(selectedShows);
+    next.add(id);
+    setSelectedShows(next);
+  };
+
+  const removeShow = (id: number) => {
+    const next = new Set(selectedShows);
+    next.delete(id);
+    setSelectedShows(next);
   };
 
   const toggleService = (id: number) => {
@@ -432,35 +438,59 @@ export default function ServiceBuilderModal({
                           Шоу появятся после добавления в админке
                         </div>
                       ) : (
-                        <div className="overflow-hidden rounded-xl bg-white/80 ring-1 ring-black/10">
-                          {shows.map((show, idx) => {
-                            const checked = selectedShows.has(show.id);
-                            return (
-                              <label
-                                key={show.id}
-                                className={`flex cursor-pointer items-center gap-3 px-4 py-3 transition-colors ${
-                                  idx > 0 ? "border-t border-black/8" : ""
-                                } ${checked ? "bg-[rgb(var(--mp-lavender-rgb)_/_0.10)]" : "hover:bg-black/[0.03]"}`}
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={checked}
-                                  onChange={() => toggleShow(show.id)}
-                                  className="h-5 w-5 shrink-0 rounded border-black/20 accent-[var(--mp-lavender)]"
-                                />
-                                <span className="min-w-0 flex-1 text-sm font-semibold text-[var(--mp-ink)]">
-                                  {show.name}
-                                  <span className="mt-0.5 block text-xs font-normal text-black/50">
-                                    {show.description || `${show.duration} мин`}
-                                  </span>
-                                </span>
-                                <span className="shrink-0 text-sm font-black text-[var(--mp-ink)]">
-                                  {show.price.toLocaleString("ru-RU")} ₽
-                                </span>
-                              </label>
-                            );
-                          })}
-                        </div>
+                        <>
+                          <select
+                            value=""
+                            onChange={(e) => {
+                              addShow(Number(e.target.value));
+                              e.currentTarget.value = "";
+                            }}
+                            className={selectClass}
+                          >
+                            <option value="">
+                              {selectedShows.size === 0
+                                ? "Выберите шоу"
+                                : "Добавить ещё шоу"}
+                            </option>
+                            {shows
+                              .filter((show) => !selectedShows.has(show.id))
+                              .map((show) => (
+                                <option key={show.id} value={show.id}>
+                                  {show.name} — {show.price.toLocaleString("ru-RU")} ₽
+                                </option>
+                              ))}
+                          </select>
+
+                          {selectedShows.size > 0 ? (
+                            <div className="mt-3 space-y-2">
+                              {shows
+                                .filter((show) => selectedShows.has(show.id))
+                                .map((show) => (
+                                  <div
+                                    key={show.id}
+                                    className="flex items-center justify-between gap-3 rounded-xl bg-white/80 px-4 py-2.5 ring-1 ring-black/10"
+                                  >
+                                    <span className="min-w-0 text-sm font-medium text-[var(--mp-ink)]">
+                                      {show.name}
+                                    </span>
+                                    <div className="flex shrink-0 items-center gap-3">
+                                      <span className="text-sm font-black text-[var(--mp-ink)]">
+                                        {show.price.toLocaleString("ru-RU")} ₽
+                                      </span>
+                                      <button
+                                        type="button"
+                                        onClick={() => removeShow(show.id)}
+                                        className="text-sm text-black/45 hover:text-black/80"
+                                        aria-label={`Убрать ${show.name}`}
+                                      >
+                                        ×
+                                      </button>
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          ) : null}
+                        </>
                       )}
                     </div>
 

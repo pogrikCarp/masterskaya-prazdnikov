@@ -9,6 +9,11 @@ import FloatingParticles from "./FloatingParticles";
 import GlassHeader from "./GlassHeader";
 import WaveDivider from "./WaveDivider";
 import Button from "./Button";
+import {
+  DEFAULT_HOME_CONTENT,
+  HERO_SECTION,
+  type HomeSectionContent,
+} from "@/lib/home-content";
 
 import Among2 from "../../img/Among2.png";
 import Logo from "../../img/mastprasnPOSLEDN.png";
@@ -24,7 +29,11 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
-export default function HeroSection() {
+export default function HeroSection({
+  section = DEFAULT_HOME_CONTENT[HERO_SECTION],
+}: {
+  section?: HomeSectionContent;
+}) {
   const leftMascotRef = useRef<HTMLDivElement | null>(null);
   const rightMascotRef = useRef<HTMLDivElement | null>(null);
   const giftRef = useRef<HTMLDivElement | null>(null);
@@ -843,9 +852,7 @@ export default function HeroSection() {
               transition={{ duration: 0.9, ease, delay: 0.08 }}
               className="mt-2 text-[clamp(30px,8vw,42px)] leading-[1.05] font-extrabold tracking-tight text-white sm:text-[64px] sm:leading-[1.02]"
             >
-              Подарите ребенку сказку,
-              <br />
-              <span>а себе — отдых</span>
+              {section.title}
             </motion.h1>
 
             <motion.p
@@ -854,7 +861,7 @@ export default function HeroSection() {
               transition={{ duration: 0.9, ease, delay: 0.14 }}
               className="mt-5 max-w-2xl mx-auto text-[17px] text-white/80 sm:text-xl"
             >
-              Индивидуальные сценарии под психотип и особенности характера ребенка
+              {section.subtitle}
             </motion.p>
 
             <motion.div
@@ -882,15 +889,15 @@ export default function HeroSection() {
               transition={{ duration: 0.9, ease, delay: 0.22 }}
               className="mt-12 mx-auto grid w-full max-w-[560px] grid-cols-1 gap-4 sm:grid-cols-2"
             >
-              <div className="rounded-[22px] bg-white/10 ring-1 ring-white/20 p-5">
-                <div className="text-lg font-extrabold text-white">5,0</div>
-                <div className="mt-1 text-sm text-white/70">средняя оценка по отзывам</div>
-              </div>
-
-              <div className="rounded-[22px] bg-white/10 ring-1 ring-white/20 p-5">
-                <div className="text-lg font-extrabold text-white">24/7</div>
-                <div className="mt-1 text-sm text-white/70">поддержка до и после праздника</div>
-              </div>
+              {section.cards.map((stat) => (
+                <div
+                  key={stat.title}
+                  className="rounded-[22px] bg-white/10 ring-1 ring-white/20 p-5"
+                >
+                  <div className="text-lg font-extrabold text-white">{stat.title}</div>
+                  <div className="mt-1 text-sm text-white/70">{stat.text}</div>
+                </div>
+              ))}
             </motion.div>
           </div>
         </div>

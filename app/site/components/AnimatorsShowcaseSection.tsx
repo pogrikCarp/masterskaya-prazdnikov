@@ -4,6 +4,11 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
 import { ButtonLink, badgeClassName } from "./Button";
+import {
+  ANIMATORS_SECTION,
+  DEFAULT_HOME_CONTENT,
+  type HomeSectionContent,
+} from "@/lib/home-content";
 
 type Animator = {
   id: number;
@@ -25,8 +30,10 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function AnimatorsShowcaseSection({
   showAllLink = true,
+  section = DEFAULT_HOME_CONTENT[ANIMATORS_SECTION],
 }: {
   showAllLink?: boolean;
+  section?: HomeSectionContent;
 }) {
   const reduceMotion = useReducedMotion();
   const popularScrollerRef = useRef<HTMLDivElement | null>(null);
@@ -85,11 +92,13 @@ export default function AnimatorsShowcaseSection({
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-3xl">
             <h2 className="text-[28px] sm:text-[34px] md:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-              Аниматоры - те самые любимые герои, только вживую
+              {section.title}
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl">
-              В нашей команде — только чуткие, веселые и опытные артисты.
-            </p>
+            {section.subtitle ? (
+              <p className="mt-3 text-sm sm:text-base text-black/60 max-w-2xl">
+                {section.subtitle}
+              </p>
+            ) : null}
             </div>
 
             <div className="flex items-center gap-2">

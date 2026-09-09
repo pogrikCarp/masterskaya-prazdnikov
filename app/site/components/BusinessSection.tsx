@@ -1,8 +1,20 @@
 import Container from "./Container";
 import { buttonClassName } from "./Button";
 import Reveal from "./Reveal";
+import {
+  BUSINESS_BENEFITS_SECTION,
+  BUSINESS_SECTION,
+  DEFAULT_HOME_CONTENT,
+  type HomeSectionContent,
+} from "@/lib/home-content";
 
-export default function BusinessSection() {
+export default function BusinessSection({
+  section = DEFAULT_HOME_CONTENT[BUSINESS_SECTION],
+  benefitsSection = DEFAULT_HOME_CONTENT[BUSINESS_BENEFITS_SECTION],
+}: {
+  section?: HomeSectionContent;
+  benefitsSection?: HomeSectionContent;
+}) {
   const telegramText =
     "Здравствуйте! Хочу обсудить сотрудничество с вами. (Описание)";
   const telegramHref = `https://t.me/orlixina333?text=${encodeURIComponent(telegramText)}`;
@@ -18,100 +30,44 @@ export default function BusinessSection() {
           <div className="relative">
             <div className="text-center max-w-3xl mx-auto">
               <h2 className="mt-4 text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-                Для бизнеса и организаций
+                {section.title}
               </h2>
-              <p className="mt-4 text-sm sm:text-base text-black/60">
-                Проводим праздники в детских садах, школах, развивающих центрах и на
-                корпоративных мероприятиях. Работаем по договору, предоставляем все документы.
-              </p>
+              {section.subtitle ? (
+                <p className="mt-4 text-sm sm:text-base text-black/60">{section.subtitle}</p>
+              ) : null}
             </div>
 
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="relative overflow-hidden rounded-[28px] bg-white/60 ring-1 ring-black/10 p-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-[18px] bg-white/70 ring-1 ring-black/10 text-3xl">
-                  🏫
+              {section.cards.map((card) => (
+                <div
+                  key={card.title}
+                  className="relative overflow-hidden rounded-[28px] bg-white/60 ring-1 ring-black/10 p-6"
+                >
+                  <div className="flex h-14 w-14 items-center justify-center rounded-[18px] bg-white/70 ring-1 ring-black/10 text-3xl">
+                    {card.icon ?? "•"}
+                  </div>
+                  <h3 className="mt-4 text-lg font-black tracking-tight text-[var(--mp-ink)]">
+                    {card.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-black/60">{card.text}</p>
                 </div>
-                <h3 className="mt-4 text-lg font-black tracking-tight text-[var(--mp-ink)]">
-                  Детские сады
-                </h3>
-                <p className="mt-2 text-sm text-black/60">
-                  Утренники, выпускные, тематические праздники для групп любого возраста.
-                </p>
-              </div>
-
-              <div className="relative overflow-hidden rounded-[28px] bg-white/60 ring-1 ring-black/10 p-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-[18px] bg-white/70 ring-1 ring-black/10 text-3xl">
-                  📚
-                </div>
-                <h3 className="mt-4 text-lg font-black tracking-tight text-[var(--mp-ink)]">
-                  Школы
-                </h3>
-                <p className="mt-2 text-sm text-black/60">
-                  Праздники для начальных классов, выпускные, День знаний и другие события.
-                </p>
-              </div>
-
-              <div className="relative overflow-hidden rounded-[28px] bg-white/60 ring-1 ring-black/10 p-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-[18px] bg-white/70 ring-1 ring-black/10 text-3xl">
-                  🎨
-                </div>
-                <h3 className="mt-4 text-lg font-black tracking-tight text-[var(--mp-ink)]">
-                  Развивающие центры
-                </h3>
-                <p className="mt-2 text-sm text-black/60">
-                  Регулярные мероприятия, мастер-классы, шоу-программы для ваших учеников.
-                </p>
-              </div>
-
-              <div className="relative overflow-hidden rounded-[28px] bg-white/60 ring-1 ring-black/10 p-6">
-                <div className="flex h-14 w-14 items-center justify-center rounded-[18px] bg-white/70 ring-1 ring-black/10 text-3xl">
-                  🏢
-                </div>
-                <h3 className="mt-4 text-lg font-black tracking-tight text-[var(--mp-ink)]">
-                  Корпоративы
-                </h3>
-                <p className="mt-2 text-sm text-black/60">
-                  Семейные корпоративные праздники с детской программой и развлечениями.
-                </p>
-              </div>
+              ))}
             </div>
 
             <div className="mt-10 grid gap-6 sm:grid-cols-3">
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10">
-                  <svg className="h-5 w-5 text-[var(--mp-ink)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+              {benefitsSection.cards.map((benefit) => (
+                <div key={benefit.title} className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10">
+                    <svg className="h-5 w-5 text-[var(--mp-ink)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-[var(--mp-ink)]">{benefit.title}</div>
+                    <div className="mt-1 text-sm text-black/60">{benefit.text}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-semibold text-[var(--mp-ink)]">Работа по договору</div>
-                  <div className="mt-1 text-sm text-black/60">Все документы и отчётность</div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10">
-                  <svg className="h-5 w-5 text-[var(--mp-ink)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="font-semibold text-[var(--mp-ink)]">Гибкие условия</div>
-                  <div className="mt-1 text-sm text-black/60">Скидки при регулярном сотрудничестве</div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10">
-                  <svg className="h-5 w-5 text-[var(--mp-ink)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="font-semibold text-[var(--mp-ink)]">Опытная команда</div>
-                  <div className="mt-1 text-sm text-black/60">Работаем с организациями 5+ лет</div>
-                </div>
-              </div>
+              ))}
             </div>
 
             <div className="mt-8 flex justify-center">

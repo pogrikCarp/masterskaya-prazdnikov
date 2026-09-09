@@ -4,8 +4,17 @@ import { buttonClassName } from "./Button";
 import Reveal from "./Reveal";
 
 import PriglImage from "../../img/prigl2.png";
+import {
+  DEFAULT_HOME_CONTENT,
+  INVITATIONS_SECTION,
+  type HomeSectionContent,
+} from "@/lib/home-content";
 
-export default function InvitationsSection() {
+export default function InvitationsSection({
+  section = DEFAULT_HOME_CONTENT[INVITATIONS_SECTION],
+}: {
+  section?: HomeSectionContent;
+}) {
   const telegramText =
     "Здравствуйте, хочу заказать у вас пригласительные для нашего праздника! (Описание)";
   const telegramHref = `https://t.me/orlixina333?text=${encodeURIComponent(telegramText)}`;
@@ -21,53 +30,24 @@ export default function InvitationsSection() {
           <div className="relative grid gap-8 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-7">
               <h2 className="mt-4 text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-                Пригласительные для вашего праздника
+                {section.title}
               </h2>
-              <p className="mt-4 text-sm sm:text-base text-black/60">
-                Создаём красивые пригласительные в едином стиле с праздником — печатные или
-                электронные. Любой формат, любая тематика.
-              </p>
+              {section.subtitle ? (
+                <p className="mt-4 text-sm sm:text-base text-black/60">{section.subtitle}</p>
+              ) : null}
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10 text-xl">
-                    🎨
+                {section.cards.map((feature) => (
+                  <div key={feature.title} className="flex items-start gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10 text-xl">
+                      {feature.icon ?? "•"}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-[var(--mp-ink)]">{feature.title}</div>
+                      <div className="mt-1 text-sm text-black/60">{feature.text}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-[var(--mp-ink)]">Индивидуальный дизайн</div>
-                    <div className="mt-1 text-sm text-black/60">Под тематику праздника</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10 text-xl">
-                    📱
-                  </div>
-                  <div>
-                    <div className="font-semibold text-[var(--mp-ink)]">Любой формат</div>
-                    <div className="mt-1 text-sm text-black/60">Печатные или электронные</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10 text-xl">
-                    ⚡
-                  </div>
-                  <div>
-                    <div className="font-semibold text-[var(--mp-ink)]">Быстрая подготовка</div>
-                    <div className="mt-1 text-sm text-black/60">2–3 дня на макет</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/70 ring-1 ring-black/10 text-xl">
-                    💰
-                  </div>
-                  <div>
-                    <div className="font-semibold text-[var(--mp-ink)]">Доступная цена</div>
-                    <div className="mt-1 text-sm text-black/60">от 500 ₽ за дизайн</div>
-                  </div>
-                </div>
+                ))}
               </div>
 
               <div className="mt-8">
