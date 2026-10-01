@@ -76,7 +76,8 @@ export default function ServiceBuilderModal({
   // Selection state
   const [selectedAnimator, setSelectedAnimator] = useState<number | null>(null);
   const [duration, setDuration] = useState<number>(1);
-  const [twoAnimators, setTwoAnimators] = useState(false);
+  const [addSecondAnimator, setAddSecondAnimator] = useState(false);
+  const [secondAnimator, setSecondAnimator] = useState<number | null>(null);
   const [selectedQuest, setSelectedQuest] = useState<number | null>(null);
   const [selectedMasterClass, setSelectedMasterClass] = useState<number | null>(null);
   const [selectedShows, setSelectedShows] = useState<Set<number>>(new Set());
@@ -173,8 +174,14 @@ export default function ServiceBuilderModal({
     if (selectedAnimator) {
       const animator = animators.find((a) => a.id === selectedAnimator);
       if (animator) {
-        t += animator.pricePerHour * duration * (twoAnimators ? 2 : 1);
+        t += animator.pricePerHour * duration;
       }
+    }
+
+    // Second animator price
+    if (selectedAnimator && addSecondAnimator && secondAnimator) {
+      const second = animators.find((a) => a.id === secondAnimator);
+      if (second) t += second.pricePerHour * duration;
     }
 
     // Quest price
@@ -206,7 +213,8 @@ export default function ServiceBuilderModal({
     selectedAnimator,
     animators,
     duration,
-    twoAnimators,
+    addSecondAnimator,
+    secondAnimator,
     selectedQuest,
     quests,
     selectedMasterClass,
@@ -231,10 +239,19 @@ export default function ServiceBuilderModal({
     if (selectedAnimator) {
       const animator = animators.find((a) => a.id === selectedAnimator);
       if (animator) {
-        const animatorPrice = animator.pricePerHour * duration * (twoAnimators ? 2 : 1);
         items.push({
-          name: `${animator.name} (${duration} ч${twoAnimators ? ", 2 аниматора" : ""})`,
-          price: animatorPrice,
+          name: `${animator.name} (${duration} ч)`,
+          price: animator.pricePerHour * duration,
+        });
+      }
+    }
+
+    if (selectedAnimator && addSecondAnimator && secondAnimator) {
+      const second = animators.find((a) => a.id === secondAnimator);
+      if (second) {
+        items.push({
+          name: `${second.name} (${duration} ч, 2-й аниматор)`,
+          price: second.pricePerHour * duration,
         });
       }
     }
@@ -264,7 +281,8 @@ export default function ServiceBuilderModal({
     selectedAnimator,
     animators,
     duration,
-    twoAnimators,
+    addSecondAnimator,
+    secondAnimator,
     selectedQuest,
     quests,
     selectedMasterClass,
@@ -363,17 +381,55 @@ export default function ServiceBuilderModal({
                             </select>
                           </div>
 
-                          <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={twoAnimators}
-                              onChange={(e) => setTwoAnimators(e.target.checked)}
-                              className="h-5 w-5 rounded border-black/20 text-[rgb(var(--mp-lavender-rgb))] focus:ring-[rgb(var(--mp-lavender-rgb))]"
-                            />
-                            <span className="text-sm text-black/70">2 аниматора</span>
-                          </label>
                         </div>
                       )}
+
+                      {selectedAnimator && !addSecondAnimator ? (
+                        <button
+                          type="button"
+                          onClick={() => setAddSecondAnimator(true)}
+                          className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[var(--mp-lavender)] hover:underline"
+                        >
+                          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.14)] text-base leading-none">
+                            +
+                          </span>
+                          Добавить аниматора
+                        </button>
+                      ) : null}
+
+                      {selectedAnimator && addSecondAnimator ? (
+                        <div className="mt-4 rounded-xl bg-white/60 p-4 ring-1 ring-black/10">
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <div className="text-sm font-bold text-[var(--mp-ink)]">
+                              Второй аниматор
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setAddSecondAnimator(false);
+                                setSecondAnimator(null);
+                              }}
+                              className="text-sm text-black/50 hover:text-black/80"
+                            >
+                              Убрать
+                            </button>
+                          </div>
+                          <select
+                            value={secondAnimator ?? ""}
+                            onChange={(e) =>
+                              setSecondAnimator(e.target.value ? Number(e.target.value) : null)
+                            }
+                            className={selectClass}
+                          >
+                            <option value="">Выберите героя</option>
+                            {animators.map((animator) => (
+                              <option key={animator.id} value={animator.id}>
+                                {animator.name} — {animator.pricePerHour.toLocaleString("ru-RU")} ₽/ч
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      ) : null}
                     </div>
 
                     {/* Квест */}

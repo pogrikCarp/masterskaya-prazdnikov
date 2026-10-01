@@ -11,6 +11,7 @@ import InvitationsSection from "./site/components/InvitationsSection";
 import BusinessSection from "./site/components/BusinessSection";
 import QuestsSection from "./site/components/QuestsSection";
 import WorkshopsSection from "./site/components/WorkshopsSection";
+import ComboProgramsSection from "./site/components/ComboProgramsSection";
 import ContactFormSection from "./site/components/ContactFormSection";
 import Reveal from "./site/components/Reveal";
 import {
@@ -18,6 +19,7 @@ import {
   BUILDER_SECTION,
   BUSINESS_BENEFITS_SECTION,
   BUSINESS_SECTION,
+  COMBO_SECTION,
   CONTACT_SECTION,
   EXTRA_SERVICES_SECTION,
   GALLERY_SECTION,
@@ -59,6 +61,8 @@ export default async function HomePage() {
       <QuestsSection section={sections[QUESTS_SECTION]} />
 
       <WorkshopsSection section={sections[WORKSHOPS_SECTION]} />
+
+      <ComboProgramsSection section={sections[COMBO_SECTION]} />
 
       <AdditionalServicesSection section={sections[EXTRA_SERVICES_SECTION]} />
 

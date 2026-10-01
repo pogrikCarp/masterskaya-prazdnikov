@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import Container from "./Container";
 import AnimatedBackground from "./AnimatedBackground";
-import FloatingParticles from "./FloatingParticles";
 import GlassHeader from "./GlassHeader";
 import WaveDivider from "./WaveDivider";
 import Button from "./Button";
@@ -17,8 +16,6 @@ import {
 
 import Among2 from "../../img/Among2.png";
 import Logo from "../../img/mastprasnPOSLEDN.png";
-import LogoForm from "../../img/logoformpng.png";
-
 const ease = [0.22, 1, 0.36, 1] as const;
 
 function clamp(n: number, min: number, max: number) {
@@ -27,6 +24,15 @@ function clamp(n: number, min: number, max: number) {
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
+}
+
+/** Переносит строку перед союзом «а»: «…сказку, / а себе — отдых!». Работает и с текстом из админки. */
+function splitTitle(title: string): string[] {
+  if (title.includes("\n")) {
+    return title.split("\n").map((l) => l.trim()).filter(Boolean);
+  }
+  const match = title.match(/^(.+?,)\s+(а\s.+)$/);
+  return match ? [match[1], match[2]] : [title];
 }
 
 export default function HeroSection({
@@ -144,18 +150,7 @@ export default function HeroSection({
   return (
     <section className="relative overflow-hidden">
       <AnimatedBackground />
-      <FloatingParticles />
       <GlassHeader />
-      <Image
-        src={LogoForm}
-        alt=""
-        aria-hidden="true"
-        width={112}
-        height={112}
-        className="pointer-events-none absolute z-20 hidden h-28 w-28 object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.25)] lg:block"
-        style={{ left: "clamp(100px, 12vw, 160px)", top: "112px" }}
-        priority
-      />
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0">
@@ -781,23 +776,8 @@ export default function HeroSection({
       </div>
 
       <Container>
-        <div className="relative pt-20 pb-28 sm:pt-16 sm:pb-32 lg:pt-20 lg:pb-40">
+        <div className="relative pt-32 pb-28 sm:pt-28 sm:pb-32 lg:pt-36 lg:pb-40">
           <div className="mx-auto max-w-4xl text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease }}
-              className="mb-4 flex justify-center lg:hidden"
-            >
-              <Image
-                src={LogoForm}
-                alt="Мастерская праздников"
-                width={88}
-                height={88}
-                priority
-                className="h-[72px] w-[72px] object-contain drop-shadow-[0_8px_14px_rgba(0,0,0,0.28)] sm:h-20 sm:w-20"
-              />
-            </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -852,7 +832,11 @@ export default function HeroSection({
               transition={{ duration: 0.9, ease, delay: 0.08 }}
               className="mt-2 text-[clamp(30px,8vw,42px)] leading-[1.05] font-extrabold tracking-tight text-white sm:text-[64px] sm:leading-[1.02]"
             >
-              {section.title}
+              {splitTitle(section.title).map((line, i) => (
+                <span key={i} className="block">
+                  {line}
+                </span>
+              ))}
             </motion.h1>
 
             <motion.p
@@ -908,6 +892,9 @@ export default function HeroSection({
       <style jsx>{`
         .hero-balloon {
           position: absolute;
+          /* круглый шарик: высота всегда равна ширине */
+          aspect-ratio: 1 / 1;
+          height: auto !important;
           border-radius: 9999px;
           background: radial-gradient(
               12px 18px at 30% 26%,
@@ -1560,6 +1547,37 @@ export default function HeroSection({
           height: 100%;
           width: 100%;
           will-change: transform;
+          animation: hero-top-hop 9s ease-in-out infinite;
+        }
+
+        .hero-top-float-left .hero-top-float-layer {
+          animation-delay: 4.5s;
+        }
+
+        /* раз в несколько секунд персонаж подпрыгивает и крутится */
+        @keyframes hero-top-hop {
+          0%,
+          80%,
+          100% {
+            transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+          }
+          86% {
+            transform: translate3d(0, -34px, 0) rotate(180deg) scale(1.1);
+          }
+          93% {
+            transform: translate3d(0, -8px, 0) rotate(330deg) scale(1.04);
+          }
+          97% {
+            transform: translate3d(0, 0, 0) rotate(360deg) scale(1);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero-top-float,
+          .hero-top-float-left,
+          .hero-top-float-layer {
+            animation: none !important;
+          }
         }
 
         .hero-top-jitter {
@@ -1579,34 +1597,34 @@ export default function HeroSection({
         }
 
         .hero-top-float {
-          animation: hero-top-float-right 6s ease-in-out infinite;
+          animation: hero-top-float-right 4.6s ease-in-out infinite;
         }
 
         .hero-top-float-left {
-          animation: hero-top-float-left 6.5s ease-in-out infinite;
+          animation: hero-top-float-left 5.2s ease-in-out infinite;
         }
 
         @keyframes hero-top-float-right {
           0% {
-            transform: translate3d(-4px, 0px, 0) rotate(2deg);
+            transform: translate3d(-14px, 6px, 0) rotate(-6deg);
           }
           50% {
-            transform: translate3d(4px, -14px, 0) rotate(5deg);
+            transform: translate3d(14px, -30px, 0) rotate(8deg);
           }
           100% {
-            transform: translate3d(-4px, 0px, 0) rotate(2deg);
+            transform: translate3d(-14px, 6px, 0) rotate(-6deg);
           }
         }
 
         @keyframes hero-top-float-left {
           0% {
-            transform: translate3d(4px, 0px, 0) rotate(2deg);
+            transform: translate3d(14px, 6px, 0) rotate(6deg);
           }
           50% {
-            transform: translate3d(-4px, -14px, 0) rotate(5deg);
+            transform: translate3d(-14px, -30px, 0) rotate(-8deg);
           }
           100% {
-            transform: translate3d(4px, 0px, 0) rotate(2deg);
+            transform: translate3d(14px, 6px, 0) rotate(6deg);
           }
         }
       `}</style>

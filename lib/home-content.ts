@@ -5,6 +5,7 @@ export const ANIMATORS_SECTION = "animators";
 export const SHOWS_SECTION = "shows";
 export const QUESTS_SECTION = "quests";
 export const WORKSHOPS_SECTION = "workshops";
+export const COMBO_SECTION = "combo-programs";
 export const EXTRA_SERVICES_SECTION = "extra-services";
 export const BUILDER_SECTION = "builder";
 export const INVITATIONS_SECTION = "invitations";
@@ -83,6 +84,12 @@ export const HOME_SECTION_META: Record<string, SectionMeta> = {
     hasCards: false,
     hasSubtitle: true,
   },
+  [COMBO_SECTION]: {
+    label: "Готовые программы",
+    iconHint: "Эмодзи, например 🎁",
+    hasCards: true,
+    hasSubtitle: true,
+  },
   [EXTRA_SERVICES_SECTION]: {
     label: "Дополнительные услуги",
     iconHint: "Эмодзи, например 🎨",
@@ -136,6 +143,7 @@ export const HOME_SECTION_KEYS = [
   SHOWS_SECTION,
   QUESTS_SECTION,
   WORKSHOPS_SECTION,
+  COMBO_SECTION,
   EXTRA_SERVICES_SECTION,
   BUILDER_SECTION,
   INVITATIONS_SECTION,
@@ -148,7 +156,7 @@ export const HOME_SECTION_KEYS = [
 export const DEFAULT_HOME_CONTENT: Record<string, HomeSectionContent> = {
   [HERO_SECTION]: {
     key: HERO_SECTION,
-    title: "Подарите ребенку сказку, а себе — отдых",
+    title: "Подарите ребенку сказку, а себе — отдых!",
     subtitle: "Индивидуальные сценарии под психотип и особенности характера ребенка",
     cards: [
       { icon: null, title: "5,0", text: "средняя оценка по отзывам" },
@@ -185,7 +193,7 @@ export const DEFAULT_HOME_CONTENT: Record<string, HomeSectionContent> = {
       {
         icon: "note",
         title: "Авторская концепция",
-        text: "Индивидуальная программа праздника: мы учитываем психотип и характер вашего ребенка.",
+        text: "К каждому празднику — индивидуальный подход. Мы адаптируем программу исходя из характера Вашего ребенка и атмосферы праздника.",
       },
       {
         icon: "bulb",
@@ -214,16 +222,39 @@ export const DEFAULT_HOME_CONTENT: Record<string, HomeSectionContent> = {
   },
   [QUESTS_SECTION]: {
     key: QUESTS_SECTION,
-    title: "Квесты с историей, а не набор конкурсов",
-    subtitle:
-      "Легенда, испытания и финал с наградой — дети проживают приключение, а не просто бегают по точкам.",
+    title: "Квесты: Вместе в приключение!",
+    subtitle: "Идеальный способ сплотить детей в одну команду.",
     cards: [],
   },
   [WORKSHOPS_SECTION]: {
     key: WORKSHOPS_SECTION,
-    title: "Мастер‑классы",
-    subtitle: "Коротко, ярко и с результатом: ребёнок уходит с готовой работой.",
+    title: "Мастер-классы: создаем красоту своими руками",
+    subtitle:
+      "Переключите внимание детей на творчество! Увлекательный мастер-класс станет отличным дополнением к программе и подарком для гостей — каждый унесет с собой поделку.",
     cards: [],
+  },
+  [COMBO_SECTION]: {
+    key: COMBO_SECTION,
+    title: "Готовые программы: выбирайте и празднуйте",
+    subtitle:
+      "Мы уже собрали удачные сочетания аниматора, шоу, квеста и мастер-класса — остается выбрать героя и дату.",
+    cards: [
+      {
+        icon: "🎈",
+        title: "Праздник-старт",
+        text: "Аниматор и шоу на выбор: легкая программа для небольшой компании.",
+      },
+      {
+        icon: "🎉",
+        title: "Праздник-хит",
+        text: "Аниматор, квест и мастер-класс: динамика, командная игра и поделка для каждого гостя.",
+      },
+      {
+        icon: "🌟",
+        title: "Праздник-вау",
+        text: "Два аниматора, шоу, квест и мастер-класс: насыщенная программа для большого праздника.",
+      },
+    ],
   },
   [EXTRA_SERVICES_SECTION]: {
     key: EXTRA_SERVICES_SECTION,
@@ -267,7 +298,7 @@ export const DEFAULT_HOME_CONTENT: Record<string, HomeSectionContent> = {
     key: BUILDER_SECTION,
     title: "Соберите идеальный праздник за пару минут",
     subtitle:
-      "Выбирайте формат, возраст и дополнительные опции — мы сразу покажем итоговую стоимость и подскажем лучшие сочетания.",
+      "Настройте программу под себя: выберите формат, наполнение программы и дополнительные опции — калькулятор сразу покажет итоговую стоимость, а мы подскажем лучшие сочетания!",
     cards: [
       { icon: "🎉", title: "Выберите базовую программу", text: "" },
       { icon: "🧪", title: "Добавьте шоу, анимацию или мастер‑класс", text: "" },
@@ -278,12 +309,12 @@ export const DEFAULT_HOME_CONTENT: Record<string, HomeSectionContent> = {
     key: INVITATIONS_SECTION,
     title: "Пригласительные для вашего праздника",
     subtitle:
-      "Создаём красивые пригласительные в едином стиле с праздником — печатные или электронные. Любой формат, любая тематика.",
+      "Специально для Ваших гостей мы создадим персонализированные пригласительные в едином стиле праздника! Пригласительные помогут создать нужное настроение и позвать тех, кто вам по-настоящему дорог — родных, друзей и самых близких.",
     cards: [
-      { icon: "🎨", title: "Индивидуальный дизайн", text: "Под тематику праздника" },
-      { icon: "📱", title: "Любой формат", text: "Печатные или электронные" },
-      { icon: "⚡", title: "Быстрая подготовка", text: "2–3 дня на макет" },
-      { icon: "💰", title: "Доступная цена", text: "от 500 ₽ за дизайн" },
+      { icon: "🎨", title: "Индивидуальный дизайн", text: "В тематике праздника" },
+      { icon: "💌", title: "Персонализация", text: "Именно для Ваших гостей" },
+      { icon: "⚡", title: "Быстрая подготовка", text: "В течение 1–2 дней" },
+      { icon: "🎁", title: "Абсолютно бесплатно", text: "Подарок для наших клиентов" },
     ],
   },
   [BUSINESS_SECTION]: {

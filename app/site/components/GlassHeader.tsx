@@ -2,31 +2,25 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import Container from "./Container";
 import Button, { buttonClassName } from "./Button";
 import { Icon } from "./Icon";
 import { useRequestModal } from "./RequestModalProvider";
-import { SITE_PHONE_DISPLAY, SITE_PHONE_HREF } from "../content/contacts";
+import {
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_HREF,
+  SITE_TG_URL,
+  SITE_VK_URL,
+} from "../content/contacts";
+import { NAV_ITEMS as nav } from "../content/nav";
 
-type NavItem = {
-  label: string;
-  href: string;
-};
-
-const nav: NavItem[] = [
-  { label: "Все услуги", href: "#services" },
-  { label: "Все шоу", href: "/shows" },
-  { label: "О нас", href: "#about" },
-  { label: "Цены", href: "#pricing" },
-  { label: "Фотогалерея", href: "/gallery" },
-  { label: "Контакты", href: "#contacts" },
-];
+import LogoForm from "../../img/logoformpng.png";
 
 export default function GlassHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const phone = useMemo(() => SITE_PHONE_DISPLAY, []);
   const { openRequestModal } = useRequestModal();
 
   const resolveHref = (href: string) => {
@@ -137,27 +131,57 @@ export default function GlassHeader() {
         />
         <Container>
           <div
-            className={`flex items-center gap-3 px-4 sm:px-6 ${
+            className={`flex items-center gap-3 px-4 sm:px-6 xl:gap-4 ${
               scrolled ? "py-2" : "py-3"
             }`}
           >
-            <nav className="hidden min-w-0 flex-1 overflow-hidden lg:flex items-center justify-start gap-0.5 xl:justify-center xl:gap-1">
+            <Link
+              href="/"
+              aria-label="Мастерская праздника — на главную"
+              className="group flex shrink-0 items-center gap-2.5"
+            >
+              <Image
+                src={LogoForm}
+                alt=""
+                aria-hidden="true"
+                width={64}
+                height={64}
+                priority
+                className={`object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.22)] transition-all duration-300 group-hover:-rotate-6 ${
+                  scrolled ? "h-11 w-11 sm:h-12 sm:w-12" : "h-12 w-12 sm:h-14 sm:w-14"
+                }`}
+              />
+              <span
+                className={`self-end pb-0.5 text-[13px] font-extrabold leading-[1.1] tracking-tight transition-colors sm:text-[15px] ${
+                  scrolled ? "text-[var(--mp-ink)]" : "text-white"
+                }`}
+              >
+                Мастерская
+                <br />
+                праздника
+              </span>
+            </Link>
+
+            <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 xl:flex 2xl:gap-1">
               {nav.map((item) => (
                 <Link
                   key={item.href}
                   href={resolveHref(item.href)}
                   onClick={onAnchorClick(item.href)}
                   className={[
-                    "whitespace-nowrap",
+                    "max-w-[9.5rem]",
                     "px-2",
-                    "xl:px-3",
+                    "2xl:px-3",
                     "py-2",
-                    "text-sm",
-                    "font-semibold",
+                    "text-center",
+                    "text-[15px]",
+                    "2xl:text-base",
+                    "leading-[1.15]",
+                    "font-bold",
                     "transition-colors",
                     scrolled
-                      ? "text-black/70 hover:text-black"
-                      : "text-white/80 hover:text-white",
+                      ? "text-black/75 hover:text-black"
+                      : "text-white/90 hover:text-white",
                   ].join(" ")}
                 >
                   {item.label}
@@ -165,42 +189,30 @@ export default function GlassHeader() {
               ))}
             </nav>
 
-            <div className="ml-auto flex items-center gap-2 shrink-0">
+            <div className="ml-auto flex items-center gap-2 shrink-0 xl:ml-0">
               <motion.a
-                whileHover={{ scale: 1.04 }}
+                whileHover={{ scale: 1.06 }}
                 transition={{ duration: 0.25 }}
                 href={SITE_PHONE_HREF}
+                aria-label={`Позвонить: ${SITE_PHONE_DISPLAY}`}
+                title={SITE_PHONE_DISPLAY}
                 className={[
                   "hidden sm:inline-flex",
-                  "items-center",
-                  "gap-2",
-                  "rounded-full",
                   "h-11",
-                  "font-semibold",
-                  "text-xs",
+                  "w-11",
+                  "items-center",
+                  "justify-center",
+                  "rounded-full",
                   "ring-1",
-                  "transition-[background-color,padding,box-shadow] duration-300",
-                  scrolled ? "px-2.5" : "px-3",
+                  "transition-colors",
                   scrolled
                     ? "bg-black/[0.05] text-[var(--mp-ink)] ring-black/10 hover:bg-black/[0.08]"
                     : "bg-white/14 text-white ring-white/20 hover:bg-white/18",
                 ].join(" ")}
               >
                 <span className="mp-phone-icon inline-flex">
-                  <Icon name="phone" className="h-4 w-4" />
+                  <Icon name="phone" className="h-5 w-5" />
                 </span>
-                <motion.span
-                  initial={false}
-                  animate={{
-                    width: scrolled ? 0 : "auto",
-                    opacity: scrolled ? 0 : 1,
-                    marginLeft: scrolled ? -8 : 0,
-                  }}
-                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                  className="overflow-hidden whitespace-nowrap"
-                >
-                  {phone}
-                </motion.span>
               </motion.a>
 
               <motion.button
@@ -214,7 +226,9 @@ export default function GlassHeader() {
               </motion.button>
 
               <a
-                href="#"
+                href={SITE_VK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={[
                   "hidden sm:inline-flex",
                   "h-11",
@@ -233,7 +247,9 @@ export default function GlassHeader() {
                 <Icon name="vk" className="h-4 w-4" />
               </a>
               <a
-                href="#"
+                href={SITE_TG_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={[
                   "hidden sm:inline-flex",
                   "h-11",
@@ -255,7 +271,7 @@ export default function GlassHeader() {
               <button
                 type="button"
                 onClick={() => setOpen((v) => !v)}
-                className={`lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full ring-1 transition-colors ${
+                className={`xl:hidden inline-flex h-11 w-11 items-center justify-center rounded-full ring-1 transition-colors ${
                   scrolled
                     ? "bg-black/[0.05] ring-black/10 text-[var(--mp-ink)] hover:bg-black/[0.08]"
                     : "bg-white/14 ring-white/20 text-white hover:bg-white/18"
@@ -268,7 +284,7 @@ export default function GlassHeader() {
           </div>
 
           {open && (
-            <div className="lg:hidden px-4 pb-4" data-site-mobile>
+            <div className="xl:hidden px-4 pb-4" data-site-mobile>
               <div
                 className={`max-h-[calc(100dvh-7rem)] overflow-y-auto rounded-[22px] p-2 ${mobilePanelClass}`}
               >
@@ -281,7 +297,7 @@ export default function GlassHeader() {
                         onAnchorClick(item.href, { closeMobile: true })(e);
                         if (!item.href.startsWith("#")) setOpen(false);
                       }}
-                      className={`rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
+                      className={`rounded-2xl px-4 py-3 text-base font-bold transition-colors ${
                         scrolled
                           ? "text-black/80 hover:bg-black/[0.06]"
                           : "text-white/90 hover:bg-white/10"
@@ -317,7 +333,9 @@ export default function GlassHeader() {
                     Позвонить
                   </a>
                   <a
-                    href="#"
+                    href={SITE_VK_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl ring-1 transition-colors ${
                       scrolled
                         ? "bg-black/[0.05] text-black/80 ring-black/10 hover:bg-black/[0.08]"
@@ -328,7 +346,9 @@ export default function GlassHeader() {
                     <Icon name="vk" className="h-5 w-5" />
                   </a>
                   <a
-                    href="#"
+                    href={SITE_TG_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl ring-1 transition-colors ${
                       scrolled
                         ? "bg-black/[0.05] text-black/80 ring-black/10 hover:bg-black/[0.08]"

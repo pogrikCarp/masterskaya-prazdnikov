@@ -6,21 +6,13 @@ import Container from "./Container";
 import { buttonClassName } from "./Button";
 import { Icon } from "./Icon";
 import { useRequestModal } from "./RequestModalProvider";
-import { SITE_PHONE_DISPLAY, SITE_PHONE_HREF } from "../content/contacts";
-
-type NavItem = {
-  label: string;
-  href: string;
-};
-
-const nav: NavItem[] = [
-  { label: "Все услуги", href: "#services" },
-  { label: "Все шоу", href: "/shows" },
-  { label: "О нас", href: "#about" },
-  { label: "Цены", href: "#pricing" },
-  { label: "Фотогалерея", href: "/gallery" },
-  { label: "Контакты", href: "#contacts" },
-];
+import {
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_HREF,
+  SITE_TG_URL,
+  SITE_VK_URL,
+} from "../content/contacts";
+import { NAV_ITEMS as nav } from "../content/nav";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -92,14 +84,18 @@ export default function Header() {
                 {phone}
               </a>
               <a
-                href="#"
+                href={SITE_VK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/12 text-white/80 ring-1 ring-white/15 transition-all duration-300 hover:bg-white/20 hover:text-white"
                 aria-label="VK"
               >
                 <Icon name="vk" className="h-5 w-5" />
               </a>
               <a
-                href="#"
+                href={SITE_TG_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/12 text-white/80 ring-1 ring-white/15 transition-all duration-300 hover:bg-white/20 hover:text-white"
                 aria-label="Telegram"
               >
@@ -121,13 +117,13 @@ export default function Header() {
               </div>
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden xl:flex items-center gap-0.5">
               {nav.map((item) => (
                 <Link
                   key={item.href}
                   href={resolveHref(item.href)}
                   onClick={onAnchorClick(item.href)}
-                  className="nav-link-premium relative px-5 py-2.5 text-[14px] font-semibold tracking-wide text-[#2A245E]/70 transition-colors duration-300 hover:text-[#5A3FE0]"
+                  className="nav-link-premium relative max-w-[9.5rem] px-3 py-2.5 text-center text-[15px] leading-[1.15] font-bold text-[#2A245E]/70 transition-colors duration-300 hover:text-[#5A3FE0]"
                 >
                   {item.label}
                 </Link>
@@ -146,7 +142,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setOpen((v) => !v)}
-                className="lg:hidden inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#5A3FE0]/10 text-[#5A3FE0]/70 transition-all duration-300 hover:bg-[#5A3FE0]/15 hover:text-[#5A3FE0]"
+                className="xl:hidden inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#5A3FE0]/10 text-[#5A3FE0]/70 transition-all duration-300 hover:bg-[#5A3FE0]/15 hover:text-[#5A3FE0]"
                 aria-label={open ? "Закрыть меню" : "Открыть меню"}
               >
                 <Icon name={open ? "close" : "menu"} className="h-5 w-5" />
@@ -156,7 +152,7 @@ export default function Header() {
         </Container>
 
         {open && (
-          <div className="lg:hidden" data-site-mobile>
+          <div className="xl:hidden" data-site-mobile>
             <Container className="pb-6">
               <div className="rounded-[24px] bg-white/90 backdrop-blur-xl ring-1 ring-[#5A3FE0]/10 shadow-[0_20px_50px_rgba(90,63,224,0.12)] p-4">
                 <div className="grid gap-1">
@@ -199,14 +195,18 @@ export default function Header() {
                     Позвонить
                   </a>
                   <a
-                    href="#"
+                    href={SITE_VK_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#5A3FE0]/10 text-[#5A3FE0]/60 transition-colors hover:bg-[#5A3FE0]/15 hover:text-[#5A3FE0]"
                     aria-label="VK"
                   >
                     <Icon name="vk" className="h-5 w-5" />
                   </a>
                   <a
-                    href="#"
+                    href={SITE_TG_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#5A3FE0]/10 text-[#5A3FE0]/60 transition-colors hover:bg-[#5A3FE0]/15 hover:text-[#5A3FE0]"
                     aria-label="Telegram"
                   >

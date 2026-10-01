@@ -73,7 +73,7 @@ export default function ServiceBuilderAnchorSection({
                   </Button>
 
                   <div className="mt-3 text-center text-xs text-black/50">
-                    Займёт не больше 2 минут · Бесплатно · Без обязательств
+                    Займет не более 2 минут · Прозрачное ценообразование
                   </div>
                 </div>
               </div>
