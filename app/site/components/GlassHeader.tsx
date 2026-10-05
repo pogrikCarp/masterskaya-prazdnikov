@@ -152,7 +152,7 @@ export default function GlassHeader() {
                 }`}
               />
               <span
-                className={`whitespace-nowrap text-center text-[11px] font-extrabold leading-none tracking-tight transition-colors sm:text-xs ${
+                className={`whitespace-nowrap text-center text-[16.5px] font-extrabold leading-none tracking-tight transition-colors sm:text-[18px] ${
                   scrolled ? "text-[var(--mp-ink)]" : "text-white"
                 }`}
               >
