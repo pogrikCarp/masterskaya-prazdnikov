@@ -138,7 +138,7 @@ export default function GlassHeader() {
             <Link
               href="/"
               aria-label="Мастерская праздника — на главную"
-              className="group -ml-1 flex shrink-0 items-center gap-2 sm:-ml-2"
+              className="group -ml-1 flex shrink-0 flex-col items-center gap-0.5 sm:-ml-2"
             >
               <Image
                 src={LogoForm}
@@ -152,13 +152,11 @@ export default function GlassHeader() {
                 }`}
               />
               <span
-                className={`self-end pb-0.5 text-[13px] font-extrabold leading-[1.1] tracking-tight transition-colors sm:text-[15px] ${
+                className={`whitespace-nowrap text-center text-[11px] font-extrabold leading-none tracking-tight transition-colors sm:text-xs ${
                   scrolled ? "text-[var(--mp-ink)]" : "text-white"
                 }`}
               >
-                Мастерская
-                <br />
-                праздника
+                Мастерская праздника
               </span>
             </Link>
 
