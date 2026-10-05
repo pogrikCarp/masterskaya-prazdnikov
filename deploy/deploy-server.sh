@@ -45,6 +45,9 @@ npx prisma migrate deploy
 echo "==> Updating existing uploaded image URLs"
 npm run db:normalize-uploads
 
+echo "==> Syncing approved homepage copy"
+npm run db:sync-home-copy
+
 echo "==> Running lint"
 npm run lint
 

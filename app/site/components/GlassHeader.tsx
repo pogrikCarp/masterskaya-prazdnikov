@@ -138,7 +138,7 @@ export default function GlassHeader() {
             <Link
               href="/"
               aria-label="Мастерская праздника — на главную"
-              className="group flex shrink-0 items-center gap-2.5"
+              className="group -ml-1 flex shrink-0 items-center gap-2 sm:-ml-2"
             >
               <Image
                 src={LogoForm}
@@ -148,7 +148,7 @@ export default function GlassHeader() {
                 height={64}
                 priority
                 className={`object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.22)] transition-all duration-300 group-hover:-rotate-6 ${
-                  scrolled ? "h-11 w-11 sm:h-12 sm:w-12" : "h-12 w-12 sm:h-14 sm:w-14"
+                  scrolled ? "h-14 w-14 sm:h-16 sm:w-16" : "h-16 w-16 sm:h-[4.75rem] sm:w-[4.75rem]"
                 }`}
               />
               <span

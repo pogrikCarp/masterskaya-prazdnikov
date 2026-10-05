@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import Container from "./Container";
 import AnimatedBackground from "./AnimatedBackground";
 import GlassHeader from "./GlassHeader";
@@ -17,6 +17,30 @@ import {
 import Among2 from "../../img/Among2.png";
 import Logo from "../../img/mastprasnPOSLEDN.png";
 const ease = [0.22, 1, 0.36, 1] as const;
+
+const heroCrews = [
+  { side: "left" as const, top: "22%", inset: "max(18px,3.2vw)", size: 48, color: "#c4b5fd", delay: "0s", duration: "13s" },
+  { side: "left" as const, top: "42%", inset: "max(26px,3.8vw)", size: 36, color: "#f9a8d4", delay: "2.2s", duration: "15s", opacity: 0.9 },
+  { side: "left" as const, top: "62%", inset: "max(14px,2.8vw)", size: 42, color: "#fde68a", delay: "5.6s", duration: "16.5s", opacity: 0.85 },
+  { side: "left" as const, top: "78%", inset: "max(28px,4.2vw)", size: 32, color: "#99f6e4", delay: "8.2s", duration: "18s", opacity: 0.8 },
+  { side: "right" as const, top: "26%", inset: "max(18px,3.2vw)", size: 48, color: "#f9a8d4", delay: "1.1s", duration: "13.5s" },
+  { side: "right" as const, top: "46%", inset: "max(26px,3.8vw)", size: 36, color: "#c4b5fd", delay: "3.4s", duration: "15.5s", opacity: 0.9 },
+  { side: "right" as const, top: "66%", inset: "max(14px,2.8vw)", size: 42, color: "#99f6e4", delay: "6.3s", duration: "17s", opacity: 0.85 },
+  { side: "right" as const, top: "80%", inset: "max(28px,4.2vw)", size: 32, color: "#fde68a", delay: "9.1s", duration: "18.5s", opacity: 0.8 },
+];
+
+const heroStars = [
+  { left: "8%", top: "20%", size: 12, delay: "0s", duration: "11s", color: "#ffe08a" },
+  { left: "18%", top: "58%", size: 8, delay: "1.4s", duration: "13s", color: "#ffffff" },
+  { left: "30%", top: "16%", size: 10, delay: "2.2s", duration: "12s", color: "#f9a8d4" },
+  { left: "46%", top: "28%", size: 7, delay: "0.6s", duration: "10s", color: "#ffffff" },
+  { left: "62%", top: "18%", size: 11, delay: "3s", duration: "14s", color: "#ffe08a" },
+  { left: "74%", top: "48%", size: 8, delay: "1.8s", duration: "12s", color: "#c4b5fd" },
+  { left: "88%", top: "24%", size: 13, delay: "0.4s", duration: "15s", color: "#ffffff" },
+  { left: "14%", top: "74%", size: 9, delay: "4s", duration: "13s", color: "#f9a8d4" },
+  { left: "52%", top: "70%", size: 8, delay: "2.6s", duration: "11s", color: "#ffe08a" },
+  { left: "84%", top: "72%", size: 10, delay: "3.4s", duration: "14s", color: "#ffffff" },
+];
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
@@ -154,491 +178,49 @@ export default function HeroSection({
 
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0">
-          <div
-            className="hero-balloon hero-balloon-left"
-            style={{
-              top: "22%",
-              left: "max(18px,3.2vw)",
-              width: "clamp(24px,3.1vw,44px)",
-              height: "clamp(32px,4.1vw,58px)",
-              animationDelay: "0s",
-              animationDuration: "13s",
-            }}
-          />
-          <div
-            className="hero-balloon hero-balloon-left"
-            style={{
-              top: "42%",
-              left: "max(26px,3.8vw)",
-              width: "clamp(18px,2.6vw,36px)",
-              height: "clamp(24px,3.5vw,50px)",
-              opacity: 0.85,
-              animationDelay: "2.2s",
-              animationDuration: "15s",
-            }}
-          />
-          <div
-            className="hero-balloon hero-balloon-left"
-            style={{
-              top: "62%",
-              left: "max(14px,2.8vw)",
-              width: "clamp(20px,2.8vw,40px)",
-              height: "clamp(28px,3.8vw,54px)",
-              opacity: 0.8,
-              animationDelay: "5.6s",
-              animationDuration: "16.5s",
-            }}
-          />
-          <div
-            className="hero-balloon hero-balloon-left"
-            style={{
-              top: "78%",
-              left: "max(28px,4.2vw)",
-              width: "clamp(16px,2.3vw,34px)",
-              height: "clamp(22px,3.1vw,46px)",
-              opacity: 0.75,
-              animationDelay: "8.2s",
-              animationDuration: "18s",
-            }}
-          />
-
-          <div
-            className="hero-balloon hero-balloon-right"
-            style={{
-              top: "26%",
-              right: "max(18px,3.2vw)",
-              width: "clamp(24px,3.1vw,44px)",
-              height: "clamp(32px,4.1vw,58px)",
-              animationDelay: "1.1s",
-              animationDuration: "13.5s",
-            }}
-          />
-          <div
-            className="hero-balloon hero-balloon-right"
-            style={{
-              top: "46%",
-              right: "max(26px,3.8vw)",
-              width: "clamp(18px,2.6vw,36px)",
-              height: "clamp(24px,3.5vw,50px)",
-              opacity: 0.85,
-              animationDelay: "3.4s",
-              animationDuration: "15.5s",
-            }}
-          />
-          <div
-            className="hero-balloon hero-balloon-right"
-            style={{
-              top: "66%",
-              right: "max(14px,2.8vw)",
-              width: "clamp(20px,2.8vw,40px)",
-              height: "clamp(28px,3.8vw,54px)",
-              opacity: 0.8,
-              animationDelay: "6.3s",
-              animationDuration: "17s",
-            }}
-          />
-          <div
-            className="hero-balloon hero-balloon-right"
-            style={{
-              top: "80%",
-              right: "max(28px,4.2vw)",
-              width: "clamp(16px,2.3vw,34px)",
-              height: "clamp(22px,3.1vw,46px)",
-              opacity: 0.75,
-              animationDelay: "9.1s",
-              animationDuration: "18.5s",
-            }}
-          />
+          {heroCrews.map((crew) => (
+            <div
+              key={`${crew.side}-${crew.top}`}
+              className={`hero-balloon hero-balloon-${crew.side}`}
+              style={{
+                top: crew.top,
+                [crew.side]: crew.inset,
+                width: crew.size,
+                opacity: "opacity" in crew ? crew.opacity : 0.95,
+                animationDelay: crew.delay,
+                animationDuration: crew.duration,
+                "--crew": crew.color,
+              } as CSSProperties}
+            >
+              <span className="hero-crew">
+                <span className="hero-crew-visor" />
+                <span className="hero-crew-leg hero-crew-leg-l" />
+                <span className="hero-crew-leg hero-crew-leg-r" />
+              </span>
+            </div>
+          ))}
         </div>
       </div>
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden lg:block"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
       >
-        <div className="hero-butterfly-layer absolute inset-0">
-          <div className="hero-butterfly hero-butterfly-1">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path
-                className="hero-butterfly-antenna"
-                d="M31 12 C27 9 25 8 22 8"
-              />
-              <path
-                className="hero-butterfly-antenna"
-                d="M33 12 C37 9 39 8 42 8"
-              />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-2">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path
-                className="hero-butterfly-antenna"
-                d="M31 12 C27 9 25 8 22 8"
-              />
-              <path
-                className="hero-butterfly-antenna"
-                d="M33 12 C37 9 39 8 42 8"
-              />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-3">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path
-                className="hero-butterfly-antenna"
-                d="M31 12 C27 9 25 8 22 8"
-              />
-              <path
-                className="hero-butterfly-antenna"
-                d="M33 12 C37 9 39 8 42 8"
-              />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-4">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-5">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-6">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-7">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-        </div>
-
-        <div className="hero-butterfly-layer hero-butterfly-layer-mirror absolute inset-0">
-          <div className="hero-butterfly hero-butterfly-1">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-2">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-3">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-4">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-5">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-6">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
-
-          <div className="hero-butterfly hero-butterfly-7">
-            <svg
-              viewBox="0 0 64 48"
-              className="hero-butterfly-svg"
-              role="presentation"
-              aria-hidden="true"
-            >
-              <g className="hero-butterfly-flap">
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-left"
-                  d="M30 24 C16 10 6 10 6 24 C6 36 18 38 30 28 Z"
-                />
-                <path
-                  className="hero-butterfly-wing hero-butterfly-wing-right"
-                  d="M34 24 C48 10 58 10 58 24 C58 36 46 38 34 28 Z"
-                />
-              </g>
-              <path
-                className="hero-butterfly-body"
-                d="M32 12 C30 14 30 18 31 24 C30 30 30 34 32 36 C34 34 34 30 33 24 C34 18 34 14 32 12 Z"
-              />
-              <path className="hero-butterfly-antenna" d="M31 12 C27 9 25 8 22 8" />
-              <path className="hero-butterfly-antenna" d="M33 12 C37 9 39 8 42 8" />
-            </svg>
-          </div>
+        <div className="hero-stars absolute inset-0">
+          {heroStars.map((star) => (
+            <span
+              key={`${star.left}-${star.top}`}
+              className="hero-star"
+              style={{
+                left: star.left,
+                top: star.top,
+                width: star.size,
+                height: star.size,
+                background: star.color,
+                animationDelay: star.delay,
+                animationDuration: star.duration,
+              }}
+            />
+          ))}
         </div>
 
         <div className="hero-gift">
@@ -737,7 +319,7 @@ export default function HeroSection({
         className="pointer-events-none absolute inset-x-0 top-0 z-0"
       >
         <div className="relative mx-auto w-full max-w-[1200px] px-4 sm:px-6">
-          <div className="hero-top-mascot hero-top-float-left absolute top-[168px] left-[-28px] h-[88px] w-[150px] opacity-80 sm:top-[200px] sm:left-[-48px] sm:h-[110px] sm:w-[200px] lg:top-[252px] lg:left-[calc(max(8px,2vw)-220px)] lg:h-[clamp(92px,12vw,140px)] lg:w-[clamp(200px,24vw,300px)] lg:opacity-70">
+          <div className="hero-top-mascot hero-top-float-left absolute top-[168px] left-[4px] h-[88px] w-[132px] opacity-80 sm:top-[200px] sm:left-[12px] sm:h-[100px] sm:w-[160px] lg:top-[220px] lg:left-[max(16px,2vw)] lg:h-[clamp(88px,10vw,120px)] lg:w-[clamp(150px,14vw,190px)] lg:opacity-70">
             <div className="hero-top-float-layer h-full w-full">
               <div className="hero-top-tilt-left h-full w-full">
                 <div ref={leftMascotRef} className="hero-top-jitter h-full w-full">
@@ -748,8 +330,8 @@ export default function HeroSection({
                       aria-hidden="true"
                       fill
                       priority
-                      sizes="(min-width: 1024px) 300px, 200px"
-                      className="object-contain"
+                      sizes="190px"
+                      className="object-contain object-left"
                     />
                   </div>
                 </div>
@@ -892,28 +474,81 @@ export default function HeroSection({
       <style jsx>{`
         .hero-balloon {
           position: absolute;
-          /* круглый шарик: высота всегда равна ширине */
-          aspect-ratio: 1 / 1;
+          aspect-ratio: 1 / 1.2;
           height: auto !important;
-          border-radius: 9999px;
-          background: radial-gradient(
-              12px 18px at 30% 26%,
-              rgba(255, 255, 255, 0.85) 0%,
-              rgba(255, 255, 255, 0.25) 28%,
-              rgba(255, 255, 255, 0) 58%
-            ),
-            radial-gradient(
-              120% 120% at 30% 20%,
-              rgba(255, 214, 90, 0.95) 0%,
-              rgba(255, 173, 205, 0.52) 38%,
-              rgba(154, 210, 255, 0.38) 72%,
-              rgba(255, 255, 255, 0.18) 100%
-            );
-          box-shadow:
-            0 16px 40px rgba(17, 24, 39, 0.14),
-            inset 0 0 0 1px rgba(255, 255, 255, 0.35);
-          opacity: 0.9;
           will-change: transform, opacity;
+        }
+
+        .hero-crew {
+          position: absolute;
+          inset: 0 10% 22% 10%;
+          border-radius: 46% 46% 42% 42%;
+          background: var(--crew, #c4b5fd);
+          box-shadow: inset -5px -7px 0 rgba(76, 29, 149, 0.12);
+        }
+
+        .hero-crew-visor {
+          position: absolute;
+          top: 24%;
+          right: 12%;
+          width: 46%;
+          height: 34%;
+          border-radius: 46% 50% 42% 40%;
+          background: linear-gradient(180deg, #f7fdff 0%, #8fd3ff 100%);
+        }
+
+        .hero-crew-leg {
+          position: absolute;
+          bottom: -18%;
+          width: 34%;
+          height: 30%;
+          border-radius: 40% 40% 46% 46%;
+          background: inherit;
+        }
+
+        .hero-crew-leg-l {
+          left: 10%;
+        }
+
+        .hero-crew-leg-r {
+          right: 12%;
+        }
+
+        .hero-star {
+          position: absolute;
+          clip-path: polygon(
+            50% 0%,
+            61% 35%,
+            98% 35%,
+            68% 57%,
+            79% 91%,
+            50% 70%,
+            21% 91%,
+            32% 57%,
+            2% 35%,
+            39% 35%
+          );
+          opacity: 0.9;
+          filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.45));
+          animation-name: hero-star-float;
+          animation-timing-function: ease-in-out;
+          animation-iteration-count: infinite;
+          will-change: transform, opacity;
+        }
+
+        @keyframes hero-star-float {
+          0% {
+            transform: translate3d(0, 12px, 0) rotate(0deg) scale(0.85);
+            opacity: 0.35;
+          }
+          50% {
+            transform: translate3d(10px, -28px, 0) rotate(20deg) scale(1);
+            opacity: 0.95;
+          }
+          100% {
+            transform: translate3d(-6px, 12px, 0) rotate(-12deg) scale(0.85);
+            opacity: 0.35;
+          }
         }
 
         .hero-balloon::after {
@@ -976,9 +611,9 @@ export default function HeroSection({
 
         @media (prefers-reduced-motion: reduce) {
           .hero-balloon-left,
-          .hero-balloon-right {
+          .hero-balloon-right,
+          .hero-star {
             animation: none !important;
-            opacity: 0.35;
             transform: none !important;
           }
         }
@@ -1090,11 +725,7 @@ export default function HeroSection({
           }
 
           .hero-gift {
-            right: clamp(18px, 6vw, 90px);
-            top: 52%;
-            width: clamp(140px, 18vw, 190px);
-            height: clamp(140px, 18vw, 190px);
-            opacity: 0.88;
+            display: none;
           }
         }
 
@@ -1587,8 +1218,8 @@ export default function HeroSection({
         }
 
         .hero-top-tilt-left {
-          transform: rotate(30deg);
-          transform-origin: 50% 60%;
+          transform: rotate(8deg);
+          transform-origin: 40% 60%;
           will-change: transform;
         }
 
@@ -1618,13 +1249,13 @@ export default function HeroSection({
 
         @keyframes hero-top-float-left {
           0% {
-            transform: translate3d(14px, 6px, 0) rotate(6deg);
+            transform: translate3d(0px, 4px, 0) rotate(2deg);
           }
           50% {
-            transform: translate3d(-14px, -30px, 0) rotate(-8deg);
+            transform: translate3d(10px, -18px, 0) rotate(-2deg);
           }
           100% {
-            transform: translate3d(14px, 6px, 0) rotate(6deg);
+            transform: translate3d(0px, 4px, 0) rotate(2deg);
           }
         }
       `}</style>
