@@ -144,11 +144,11 @@ export default function GlassHeader() {
                 src={LogoForm}
                 alt=""
                 aria-hidden="true"
-                width={64}
-                height={64}
+                width={160}
+                height={160}
                 priority
                 className={`object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.22)] transition-all duration-300 group-hover:-rotate-6 ${
-                  scrolled ? "h-14 w-14 sm:h-16 sm:w-16" : "h-16 w-16 sm:h-[4.75rem] sm:w-[4.75rem]"
+                  scrolled ? "h-20 w-20 sm:h-[5.5rem] sm:w-[5.5rem]" : "h-[5.5rem] w-[5.5rem] sm:h-[6.75rem] sm:w-[6.75rem]"
                 }`}
               />
               <span
