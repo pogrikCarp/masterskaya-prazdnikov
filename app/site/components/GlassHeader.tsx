@@ -16,7 +16,7 @@ import {
 } from "../content/contacts";
 import { NAV_ITEMS as nav } from "../content/nav";
 
-import LogoForm from "../../img/logoformpng.png";
+import LogoForm from "../../img/master-logo-2026.png";
 
 export default function GlassHeader() {
   const [open, setOpen] = useState(false);
@@ -138,26 +138,20 @@ export default function GlassHeader() {
             <Link
               href="/"
               aria-label="Мастерская праздника — на главную"
-              className="group -ml-1 flex shrink-0 flex-col items-center gap-0.5 sm:-ml-2"
+              className="group -ml-5 flex shrink-0 items-center sm:-ml-8"
             >
               <Image
                 src={LogoForm}
-                alt=""
-                aria-hidden="true"
-                width={160}
-                height={160}
+                alt="Мастерская праздника"
+                width={220}
+                height={208}
                 priority
-                className={`object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.22)] transition-all duration-300 group-hover:-rotate-6 ${
-                  scrolled ? "h-20 w-20 sm:h-[5.5rem] sm:w-[5.5rem]" : "h-[5.5rem] w-[5.5rem] sm:h-[6.75rem] sm:w-[6.75rem]"
+                className={`object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.22)] transition-all duration-300 group-hover:-rotate-3 ${
+                  scrolled
+                    ? "h-24 w-28 sm:h-28 sm:w-32"
+                    : "h-28 w-32 sm:h-36 sm:w-40"
                 }`}
               />
-              <span
-                className={`whitespace-nowrap text-center text-[16.5px] font-extrabold leading-none tracking-tight transition-colors sm:text-[18px] ${
-                  scrolled ? "text-[var(--mp-ink)]" : "text-white"
-                }`}
-              >
-                Мастерская праздника
-              </span>
             </Link>
 
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 xl:flex 2xl:gap-1">

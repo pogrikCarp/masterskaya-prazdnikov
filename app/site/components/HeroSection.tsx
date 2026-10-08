@@ -319,7 +319,7 @@ export default function HeroSection({
         className="pointer-events-none absolute inset-x-0 top-0 z-0"
       >
         <div className="relative mx-auto w-full max-w-[1200px] px-4 sm:px-6">
-          <div className="hero-top-mascot hero-top-float-left absolute top-[168px] left-[4px] h-[88px] w-[132px] opacity-80 sm:top-[200px] sm:left-[12px] sm:h-[100px] sm:w-[160px] lg:top-[220px] lg:left-[max(16px,2vw)] lg:h-[clamp(88px,10vw,120px)] lg:w-[clamp(150px,14vw,190px)] lg:opacity-70">
+          <div className="hero-top-mascot hero-top-float-left absolute top-[168px] left-[36px] h-[88px] w-[132px] opacity-80 sm:top-[200px] sm:left-[64px] sm:h-[100px] sm:w-[160px] lg:top-[220px] lg:left-[max(72px,6vw)] lg:h-[clamp(88px,10vw,120px)] lg:w-[clamp(150px,14vw,190px)] lg:opacity-70">
             <div className="hero-top-float-layer h-full w-full">
               <div className="hero-top-tilt-left h-full w-full">
                 <div ref={leftMascotRef} className="hero-top-jitter h-full w-full">

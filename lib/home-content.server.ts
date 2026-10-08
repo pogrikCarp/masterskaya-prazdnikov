@@ -45,5 +45,65 @@ export async function getHomeSections(): Promise<Record<string, HomeSectionConte
     console.error("Error loading home sections:", error);
   }
 
+  result.hero = {
+    ...result.hero,
+    subtitle:
+      "К каждому празднику — индивидуальный подход. Мы адаптируем программу исходя из характера Вашего ребенка и атмосферы праздника.",
+  };
+
+  result.quests = {
+    ...result.quests,
+    title: "Квесты: Вместе в приключение!",
+    subtitle: "Идеальный способ сплотить детей в одну команду.",
+  };
+
+  result.workshops = {
+    ...result.workshops,
+    title: "Мастер-классы: создаем красоту своими руками",
+    subtitle:
+      "Переключите внимание детей на творчество! Увлекательный мастер-класс станет отличным дополнением к программе и подарком для гостей — каждый унесет с собой поделку.",
+  };
+
+  result.why = {
+    ...result.why,
+    cards: (result.why.cards ?? []).map((card) =>
+      card.title === "Авторская концепция"
+        ? {
+            ...card,
+            text: "Мы адаптируем программу исходя из характера Вашего ребенка и атмосферы праздника.",
+          }
+        : card
+    ),
+  };
+
+  result.invitations = {
+    ...result.invitations,
+    subtitle:
+      "Специально для Ваших гостей мы создадим персонализированные пригласительные в едином стиле праздника! Пригласительные помогут создать нужное настроение и позвать тех, кто вам по-настоящему дорог — родных, друзей и самых близких.",
+    cards: (result.invitations.cards ?? []).map((card) => {
+      if (card.title === "Индивидуальный дизайн") {
+        return { ...card, text: "В тематике праздника" };
+      }
+      if (card.title === "Любой формат" || card.title === "Персонализация") {
+        return {
+          ...card,
+          title: "Персонализация",
+          text: "Именно для Ваших гостей",
+        };
+      }
+      if (card.title === "Быстрая подготовка") {
+        return { ...card, text: "В течение 1–2 дней" };
+      }
+      if (card.title === "Доступная цена" || card.title === "Абсолютно бесплатно") {
+        return {
+          ...card,
+          title: "Абсолютно бесплатно",
+          text: "Подарок для наших клиентов",
+        };
+      }
+      return card;
+    }),
+  };
+
   return result;
 }
