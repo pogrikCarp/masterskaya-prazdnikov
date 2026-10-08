@@ -148,8 +148,8 @@ export default function GlassHeader() {
                 priority
                 className={`object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.22)] transition-all duration-300 group-hover:-rotate-3 ${
                   scrolled
-                    ? "h-24 w-28 sm:h-28 sm:w-32"
-                    : "h-28 w-32 sm:h-36 sm:w-40"
+                    ? "h-16 w-20 sm:h-20 sm:w-24"
+                    : "h-20 w-24 sm:h-24 sm:w-28"
                 }`}
               />
             </Link>
