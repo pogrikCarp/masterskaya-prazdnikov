@@ -142,6 +142,7 @@ export default function Header() {
               <button
                 type="button"
                 onClick={() => setOpen((v) => !v)}
+                data-site-mobile
                 className="xl:hidden inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#5A3FE0]/10 text-[#5A3FE0]/70 transition-all duration-300 hover:bg-[#5A3FE0]/15 hover:text-[#5A3FE0]"
                 aria-label={open ? "Закрыть меню" : "Открыть меню"}
               >

@@ -263,6 +263,7 @@ export default function GlassHeader() {
               <button
                 type="button"
                 onClick={() => setOpen((v) => !v)}
+                data-site-mobile
                 className={`xl:hidden inline-flex h-11 w-11 items-center justify-center rounded-full ring-1 transition-colors ${
                   scrolled
                     ? "bg-black/[0.05] ring-black/10 text-[var(--mp-ink)] hover:bg-black/[0.08]"
