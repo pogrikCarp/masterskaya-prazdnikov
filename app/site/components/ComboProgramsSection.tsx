@@ -39,7 +39,7 @@ export default function ComboProgramsSection({
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
             <h2 className="text-[34px] sm:text-[44px] font-black tracking-tight text-[var(--mp-ink)]">
-              {section.title}
+              Наши комбо-программы
             </h2>
             {section.subtitle ? (
               <p className="mt-3 text-sm sm:text-base text-black/55">{section.subtitle}</p>
