@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Manrope, Rubik_Mono_One, Russo_One } from "next/font/google";
+import { DynaPuff, Inter, M_PLUS_Rounded_1c, Manrope, Roboto_Condensed } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import PreloaderGate from "./site/components/PreloaderGate";
@@ -18,16 +18,23 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const comboTitle = Rubik_Mono_One({
+const comboTitle = M_PLUS_Rounded_1c({
   subsets: ["cyrillic", "latin"],
-  weight: "400",
+  weight: "900",
   variable: "--font-combo-title",
   display: "swap",
 });
 
-const comboCopy = Russo_One({
+const comboPrice = DynaPuff({
+  subsets: ["latin"],
+  weight: "700",
+  variable: "--font-combo-price",
+  display: "swap",
+});
+
+const comboCopy = Roboto_Condensed({
   subsets: ["cyrillic", "latin"],
-  weight: "400",
+  weight: "900",
   variable: "--font-combo-copy",
   display: "swap",
 });
@@ -73,7 +80,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru" className="is-preloading">
-      <body className={`${inter.variable} ${manrope.variable} ${comboTitle.variable} ${comboCopy.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${manrope.variable} ${comboTitle.variable} ${comboCopy.variable} ${comboPrice.variable} font-sans antialiased`}>
         <div id="site-preloader" className="site-preloader" aria-hidden="true">
           <div className="site-preloader__spinner" />
         </div>

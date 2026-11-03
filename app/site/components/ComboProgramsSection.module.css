@@ -1,0 +1,214 @@
+.card {
+  --ink: #233f75;
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d9c9f1;
+  border-radius: 28px;
+  padding: 20px 0 18px;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 12% 82%, #c7eae859, transparent 34%),
+    radial-gradient(ellipse at 86% 90%, #d6b4ef6b, transparent 42%),
+    radial-gradient(ellipse at 40% 38%, #ffffff91, transparent 58%),
+    linear-gradient(125deg, #eee8fc, #f6eff9 53%, #eaeafa);
+  box-shadow: 0 16px 45px #61518a1a;
+}
+
+.card[data-variant="megaboom"],
+.card[data-variant="craft"] {
+  background:
+    radial-gradient(ellipse at 4% 10%, #b9eceb80, transparent 37%),
+    radial-gradient(ellipse at 55% 40%, #ffdaee87, transparent 46%),
+    radial-gradient(ellipse at 92% 80%, #c8edf080, transparent 42%),
+    linear-gradient(130deg, #f0e5fc, #f9e9f7 65%, #e3ebfc);
+}
+
+.header, .features, .footer { position: relative; z-index: 1; }
+
+.logo {
+  position: relative;
+  width: 48%;
+  aspect-ratio: 1.48;
+  margin: 0 auto 4px;
+  overflow: hidden;
+  filter: drop-shadow(0 3px 0 #bdb0d670);
+}
+
+.logo img {
+  position: absolute;
+  top: -34%;
+  left: -5%;
+  width: 112%;
+  max-width: none;
+  height: auto;
+  filter: drop-shadow(3px 0 0 white) drop-shadow(-3px 0 0 white) drop-shadow(0 3px 0 white) drop-shadow(0 -3px 0 white);
+}
+
+.title {
+  margin: 0 auto;
+  width: 88%;
+  font-family: var(--font-combo-title), sans-serif;
+  font-size: clamp(36px, 12cqi, 78px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -.055em;
+  text-align: center;
+  filter: drop-shadow(0 4px 0 #a59ab84f);
+}
+
+.titleLine { display: block; white-space: nowrap; }
+.titleLineSmall { font-size: .72em; }
+.titleSpace { display: inline-block; width: .24em; }
+.letter { position: relative; display: inline-block; z-index: 0; }
+.letter::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: attr(data-letter);
+  color: inherit;
+  -webkit-text-stroke: .16em #fff;
+  paint-order: stroke fill;
+}
+.letterFace {
+  position: relative;
+  -webkit-text-stroke: .065em #293f70;
+  paint-order: stroke fill;
+  text-shadow: 1px 2px 0 #ffffff6b;
+}
+.letter:nth-child(3n + 1) { transform: rotate(-3deg); }
+.letter:nth-child(4n) { transform: rotate(3deg) translateY(.025em); }
+
+.features {
+  display: grid;
+  gap: clamp(7px, 1.7cqi, 11px);
+  width: 66%;
+  margin: clamp(20px, 4.7cqi, 30px) 14% 24px 20%;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-combo-copy), "Arial Narrow", sans-serif;
+  font-size: clamp(16px, 3.25cqi, 22px);
+  font-weight: 900;
+  line-height: 1.16;
+  letter-spacing: -.02em;
+  color: #073269;
+}
+
+.feature { display: flex; align-items: flex-start; gap: 9px; }
+.check {
+  width: 1.5em;
+  height: 1.5em;
+  flex: 0 0 1.5em;
+  margin-top: -.09em;
+  filter: drop-shadow(0 2px 0 #a99ac263);
+}
+.featureText { flex: 1; min-width: 0; }
+.card[data-variant="craft"] .featureText,
+.card[data-variant="megaboom"] .featureText,
+.card[data-variant="supermix"] .featureText {
+  background: linear-gradient(90deg, #ffffff70, #ffffff70) 0 0 / 100% 100% no-repeat;
+  padding: .06em .13em .12em;
+}
+
+.footer { margin-top: auto; padding: 0 9%; }
+.priceBox {
+  position: relative;
+  display: grid;
+  grid-template-columns: 58% 42%;
+  align-items: center;
+  border: 2px dashed #a383db;
+  border-radius: 13px;
+  padding: 12px 10px;
+  background: #f0e6ff4d;
+}
+.priceCopy { position: relative; z-index: 1; min-width: 0; }
+.priceLabel {
+  font-family: var(--font-combo-copy), "Arial Narrow", sans-serif;
+  font-size: clamp(15px, 3.2cqi, 21px);
+  font-weight: 900;
+  line-height: 1.13;
+}
+.oldPrice {
+  position: relative;
+  display: inline-block;
+  margin-left: .15em;
+  white-space: nowrap;
+  font-size: 1.2em;
+  text-decoration: none;
+  -webkit-text-stroke: 3px #fff;
+  paint-order: stroke fill;
+}
+.oldPrice::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  left: -.08em;
+  right: -.08em;
+  top: 53%;
+  transform: rotate(-6deg);
+  background: #e369a0;
+  box-shadow: 0 1px 0 white;
+}
+.comboLabel { display: block; margin-top: .3em; }
+.price {
+  display: block;
+  width: max-content;
+  margin-top: .06em;
+  font-family: var(--font-combo-price), sans-serif;
+  font-size: clamp(40px, 10.3cqi, 67px);
+  font-weight: 700;
+  font-variant-numeric: lining-nums;
+  letter-spacing: -.055em;
+  line-height: 1.18;
+  color: #f178a6;
+  -webkit-text-stroke: 1.8px #284d7e;
+  paint-order: stroke fill;
+  filter: drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white) drop-shadow(0 -2px 0 white) drop-shadow(0 3px 0 white) drop-shadow(0 3px 0 #a49bb85e);
+}
+.discount {
+  position: relative;
+  display: flex;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 3px;
+  transform: rotate(2deg);
+  font-family: var(--font-combo-copy), "Arial Narrow", sans-serif;
+  font-weight: 900;
+  filter: drop-shadow(0 3px 0 #ae99c354);
+}
+.discount svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.discountLabel { margin-top: 10%; font-size: clamp(18px, 4cqi, 26px); line-height: 1; -webkit-text-stroke: 3px white; paint-order: stroke fill; }
+.discountValue { color: #ed729e; font-size: clamp(27px, 6.1cqi, 40px); line-height: 1.25; white-space: nowrap; letter-spacing: -.04em; -webkit-text-stroke: 3px white; paint-order: stroke fill; }
+.orderButton { margin-top: 15px; width: 100%; }
+
+.decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.bunting { position: absolute; top: 0; width: 100%; height: auto; }
+.balloonLeft { position: absolute; top: 18%; left: -3%; width: 19%; }
+.balloonRight { position: absolute; top: 17%; right: -3%; width: 19%; }
+.balloonBottom { position: absolute; right: -1%; bottom: 12%; width: 15%; }
+.cloudLeft { position: absolute; top: 53%; left: -3%; width: 17%; }
+.cloudRight { position: absolute; top: 45%; right: -2%; width: 15%; }
+.craftLeft { position: absolute; top: 31%; left: -2%; width: 17%; }
+.craftRight { position: absolute; top: 33%; right: -2%; width: 17%; }
+.palette { position: absolute; top: 58%; left: -2%; width: 18%; }
+.paintPot { position: absolute; top: 59%; right: -3%; width: 20%; }
+.pinata { position: absolute; top: 1%; left: -4%; width: 25%; transform: rotate(-6deg); }
+.ribbonRight { position: absolute; top: 6%; right: -3%; width: 19%; transform: rotate(10deg); }
+.ribbonLeft { position: absolute; top: 30%; left: -4%; width: 18%; transform: rotate(-12deg); }
+.cannonLeft { position: absolute; top: 64%; left: -8%; width: 26%; transform: rotate(-25deg); }
+.cannonRight { position: absolute; top: 52%; right: -8%; width: 25%; transform: rotate(23deg); }
+.confetti { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+@media (max-width: 380px) {
+  .features { width: 78%; margin-left: 11%; margin-right: 11%; }
+  .footer { padding-inline: 6%; }
+  .priceBox { padding-inline: 8px; }
+  .price { font-size: clamp(32px, 10.3cqi, 40px); }
+}
+

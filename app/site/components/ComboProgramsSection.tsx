@@ -1,3 +1,7 @@
+import Image from "next/image";
+import PartyLogo from "../../img/logoformpng.png";
+import ComboProgramDecor from "./ComboProgramDecor";
+import styles from "./ComboProgramsSection.module.css";
 import Container from "./Container";
 import { ButtonLink } from "./Button";
 import Reveal from "./Reveal";
@@ -7,8 +11,8 @@ import {
   type HomeSectionContent,
 } from "@/lib/home-content";
 
-const TITLE_COLORS = ["#8d63d9", "#53d4b1", "#ff9d83", "#ffd45d", "#68aee8", "#f16b9f"];
-const CHECK_COLORS = ["#9be8b5", "#f5a2b8", "#ffe279", "#bca1ef", "#9edaf2"];
+const TITLE_COLORS = ["#bc94e3", "#88d9bd", "#ffb59c", "#ffda6b", "#8ac9ed", "#f591b8"];
+const CHECK_COLORS = ["#c6a3e8", "#93dfbe", "#f39bb6", "#a0d9ed", "#f6a2b8", "#ffe18a", "#bca2e8", "#9ad9c8", "#fac59f"];
 
 const COMBO_PROGRAMS = [
   {
@@ -93,32 +97,18 @@ const COMBO_PROGRAMS = [
 
 type ProgramVariant = (typeof COMBO_PROGRAMS)[number]["variant"];
 
-function ColorfulTitle({ title }: { title: string }) {
+function ColorfulTitle({ title, variant }: { title: string; variant: ProgramVariant }) {
+  const lines = variant === "megaboom" ? ["Мегабум"] : variant === "craft" ? ["Стандарт", "с любимым", "мастер-классом"] : [variant === "supermix" ? "Супермикс" : "Стандарт", "с шоу"];
   let letterIndex = 0;
 
   return (
-    <h3
-      className="relative z-10 flex flex-wrap justify-center gap-x-[0.24em] text-center text-[29px] leading-[1.18] sm:text-[37px]"
-      style={{ fontFamily: "var(--font-combo-title), sans-serif" }}
-    >
-      {title.split(" ").map((word, wordIndex) => (
-        <span key={`${word}-${wordIndex}`} className="whitespace-nowrap">
-          {Array.from(word).map((letter) => {
-            const color = TITLE_COLORS[letterIndex % TITLE_COLORS.length];
-            letterIndex += 1;
-            return (
-              <span
-                key={`${letter}-${letterIndex}`}
-                style={{
-                  color,
-                  WebkitTextStroke: "1.5px #24477d",
-                  paintOrder: "stroke fill",
-                  textShadow: "0 3px 0 #fff, 0 6px 0 rgba(98,76,160,.22)",
-                }}
-              >
-                {letter}
-              </span>
-            );
+    <h3 className={styles.title} aria-label={title}>
+      {lines.map((line, lineIndex) => (
+        <span key={line} aria-hidden="true" className={`${styles.titleLine} ${variant === "craft" && lineIndex > 0 ? styles.titleLineSmall : ""}`}>
+          {Array.from(line).map((letter, index) => {
+            if (letter === " ") return <span key={index} className={styles.titleSpace}> </span>;
+            const color = TITLE_COLORS[letterIndex++ % TITLE_COLORS.length];
+            return <span key={index} className={styles.letter} data-letter={letter} style={{ color }}><span className={styles.letterFace}>{letter}</span></span>;
           })}
         </span>
       ))}
@@ -126,80 +116,32 @@ function ColorfulTitle({ title }: { title: string }) {
   );
 }
 
-function PartyBadge({ variant }: { variant: ProgramVariant }) {
+function Checkmark({ index }: { index: number }) {
   return (
-    <svg aria-hidden="true" viewBox="0 0 220 120" className="mx-auto h-[88px] w-[162px] sm:h-[102px] sm:w-[190px]">
-      <g fill="none" stroke="#25487e" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4">
-        <path fill="#fff" d="M53 30c12-18 34-20 49-8 16-22 48-15 53 9 23-4 38 17 27 34 10 17-6 36-25 32-13 18-42 16-52-4-19 12-44 0-43-22-22-7-21-34-9-41Z" />
-        {variant === "megaboom" ? (
-          <>
-            <path fill="#b68be8" d="M72 46 113 28l34 27-10 35-45 5-27-24Z" />
-            <path d="m77 51 63 28M96 39l-8 51M122 35l14 54" />
-            <path stroke="#f06f9e" d="m78 93-8 17m24-17 3 19m18-20 10 18m9-22 18 12" />
-          </>
-        ) : variant === "craft" ? (
-          <>
-            <path fill="#ffcf66" d="M74 68c0-25 22-43 48-37 31 7 42 41 19 58-12 9-22-2-34 3-23 10-33-7-33-24Z" />
-            <circle cx="102" cy="49" r="6" fill="#f48ea7" />
-            <circle cx="123" cy="48" r="6" fill="#77d9c1" />
-            <circle cx="137" cy="64" r="6" fill="#9881e8" />
-            <path fill="#fff" d="m67 95 48-39 9 10-48 39Z" />
-          </>
-        ) : (
-          <>
-            <path fill="#ffd94f" d="m113 24 13 27 30 4-22 21 6 30-27-14-27 14 5-30-21-21 30-4Z" />
-            <path fill="#ff967f" d="m124 81 55-22 5 13-55 22Z" />
-            <circle cx="137" cy="90" r="8" fill="#fff" />
-            <circle cx="172" cy="76" r="8" fill="#fff" />
-          </>
-        )}
-      </g>
-      <g fill="#ffcf4d">
-        <path d="m39 19 4 9 10 1-8 7 2 10-8-5-9 5 2-10-7-7 10-1Z" />
-        <path d="m188 23 3 7 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1Z" />
-      </g>
-      <g fill="#f06f9e"><circle cx="44" cy="86" r="5" /><circle cx="187" cy="92" r="5" /></g>
+    <svg aria-hidden="true" viewBox="0 0 48 48" className={styles.check}>
+      <circle cx="24" cy="24" r="21.5" fill={CHECK_COLORS[index % CHECK_COLORS.length]} stroke="#28507d" strokeWidth="1.8" />
+      <path d="m14 24 7 9 13-20" fill="none" stroke="#28507d" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="m14 24 7 9 13-20" fill="none" stroke="white" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function PartyBackdrop({ variant }: { variant: ProgramVariant }) {
-  const left = variant === "megaboom" ? "#b68be8" : variant === "craft" ? "#ff9cb4" : "#9b7be4";
-  const right = variant === "supermix" ? "#ffdf69" : "#ff91aa";
-
+function Discount({ value }: { value: string }) {
+  const burst = "m100 6 13 13 18-5 8 17 19 1 3 20 17 8-6 19 13 14-12 14 5 19-18 8-2 19-20 1-8 17-19-5-14 13-14-13-19 5-8-17-20-1-2-19-18-8 5-19-12-14 13-14-6-19 17-8 3-20 19-1 8-17 18 5Z";
   return (
-    <svg aria-hidden="true" viewBox="0 0 700 1000" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full opacity-80">
-      <g fill="none" stroke="#31548a" strokeWidth="3">
-        <path d="M0 54C170 94 530 15 700 58" />
-        {[
-          [28, 58, "#ff8f9b"], [83, 69, "#74dcb9"], [139, 66, "#ffcf63"], [196, 58, "#c69be9"],
-          [503, 52, "#ffcf63"], [559, 62, "#ff9c81"], [615, 67, "#75dcb9"], [668, 60, "#c69be9"],
-        ].map(([x, y, fill], index) => (
-          <path key={index} fill={String(fill)} d={`M${x} ${y}l24 7-15 34-19-31Z`} />
-        ))}
-      </g>
-
-      <g fill="none" stroke="#31548a" strokeWidth="3">
-        <ellipse cx="47" cy="210" rx="35" ry="48" fill={left} />
-        <path d="M47 258c-8 48 20 82 5 129" />
-        <ellipse cx="658" cy="245" rx="34" ry="47" fill={right} />
-        <path d="M658 292c8 45-20 75-6 123" />
-        <ellipse cx="23" cy="365" rx="31" ry="43" fill="#74dcb9" />
-        <path d="M23 408c-6 42 16 72 4 106" />
-      </g>
-
-      <g fill="#fff" stroke="#31548a" strokeWidth="3">
-        <path d="M30 553c7-22 34-28 48-10 19-13 43 3 38 26 18 8 10 34-10 34H38c-25 0-31-34-8-50Z" />
-        <path d="M603 533c7-22 34-28 48-10 19-13 43 3 38 26 18 8 10 34-10 34h-68c-25 0-31-34-8-50Z" />
-      </g>
-
-      <g stroke="#31548a" strokeWidth="3">
-        <path fill="#ffd94f" d="m77 461 9 18 20 3-15 14 4 20-18-9-18 9 3-20-14-14 20-3Z" />
-        <path fill="#f07aa0" d="m626 438 8 17 19 3-14 13 3 19-16-9-17 9 3-19-14-13 19-3Z" />
-        <path fill="#7bd9bb" d="m102 722 6 13 15 2-11 10 3 15-13-7-13 7 3-15-11-10 15-2Z" />
-        <path fill="#b892e8" d="m620 737 6 13 15 2-11 10 3 15-13-7-13 7 3-15-11-10 15-2Z" />
-      </g>
-    </svg>
+    <div className={styles.discount}>
+      <svg aria-hidden="true" viewBox="0 0 200 210">
+        <path d={burst} fill="#ffdf63" stroke="#fff" strokeWidth="11" strokeLinejoin="round" />
+        <path d={burst} fill="#ffdf63" stroke="#2f4a79" strokeWidth="2.3" strokeLinejoin="round" />
+        <path d="m168 5 7 14 16 2-11 12 3 16-15-8-14 8 2-16-11-12 16-2Z" fill="#ffe16b" stroke="white" strokeWidth="6" strokeLinejoin="round" />
+        <path d="m168 5 7 14 16 2-11 12 3 16-15-8-14 8 2-16-11-12 16-2Z" fill="#ffe16b" stroke="#2f4a79" strokeWidth="2" strokeLinejoin="round" />
+        <path d="m159 27 4 2 2-4m8-1 4 3 2-4m-13 11q4 4 7-1" fill="none" stroke="#2f4a79" strokeWidth="1.6" strokeLinecap="round" />
+        <circle cx="158" cy="34" r="2.5" fill="#ef98ad" /><circle cx="179" cy="32" r="2.5" fill="#ef98ad" />
+      </svg>
+      <span className={styles.discountLabel}>СКИДКА</span>
+      <span className={styles.discountValue}>−{value.replaceAll(" ", "")}</span>
+      <span className="sr-only">рублей</span>
+    </div>
   );
 }
 
@@ -222,38 +164,34 @@ export default function ComboProgramsSection({
         <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-2">
           {COMBO_PROGRAMS.map((program) => (
             <Reveal key={program.title} className="h-full">
-              <article className="mp-card-lift relative isolate flex h-full min-h-[820px] flex-col overflow-hidden rounded-[34px] border-2 border-[#d8c8ff] bg-[radial-gradient(circle_at_50%_12%,rgba(255,255,255,.96),rgba(244,239,255,.91)_45%,rgba(255,232,242,.9)_100%)] px-4 pb-5 pt-3 shadow-[0_26px_70px_rgba(75,50,125,.14)] sm:min-h-[900px] sm:px-7 sm:pb-7">
-                <PartyBackdrop variant={program.variant} />
-
-                <div className="relative z-10 mx-auto mt-10 rounded-[28px] bg-white/55 px-4 pb-3 pt-1 backdrop-blur-[2px]">
-                  <PartyBadge variant={program.variant} />
-                  <ColorfulTitle title={program.title} />
+              <article className={styles.card} data-variant={program.variant}>
+                <ComboProgramDecor variant={program.variant} />
+                <div className={styles.header}>
+                  <div className={styles.logo}>
+                    <Image src={PartyLogo} alt="Мастерская праздников — звезда на скейте" sizes="(min-width: 1024px) 340px, 54vw" />
+                  </div>
+                  <ColorfulTitle title={program.title} variant={program.variant} />
                 </div>
 
-                <ul className="relative z-10 mx-auto mt-7 grid w-full max-w-[510px] gap-2 text-[15px] font-normal leading-[1.35] text-[#153f78] sm:text-[17px]" style={{ fontFamily: "var(--font-combo-copy), sans-serif" }}>
+                <ul className={styles.features}>
                   {program.features.map((feature, featureIndex) => (
-                    <li key={feature} className="flex items-start gap-2.5 rounded-md bg-white/64 px-2.5 py-1.5 shadow-[0_3px_0_rgba(75,70,140,.06)] backdrop-blur-[1px]">
-                      <span aria-hidden="true" className="mt-px inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-[#28528a] text-[17px] font-black text-white shadow-[0_2px_0_rgba(53,64,125,.2)]" style={{ backgroundColor: CHECK_COLORS[featureIndex % CHECK_COLORS.length], WebkitTextStroke: "1px #28528a" }}>✓</span>
-                      <span>{feature}</span>
+                    <li key={feature} className={styles.feature}>
+                      <Checkmark index={featureIndex} />
+                      <span className={styles.featureText}>{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="relative z-10 mt-auto pt-7">
-                  <div className="grid gap-4 rounded-[26px] border-[3px] border-dashed border-[#9f79e2] bg-white/72 p-4 shadow-[0_8px_0_rgba(131,103,195,.08)] sm:grid-cols-[1fr_190px] sm:items-center sm:p-5">
-                    <div style={{ fontFamily: "var(--font-combo-copy), sans-serif" }}>
-                      <div className="text-base text-[#153f78] sm:text-lg">Стоимость программы: <span className="relative ml-1 inline-block text-xl sm:text-2xl">{program.oldPrice} ₽<span className="absolute left-[-3px] right-[-3px] top-1/2 h-[3px] -rotate-3 bg-[#ef6d99]" /></span></div>
-                      <div className="mt-1 text-base text-[#153f78] sm:text-lg">Стоимость с комбо:</div>
-                      <div className="mt-1 text-[48px] leading-none text-[#f06f9e] sm:text-[58px]" style={{ WebkitTextStroke: "2px #28528a", paintOrder: "stroke fill", textShadow: "0 4px 0 #fff, 0 7px 0 rgba(53,75,135,.22)" }}>{program.price}</div>
+                <div className={styles.footer}>
+                  <div className={styles.priceBox}>
+                    <div className={styles.priceCopy}>
+                      <div className={styles.priceLabel}>Стоимость программы: <del className={styles.oldPrice}>{program.oldPrice}<span className="sr-only"> рублей</span></del></div>
+                      <div className={`${styles.priceLabel} ${styles.comboLabel}`}>Стоимость с комбо:</div>
+                      <strong className={styles.price}>{program.price.replaceAll(" ", "")}<span className="sr-only"> рублей</span></strong>
                     </div>
-
-                    <div className="mx-auto flex aspect-square w-[165px] flex-col items-center justify-center bg-[#ffd94f] px-4 text-center text-[#153f78] drop-shadow-[0_5px_0_rgba(69,75,135,.2)] [clip-path:polygon(50%_0%,61%_10%,75%_5%,81%_19%,96%_23%,91%_39%,100%_50%,90%_61%,96%_77%,81%_81%,75%_96%,61%_90%,50%_100%,39%_90%,25%_96%,19%_81%,4%_77%,10%_61%,0%_50%,10%_39%,4%_23%,19%_19%,25%_5%,39%_10%)]">
-                      <span className="text-base font-black uppercase" style={{ fontFamily: "var(--font-combo-copy), sans-serif" }}>Скидка</span>
-                      <span className="mt-1 text-[32px] font-black leading-none text-[#ef6d99] [-webkit-text-stroke:1px_white]">−{program.discount}</span>
-                    </div>
+                    <Discount value={program.discount} />
                   </div>
-
-                  <ButtonLink href="#service-builder" variant="primary" size="lg" className="mt-4 w-full">Заказать программу</ButtonLink>
+                  <ButtonLink href="#service-builder" variant="primary" size="lg" className={styles.orderButton}>Заказать программу</ButtonLink>
                 </div>
               </article>
             </Reveal>
