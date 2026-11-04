@@ -48,13 +48,14 @@ export default async function AnimatorsPage() {
                       )}
                     </div>
 
-                    <div className="mt-5 rounded-[28px] bg-white/55 ring-1 ring-white/60 p-6 sm:p-7">
-                      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[22px] ring-1 ring-black/5 bg-gradient-to-br from-[rgb(var(--mp-lavender-rgb)_/_0.2)] to-[rgba(255,107,138,0.1)]">
+                    <div className="mt-5 rounded-[28px] bg-white/55 ring-1 ring-white/60 p-2 sm:p-3">
+                      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[22px] ring-1 ring-black/5 bg-white">
                         {a.imageUrl ? (
                           <img
                             src={a.imageUrl}
                             alt={a.name}
-                            className="absolute inset-0 w-full h-full object-cover"
+                            className="absolute inset-0 w-full h-full object-contain"
+                            style={{ height: "100%" }}
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center text-black/20 text-6xl">

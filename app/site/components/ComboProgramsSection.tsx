@@ -5,6 +5,7 @@ import styles from "./ComboProgramsSection.module.css";
 import Container from "./Container";
 import { ButtonLink } from "./Button";
 import Reveal from "./Reveal";
+import RequestButton from "./RequestButton";
 import {
   COMBO_SECTION,
   DEFAULT_HOME_CONTENT,
@@ -95,6 +96,8 @@ const COMBO_PROGRAMS = [
   },
 ] as const;
 
+const PROGRAM_ORDER = ["show", "supermix", "craft", "megaboom"] as const;
+
 type ProgramVariant = (typeof COMBO_PROGRAMS)[number]["variant"];
 
 function ColorfulTitle({ title, variant }: { title: string; variant: ProgramVariant }) {
@@ -161,14 +164,14 @@ export default function ComboProgramsSection({
           <ButtonLink href="#service-builder" variant="primary" size="md" className="self-start sm:self-auto">Собрать свой праздник</ButtonLink>
         </div>
 
-        <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-2">
-          {COMBO_PROGRAMS.map((program) => (
-            <Reveal key={program.title} className="h-full">
+        <div className={styles.grid}>
+          {[...COMBO_PROGRAMS].sort((a, b) => PROGRAM_ORDER.indexOf(a.variant) - PROGRAM_ORDER.indexOf(b.variant)).map((program) => (
+            <Reveal key={program.title}>
               <article className={styles.card} data-variant={program.variant}>
                 <ComboProgramDecor variant={program.variant} />
                 <div className={styles.header}>
                   <div className={styles.logo}>
-                    <Image src={PartyLogo} alt="Мастерская праздников — звезда на скейте" sizes="(min-width: 1024px) 340px, 54vw" />
+                    <Image src={PartyLogo} alt="Мастерская праздников — звезда на скейте" sizes="180px" />
                   </div>
                   <ColorfulTitle title={program.title} variant={program.variant} />
                 </div>
@@ -191,7 +194,7 @@ export default function ComboProgramsSection({
                     </div>
                     <Discount value={program.discount} />
                   </div>
-                  <ButtonLink href="#service-builder" variant="primary" size="lg" className={styles.orderButton}>Заказать программу</ButtonLink>
+                  <RequestButton className={styles.orderButton}>Заказать праздник</RequestButton>
                 </div>
               </article>
             </Reveal>

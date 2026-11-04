@@ -18,9 +18,10 @@ import { NAV_ITEMS as nav } from "../content/nav";
 
 import LogoForm from "../../img/master-logo-2026.png";
 
-export default function GlassHeader() {
+export default function GlassHeader({ appearance = "overlay" }: { appearance?: "overlay" | "light" }) {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setScrolled] = useState(false);
+  const scrolled = appearance === "light" || isScrolled;
   const { openRequestModal } = useRequestModal();
 
   const resolveHref = (href: string) => {

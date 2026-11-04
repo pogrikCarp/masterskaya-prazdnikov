@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Header from "./Header";
+import GlassHeader from "./GlassHeader";
 import Footer from "./Footer";
 
 export default function SiteShell({
@@ -11,8 +11,8 @@ export default function SiteShell({
 }) {
   return (
     <div className="min-h-screen text-[var(--mp-text)]">
-      {showHeader ? <Header /> : null}
-      <main>{children}</main>
+      {showHeader ? <GlassHeader appearance="light" /> : null}
+      <main className={showHeader ? "pt-20 sm:pt-24" : undefined}>{children}</main>
       <Footer />
     </div>
   );

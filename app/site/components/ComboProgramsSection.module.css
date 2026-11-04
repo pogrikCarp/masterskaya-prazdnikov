@@ -1,15 +1,23 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 24px;
+  max-width: 940px;
+  margin: 32px auto 0;
+}
+
 .card {
   --ink: #233f75;
   position: relative;
   isolation: isolate;
   container-type: inline-size;
   display: flex;
-  height: 100%;
   flex-direction: column;
   overflow: hidden;
   border: 1px solid #d9c9f1;
   border-radius: 28px;
-  padding: 20px 0 18px;
+  padding: 12px 0 14px;
   color: var(--ink);
   background:
     radial-gradient(ellipse at 12% 82%, #c7eae859, transparent 34%),
@@ -32,7 +40,7 @@
 
 .logo {
   position: relative;
-  width: 48%;
+  width: 36%;
   aspect-ratio: 1.48;
   margin: 0 auto 4px;
   overflow: hidden;
@@ -53,7 +61,7 @@
   margin: 0 auto;
   width: 88%;
   font-family: var(--font-combo-title), sans-serif;
-  font-size: clamp(36px, 12cqi, 78px);
+  font-size: clamp(32px, 10cqi, 44px);
   font-weight: 900;
   line-height: 1.08;
   letter-spacing: -.055em;
@@ -85,24 +93,24 @@
 
 .features {
   display: grid;
-  gap: clamp(7px, 1.7cqi, 11px);
-  width: 66%;
-  margin: clamp(20px, 4.7cqi, 30px) 14% 24px 20%;
+  gap: 5px;
+  width: 76%;
+  margin: 18px 10% 18px 14%;
   padding: 0;
   list-style: none;
   font-family: var(--font-combo-copy), "Arial Narrow", sans-serif;
-  font-size: clamp(16px, 3.25cqi, 22px);
+  font-size: clamp(14px, 3.2cqi, 16px);
   font-weight: 900;
   line-height: 1.16;
   letter-spacing: -.02em;
   color: #073269;
 }
 
-.feature { display: flex; align-items: flex-start; gap: 9px; }
+.feature { display: flex; align-items: flex-start; gap: 7px; }
 .check {
-  width: 1.5em;
-  height: 1.5em;
-  flex: 0 0 1.5em;
+  width: 1.35em;
+  height: 1.35em;
+  flex: 0 0 1.35em;
   margin-top: -.09em;
   filter: drop-shadow(0 2px 0 #a99ac263);
 }
@@ -114,7 +122,7 @@
   padding: .06em .13em .12em;
 }
 
-.footer { margin-top: auto; padding: 0 9%; }
+.footer { margin-top: auto; padding: 0 7%; }
 .priceBox {
   position: relative;
   display: grid;
@@ -122,13 +130,13 @@
   align-items: center;
   border: 2px dashed #a383db;
   border-radius: 13px;
-  padding: 12px 10px;
+  padding: 9px 10px;
   background: #f0e6ff4d;
 }
 .priceCopy { position: relative; z-index: 1; min-width: 0; }
 .priceLabel {
   font-family: var(--font-combo-copy), "Arial Narrow", sans-serif;
-  font-size: clamp(15px, 3.2cqi, 21px);
+  font-size: clamp(13px, 3.2cqi, 16px);
   font-weight: 900;
   line-height: 1.13;
 }
@@ -159,7 +167,7 @@
   width: max-content;
   margin-top: .06em;
   font-family: var(--font-combo-price), sans-serif;
-  font-size: clamp(40px, 10.3cqi, 67px);
+  font-size: clamp(32px, 10cqi, 48px);
   font-weight: 700;
   font-variant-numeric: lining-nums;
   letter-spacing: -.055em;
@@ -172,7 +180,10 @@
 .discount {
   position: relative;
   display: flex;
+  width: 100%;
+  max-width: 112px;
   aspect-ratio: 1;
+  justify-self: end;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -183,9 +194,9 @@
   filter: drop-shadow(0 3px 0 #ae99c354);
 }
 .discount svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
-.discountLabel { margin-top: 10%; font-size: clamp(18px, 4cqi, 26px); line-height: 1; -webkit-text-stroke: 3px white; paint-order: stroke fill; }
-.discountValue { color: #ed729e; font-size: clamp(27px, 6.1cqi, 40px); line-height: 1.25; white-space: nowrap; letter-spacing: -.04em; -webkit-text-stroke: 3px white; paint-order: stroke fill; }
-.orderButton { margin-top: 15px; width: 100%; }
+.discountLabel { margin-top: 10%; font-size: clamp(16px, 4cqi, 20px); line-height: 1; -webkit-text-stroke: 3px white; paint-order: stroke fill; }
+.discountValue { color: #ed729e; font-size: clamp(24px, 6.1cqi, 30px); line-height: 1.25; white-space: nowrap; letter-spacing: -.04em; -webkit-text-stroke: 3px white; paint-order: stroke fill; }
+.orderButton { margin-top: 12px; width: 100%; }
 
 .decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .bunting { position: absolute; top: 0; width: 100%; height: auto; }
@@ -204,6 +215,11 @@
 .cannonLeft { position: absolute; top: 64%; left: -8%; width: 26%; transform: rotate(-25deg); }
 .cannonRight { position: absolute; top: 52%; right: -8%; width: 25%; transform: rotate(23deg); }
 .confetti { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+@media (max-width: 639px) {
+  .grid { grid-template-columns: minmax(0, 1fr); max-width: 440px; gap: 20px; }
+  .features { font-size: 15px; }
+}
 
 @media (max-width: 380px) {
   .features { width: 78%; margin-left: 11%; margin-right: 11%; }

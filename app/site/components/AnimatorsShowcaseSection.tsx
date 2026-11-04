@@ -162,13 +162,14 @@ export default function AnimatorsShowcaseSection({
                         ) : null}
                       </div>
 
-                      <div className="mt-6 rounded-[28px] bg-white/55 ring-1 ring-white/70 p-6 sm:p-7">
-                        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[22px] bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.0)_62%),linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.24)_0%,rgba(255,107,138,0.10)_50%,rgba(125,211,252,0.12)_100%)] ring-1 ring-white/60">
+                      <div className="mt-6 rounded-[28px] bg-white/55 ring-1 ring-white/70 p-2 sm:p-3">
+                        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[22px] bg-white ring-1 ring-white/60">
                           {c.image ? (
                             <img
                               src={c.image}
                               alt={c.title}
-                              className="absolute inset-0 h-full w-full object-cover"
+                              className="absolute inset-0 h-full w-full object-contain"
+                              style={{ height: "100%" }}
                             />
                           ) : (
                             <div className="absolute inset-0 flex items-center justify-center text-4xl text-black/30">
