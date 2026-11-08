@@ -1,21 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import Button, { badgeClassName } from "./Button";
 import { Chevron } from "./CarouselNav";
 import { useOptionalRequestModal } from "./RequestModalProvider";
 
-function formatPrice(price: unknown) {
-  const value = typeof price === "number" ? price : Number(price);
-  if (!Number.isFinite(value)) return null;
-  return value.toLocaleString("ru-RU");
-}
+import ProgramGallery from "./ProgramGallery";
+import { formatCatalogPrice, getCatalogImages } from "@/lib/catalog-media";
 
 export type CarouselSlide = {
   id: number;
   title: string;
   imageUrl: string | null;
+  imageUrls?: string[];
+  priceFrom?: boolean;
   price?: number;
   priceSuffix?: string;
   meta?: string[];
@@ -43,10 +42,10 @@ export default function ImageCarousel({
 
   const canSlide = slides.length > 1;
 
-  const clampIndex = (value: number) => {
+  const clampIndex = useCallback((value: number) => {
     const len = slides.length || 1;
     return ((value % len) + len) % len;
-  };
+  }, [slides.length]);
 
   const goTo = (value: number) => {
     lastUserActionAtRef.current = Date.now();
@@ -65,7 +64,7 @@ export default function ImageCarousel({
     }, AUTOPLAY_MS);
 
     return () => window.clearInterval(timer);
-  }, [canSlide, reduceMotion, paused, slides.length]);
+  }, [canSlide, reduceMotion, paused, clampIndex]);
 
   if (!Array.isArray(slides) || slides.length === 0) return null;
 
@@ -117,19 +116,10 @@ export default function ImageCarousel({
             : "transform 700ms cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
-        {slides.map((slide, i) => (
+        {slides.map((slide) => (
           <article key={slide.id} className="relative w-full shrink-0">
-            <div className="relative aspect-[16/10] w-full sm:aspect-[16/9] lg:aspect-[21/9]">
-              {slide.imageUrl ? (
-                <img
-                  src={slide.imageUrl}
-                  alt={slide.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  loading={i === 0 ? "eager" : "lazy"}
-                />
-              ) : (
-                <div className="absolute inset-0 bg-[linear-gradient(135deg,#c084fc,#8d7cff)]" />
-              )}
+            <div className={`relative w-full ${getCatalogImages(slide).length > 1 ? "aspect-[4/5]" : "aspect-[16/10]"} sm:aspect-[16/9] lg:aspect-[21/9]`}>
+              <ProgramGallery title={slide.title} imageUrl={slide.imageUrl} imageUrls={slide.imageUrls} controlsPosition="top" onInteract={() => setPaused(true)} />
 
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,10,24,0.08)_0%,transparent_42%,rgba(12,10,24,0.62)_100%)]" />
 
@@ -157,9 +147,9 @@ export default function ImageCarousel({
                         {chip}
                       </span>
                     ))}
-                    {formatPrice(slide.price) ? (
+                    {formatCatalogPrice(slide.price, slide.priceFrom) ? (
                       <span className={badgeClassName("price")}>
-                        {formatPrice(slide.price)} ₽
+                        {formatCatalogPrice(slide.price, slide.priceFrom)}
                         {slide.priceSuffix ?? ""}
                       </span>
                     ) : null}

@@ -15,6 +15,8 @@ type Show = {
   name: string;
   description: string | null;
   imageUrl: string | null;
+  imageUrls?: string[];
+  priceFrom?: boolean;
   price: number;
   duration: number;
   popular: boolean;
@@ -44,6 +46,8 @@ export default function ShowsCarouselSection({
             id: show.id,
             title: show.name,
             imageUrl: show.imageUrl,
+            imageUrls: show.imageUrls,
+            priceFrom: show.priceFrom,
             price: show.price,
             popular: show.popular,
             meta: [`${show.duration} мин`],

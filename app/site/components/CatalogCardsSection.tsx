@@ -2,6 +2,8 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
+import ProgramGallery from "./ProgramGallery";
+import { formatCatalogPrice } from "@/lib/catalog-media";
 import Container from "./Container";
 import { ButtonLink, badgeClassName } from "./Button";
 import NavControl from "./CarouselNav";
@@ -109,18 +111,7 @@ export default function CatalogCardsSection({
                 >
                   <div className="relative p-4 sm:p-5">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-white/50 ring-1 ring-white/70">
-                      {item.imageUrl ? (
-                        <img
-                          src={item.imageUrl}
-                          alt={item.title}
-                          className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center text-3xl text-black/15">
-                          ✦
-                        </div>
-                      )}
+                      <ProgramGallery title={item.title} imageUrl={item.imageUrl} imageUrls={item.imageUrls} />
                       {item.popular ? (
                         <div className={`absolute right-3 top-3 ${badgeClassName("hit")}`}>
                           Хит
@@ -147,7 +138,7 @@ export default function CatalogCardsSection({
 
                     <div className="mt-4 flex items-center justify-between border-t border-black/5 pt-3">
                       <span className="text-sm font-bold text-[var(--mp-ink)]">
-                        {item.price != null ? `${item.price.toLocaleString("ru-RU")} ₽` : " "}
+                        {formatCatalogPrice(item.price, item.priceFrom) ?? " "}
                       </span>
                       <span className="text-xs font-semibold text-black/40 transition group-hover:text-black/70">
                         Подробнее

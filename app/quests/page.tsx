@@ -2,6 +2,8 @@ import SiteShell from "../site/components/SiteShell";
 import CatalogPageCarousel from "../site/components/CatalogPageCarousel";
 import prisma from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 async function getQuests() {
   return prisma.quest.findMany({
     where: { active: true },
@@ -21,6 +23,8 @@ export default async function QuestsPage() {
           id: quest.id,
           title: quest.name,
           imageUrl: quest.imageUrl,
+          imageUrls: quest.imageUrls,
+          priceFrom: quest.priceFrom,
           price: quest.price,
           popular: quest.popular,
           description: quest.description,

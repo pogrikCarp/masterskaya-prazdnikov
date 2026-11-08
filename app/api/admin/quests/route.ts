@@ -1,3 +1,4 @@
+import { catalogMediaInput, CatalogInputError } from "@/lib/catalog-media";
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import prisma from "@/lib/prisma";
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
       data: {
         name: data.name,
         description: data.description || null,
-        imageUrl: data.imageUrl || null,
+        ...catalogMediaInput(data),
         price: parseInt(data.price) || 0,
         duration: parseInt(data.duration) || 60,
         minAge: parseInt(data.minAge) || 6,
@@ -35,6 +36,9 @@ export async function POST(request: Request) {
     });
     return NextResponse.json(quest);
   } catch (error) {
+    if (error instanceof CatalogInputError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     console.error("Error creating quest:", error);
     return NextResponse.json({ error: "Failed to create" }, { status: 500 });
   }
@@ -52,7 +56,7 @@ export async function PUT(request: Request) {
       data: {
         name: data.name,
         description: data.description || null,
-        imageUrl: data.imageUrl || null,
+        ...catalogMediaInput(data),
         price: parseInt(data.price) || 0,
         duration: parseInt(data.duration) || 60,
         minAge: parseInt(data.minAge) || 6,
@@ -63,6 +67,9 @@ export async function PUT(request: Request) {
     });
     return NextResponse.json(quest);
   } catch (error) {
+    if (error instanceof CatalogInputError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     console.error("Error updating quest:", error);
     return NextResponse.json({ error: "Failed to update" }, { status: 500 });
   }
@@ -80,6 +87,9 @@ export async function DELETE(request: Request) {
     await prisma.quest.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
+    if (error instanceof CatalogInputError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     console.error("Error deleting quest:", error);
     return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
   }

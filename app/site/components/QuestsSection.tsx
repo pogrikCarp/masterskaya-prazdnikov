@@ -15,6 +15,8 @@ type Quest = {
   name: string;
   description: string | null;
   imageUrl: string | null;
+  imageUrls?: string[];
+  priceFrom?: boolean;
   price: number;
   duration: number;
   minAge: number;
@@ -45,6 +47,8 @@ export default function QuestsSection({
             id: quest.id,
             title: quest.name,
             imageUrl: quest.imageUrl,
+            imageUrls: quest.imageUrls,
+            priceFrom: quest.priceFrom,
             price: quest.price,
             popular: quest.popular,
             meta: [`от ${quest.minAge}+`, `${quest.duration} мин`],

@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import CatalogImageManager from "./CatalogImageManager";
+import { getCatalogImages, formatCatalogPrice } from "@/lib/catalog-media";
 import { HOME_SECTION_META } from "@/lib/home-content";
 
 type EntityType =
@@ -18,6 +20,8 @@ type BaseEntity = {
   title?: string | null;
   description: string | null;
   imageUrl: string | null;
+  imageUrls?: string[];
+  priceFrom?: boolean;
   price?: number;
   pricePerHour?: number;
   duration?: number;
@@ -43,15 +47,16 @@ type EntityConfig = {
   priceField: "price" | "pricePerHour" | null;
   hasDuration: boolean;
   hasAge: boolean;
+  multipleImages?: boolean;
   isGallery?: boolean;
   isHomeContent?: boolean;
 };
 
 const ENTITY_CONFIG: Record<EntityType, EntityConfig> = {
   animators: { title: "Аниматоры", priceField: "pricePerHour", hasDuration: false, hasAge: false },
-  quests: { title: "Квесты", priceField: "price", hasDuration: true, hasAge: true },
-  shows: { title: "Шоу-программы", priceField: "price", hasDuration: true, hasAge: false },
-  "master-classes": { title: "Мастер-классы", priceField: "price", hasDuration: true, hasAge: true },
+  quests: { multipleImages: true, title: "Квесты", priceField: "price", hasDuration: true, hasAge: true },
+  shows: { multipleImages: true, title: "Шоу-программы", priceField: "price", hasDuration: true, hasAge: false },
+  "master-classes": { multipleImages: true, title: "Мастер-классы", priceField: "price", hasDuration: true, hasAge: true },
   "additional-services": { title: "Дополнительные услуги", priceField: "price", hasDuration: false, hasAge: false },
   gallery: { title: "Галерея", priceField: null, hasDuration: false, hasAge: false, isGallery: true },
   "home-content": {
@@ -149,7 +154,7 @@ function EntityModal({
   const config = ENTITY_CONFIG[entityType];
   const priceField = config.priceField;
   const [form, setForm] = useState<Partial<BaseEntity>>(
-    entity || (config.isGallery
+    entity ? { ...entity, imageUrls: getCatalogImages(entity) } : (config.isGallery
       ? {
           title: "",
           description: "",
@@ -158,7 +163,7 @@ function EntityModal({
           active: true,
           popular: false,
         }
-      : { name: "", description: "", popular: false, active: true })
+      : { name: "", description: "", popular: false, active: true, imageUrls: [], priceFrom: false })
   );
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -166,7 +171,7 @@ function EntityModal({
   const [selectedFileName, setSelectedFileName] = useState("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState(entity?.imageUrl || "");
 
-  const handleChange = (field: string, value: string | number | boolean | null) => {
+  const handleChange = (field: string, value: string | number | boolean | string[] | null) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -213,7 +218,11 @@ function EntityModal({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          imageUrl: uploadedImageUrl || form.imageUrl || null,
+          ...(config.multipleImages ? {
+            imageUrls: form.imageUrls ?? [],
+            imageUrl: form.imageUrls?.[0] ?? null,
+            priceFrom: form.priceFrom ?? false,
+          } : { imageUrl: uploadedImageUrl || form.imageUrl || null }),
         }),
       });
 
@@ -273,9 +282,18 @@ function EntityModal({
               type="number"
               value={form[priceField] || ""}
               onChange={(e) => handleChange(priceField, e.target.value)}
+              min="0"
+              step="1"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
             />
             </div>
+          )}
+
+          {config.multipleImages && (
+            <label className="flex items-center gap-2 text-sm text-gray-700">
+              <input type="checkbox" checked={form.priceFrom ?? false} onChange={e => handleChange("priceFrom", e.target.checked)} className="h-4 w-4" />
+              Цена «от» — например, от 5 000 ₽
+            </label>
           )}
 
           {config.isGallery && (
@@ -359,6 +377,9 @@ function EntityModal({
             </div>
           )}
 
+          {config.multipleImages ? (
+            <CatalogImageManager images={form.imageUrls ?? []} onChange={images => handleChange("imageUrls", images)} onUploadingChange={setUploading} />
+          ) : (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Изображение</label>
             <div className="flex flex-wrap items-center gap-3">
@@ -381,6 +402,8 @@ function EntityModal({
               )}
             </div>
           </div>
+
+          )}
 
           <div className="flex gap-4">
             {!config.isGallery && (
@@ -415,7 +438,7 @@ function EntityModal({
             </button>
             <button
               type="submit"
-              disabled={saving}
+              disabled={saving || uploading}
               className="flex-1 py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
             >
               {saving ? "Сохранение..." : "Сохранить"}
@@ -1284,7 +1307,10 @@ export default function AdminPage() {
                     <tr key={item.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         {item.imageUrl ? (
-                          <img src={item.imageUrl} alt="" className="w-12 h-12 object-cover rounded-lg" />
+                          <div>
+                            <img src={item.imageUrl} alt="" className="w-12 h-12 object-cover rounded-lg" />
+                            {config.multipleImages && <span className="text-xs text-gray-500">{getCatalogImages(item).length} фото</span>}
+                          </div>
                         ) : (
                           <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
                             —
@@ -1304,7 +1330,7 @@ export default function AdminPage() {
                           </span>
                         ) : (
                           <>
-                            {(item[config.priceField!] ?? 0).toLocaleString()} ₽
+                            {formatCatalogPrice(item[config.priceField!] ?? 0, item.priceFrom)}
                             {config.priceField === "pricePerHour" && "/ч"}
                           </>
                         )}

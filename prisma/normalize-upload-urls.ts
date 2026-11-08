@@ -22,6 +22,18 @@ async function main() {
       WHERE "imageUrl" LIKE '/uploads/%'
     `);
   }
+
+  for (const table of ["Quest", "Show", "MasterClass"]) {
+    await prisma.$executeRawUnsafe(`
+      UPDATE "${table}"
+      SET "imageUrls" = ARRAY(
+        SELECT regexp_replace(url, '^/uploads/', '/api/uploads/')
+        FROM unnest("imageUrls") WITH ORDINALITY AS photos(url, position)
+        ORDER BY position
+      )
+      WHERE EXISTS (SELECT 1 FROM unnest("imageUrls") AS url WHERE url LIKE '/uploads/%')
+    `);
+  }
 }
 
 main()

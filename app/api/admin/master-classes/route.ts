@@ -1,3 +1,4 @@
+import { catalogMediaInput, CatalogInputError } from "@/lib/catalog-media";
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import prisma from "@/lib/prisma";
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
       data: {
         name: data.name,
         description: data.description || null,
-        imageUrl: data.imageUrl || null,
+        ...catalogMediaInput(data),
         price: parseInt(data.price) || 0,
         duration: parseInt(data.duration) || 45,
         minAge: parseInt(data.minAge) || 5,
@@ -35,6 +36,9 @@ export async function POST(request: Request) {
     });
     return NextResponse.json(masterClass);
   } catch (error) {
+    if (error instanceof CatalogInputError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     console.error("Error creating master class:", error);
     return NextResponse.json({ error: "Failed to create" }, { status: 500 });
   }
@@ -52,7 +56,7 @@ export async function PUT(request: Request) {
       data: {
         name: data.name,
         description: data.description || null,
-        imageUrl: data.imageUrl || null,
+        ...catalogMediaInput(data),
         price: parseInt(data.price) || 0,
         duration: parseInt(data.duration) || 45,
         minAge: parseInt(data.minAge) || 5,
@@ -63,6 +67,9 @@ export async function PUT(request: Request) {
     });
     return NextResponse.json(masterClass);
   } catch (error) {
+    if (error instanceof CatalogInputError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     console.error("Error updating master class:", error);
     return NextResponse.json({ error: "Failed to update" }, { status: 500 });
   }
@@ -80,6 +87,9 @@ export async function DELETE(request: Request) {
     await prisma.masterClass.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
+    if (error instanceof CatalogInputError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     console.error("Error deleting master class:", error);
     return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
   }

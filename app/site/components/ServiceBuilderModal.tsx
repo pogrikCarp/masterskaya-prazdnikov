@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { formatCatalogPrice } from "@/lib/catalog-media";
 import { Icon } from "./Icon";
 import { buttonClassName } from "./Button";
 
@@ -17,6 +18,7 @@ type Quest = {
   name: string;
   description: string | null;
   price: number;
+  priceFrom?: boolean;
   duration: number;
   popular: boolean;
 };
@@ -26,6 +28,7 @@ type Show = {
   name: string;
   description: string | null;
   price: number;
+  priceFrom?: boolean;
   duration: number;
   popular: boolean;
 };
@@ -35,6 +38,7 @@ type MasterClass = {
   name: string;
   description: string | null;
   price: number;
+  priceFrom?: boolean;
   duration: number;
   popular: boolean;
 };
@@ -234,7 +238,7 @@ export default function ServiceBuilderModal({
 
   // Build summary items
   const summaryItems = useMemo(() => {
-    const items: { name: string; price: number }[] = [];
+    const items: { name: string; price: number; priceFrom?: boolean }[] = [];
 
     if (selectedAnimator) {
       const animator = animators.find((a) => a.id === selectedAnimator);
@@ -258,17 +262,17 @@ export default function ServiceBuilderModal({
 
     if (selectedQuest) {
       const quest = quests.find((q) => q.id === selectedQuest);
-      if (quest) items.push({ name: quest.name, price: quest.price });
+      if (quest) items.push({ name: quest.name, price: quest.price, priceFrom: quest.priceFrom });
     }
 
     if (selectedMasterClass) {
       const mc = masterClasses.find((m) => m.id === selectedMasterClass);
-      if (mc) items.push({ name: mc.name, price: mc.price });
+      if (mc) items.push({ name: mc.name, price: mc.price, priceFrom: mc.priceFrom });
     }
 
     selectedShows.forEach((id) => {
       const show = shows.find((s) => s.id === id);
-      if (show) items.push({ name: show.name, price: show.price });
+      if (show) items.push({ name: show.name, price: show.price, priceFrom: show.priceFrom });
     });
 
     selectedServices.forEach((id) => {
@@ -292,6 +296,8 @@ export default function ServiceBuilderModal({
     selectedServices,
     additionalServices,
   ]);
+
+  const priceIsFrom = summaryItems.some(item => item.priceFrom);
 
   if (!open) return null;
 
@@ -449,7 +455,7 @@ export default function ServiceBuilderModal({
                         <option value="">Без квеста</option>
                         {quests.map((quest) => (
                           <option key={quest.id} value={quest.id}>
-                            {quest.name} — {quest.price.toLocaleString("ru-RU")} ₽
+                            {quest.name} — {formatCatalogPrice(quest.price, quest.priceFrom)}
                           </option>
                         ))}
                       </select>
@@ -474,7 +480,7 @@ export default function ServiceBuilderModal({
                         <option value="">Без мастер-класса</option>
                         {masterClasses.map((mc) => (
                           <option key={mc.id} value={mc.id}>
-                            {mc.name} — {mc.price.toLocaleString("ru-RU")} ₽
+                            {mc.name} — {formatCatalogPrice(mc.price, mc.priceFrom)}
                           </option>
                         ))}
                       </select>
@@ -512,7 +518,7 @@ export default function ServiceBuilderModal({
                               .filter((show) => !selectedShows.has(show.id))
                               .map((show) => (
                                 <option key={show.id} value={show.id}>
-                                  {show.name} — {show.price.toLocaleString("ru-RU")} ₽
+                                  {show.name} — {formatCatalogPrice(show.price, show.priceFrom)}
                                 </option>
                               ))}
                           </select>
@@ -531,7 +537,7 @@ export default function ServiceBuilderModal({
                                     </span>
                                     <div className="flex shrink-0 items-center gap-3">
                                       <span className="text-sm font-black text-[var(--mp-ink)]">
-                                        {show.price.toLocaleString("ru-RU")} ₽
+                                        {formatCatalogPrice(show.price, show.priceFrom)}
                                       </span>
                                       <button
                                         type="button"
@@ -621,7 +627,7 @@ export default function ServiceBuilderModal({
                                   <div key={idx} className="flex items-center justify-between text-sm">
                                     <span className="text-black/70">{item.name}</span>
                                     <span className="font-semibold text-[var(--mp-ink)]">
-                                      {item.price.toLocaleString()} ₽
+                                      {formatCatalogPrice(item.price, item.priceFrom)}
                                     </span>
                                   </div>
                                 ))}
@@ -631,7 +637,7 @@ export default function ServiceBuilderModal({
                                 <div className="flex items-baseline justify-between">
                                   <span className="text-sm text-black/60">Итого:</span>
                                   <span className="text-3xl font-black text-[var(--mp-ink)]">
-                                    {total.toLocaleString()} ₽
+                                    {formatCatalogPrice(total, priceIsFrom)}
                                   </span>
                                 </div>
                               </div>
@@ -640,7 +646,7 @@ export default function ServiceBuilderModal({
                                 href={`https://t.me/masterskaya_prazdnika?text=${encodeURIComponent(
                                   `Здравствуйте! Хочу заказать праздник:\n${summaryItems
                                     .map((i) => `• ${i.name}`)
-                                    .join("\n")}\n\nИтого: ${total.toLocaleString()} ₽`
+                                    .join("\n")}\n\nИтого: ${formatCatalogPrice(total, priceIsFrom)}`
                                 )}`}
                                 target="_blank"
                                 rel="noopener noreferrer"

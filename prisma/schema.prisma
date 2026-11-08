@@ -28,6 +28,8 @@ model Quest {
   name        String
   description String?
   imageUrl    String?
+  imageUrls   String[] @default([])
+  priceFrom   Boolean  @default(false)
   price       Int      @default(0)
   duration    Int      @default(60) // в минутах
   minAge      Int      @default(6)
@@ -44,6 +46,8 @@ model Show {
   name        String
   description String?
   imageUrl    String?
+  imageUrls   String[] @default([])
+  priceFrom   Boolean  @default(false)
   price       Int      @default(0)
   duration    Int      @default(30) // в минутах
   popular     Boolean  @default(false)
@@ -58,6 +62,8 @@ model MasterClass {
   name        String
   description String?
   imageUrl    String?
+  imageUrls   String[] @default([])
+  priceFrom   Boolean  @default(false)
   price       Int      @default(0)
   duration    Int      @default(45) // в минутах
   minAge      Int      @default(5)

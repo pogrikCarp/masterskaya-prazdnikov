@@ -1,6 +1,10 @@
+import ProgramGallery from "../site/components/ProgramGallery";
+import { formatCatalogPrice } from "@/lib/catalog-media";
 import SiteShell from "../site/components/SiteShell";
 import Container from "../site/components/Container";
 import prisma from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 async function getMasterClasses() {
   const masterClasses = await prisma.masterClass.findMany({
@@ -57,18 +61,8 @@ export default async function WorkshopsPage() {
                     </div>
 
                     <div className="mt-4 rounded-[28px] bg-white/55 ring-1 ring-white/60 p-6 sm:p-7">
-                      <div className="relative aspect-square w-full rounded-[22px] bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.0)_62%),linear-gradient(135deg,rgba(255,196,0,0.18)_0%,rgba(255,107,138,0.12)_50%,rgb(var(--mp-lavender-rgb)_/_0.18)_100%)] ring-1 ring-black/5">
-                        {workshop.imageUrl ? (
-                          <img
-                            src={workshop.imageUrl}
-                            alt={workshop.name}
-                            className="absolute inset-0 w-full h-full object-cover rounded-[22px]"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center text-black/20 text-5xl">
-                            🎨
-                          </div>
-                        )}
+                      <div className="relative aspect-square w-full overflow-hidden rounded-[22px] bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.9)_0%,rgba(255,255,255,0.0)_62%),linear-gradient(135deg,rgba(255,196,0,0.18)_0%,rgba(255,107,138,0.12)_50%,rgb(var(--mp-lavender-rgb)_/_0.18)_100%)] ring-1 ring-black/5">
+                        <ProgramGallery title={workshop.name} imageUrl={workshop.imageUrl} imageUrls={workshop.imageUrls} />
                       </div>
                     </div>
 
@@ -86,7 +80,7 @@ export default async function WorkshopsPage() {
                         <span>{workshop.duration} мин</span>
                       </div>
                       <div className="text-sm font-semibold text-[var(--mp-ink)]">
-                        {workshop.price.toLocaleString()} ₽
+                        {formatCatalogPrice(workshop.price, workshop.priceFrom)}
                       </div>
                     </div>
                   </div>

@@ -14,6 +14,8 @@ type MasterClass = {
   name: string;
   description: string | null;
   imageUrl: string | null;
+  imageUrls?: string[];
+  priceFrom?: boolean;
   price: number;
   duration: number;
   minAge: number;
@@ -45,6 +47,8 @@ export default function WorkshopsSection({
             id: workshop.id,
             title: workshop.name,
             imageUrl: workshop.imageUrl,
+            imageUrls: workshop.imageUrls,
+            priceFrom: workshop.priceFrom,
             price: workshop.price,
             popular: workshop.popular,
             meta: [`от ${workshop.minAge}+`, `${workshop.duration} мин`],
