@@ -15,7 +15,6 @@ const ease = [0.22, 1, 0.36, 1] as const;
 /** Услуги, у которых есть свой блок на странице */
 const SERVICE_ANCHORS: Record<string, string> = {
   "Пригласительные для вашего праздника": "#invitations",
-  "Календарные праздники": "#seasonal-holidays",
 };
 
 export default function AdditionalServicesSection({

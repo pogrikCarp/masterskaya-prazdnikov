@@ -212,7 +212,7 @@ export default function GlassHeader({ appearance = "overlay" }: { appearance?: "
                 type="button"
                 whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.25 }}
-                onClick={openRequestModal}
+                onClick={() => openRequestModal()}
                 className={`hidden sm:inline-flex ${buttonClassName({ variant: "primary", size: "md" })}`}
               >
                 Оставить заявку

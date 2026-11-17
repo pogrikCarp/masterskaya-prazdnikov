@@ -3,29 +3,15 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
-import { ButtonLink, badgeClassName } from "./Button";
+import { ButtonLink } from "./Button";
 import NavControl from "./CarouselNav";
+import AnimatorCard from "./AnimatorCard";
+import type { AnimatorSummary } from "@/lib/animator-filters";
 import {
   ANIMATORS_SECTION,
   DEFAULT_HOME_CONTENT,
   type HomeSectionContent,
 } from "@/lib/home-content";
-
-type Animator = {
-  id: number;
-  name: string;
-  description: string | null;
-  imageUrl: string | null;
-  pricePerHour: number;
-  popular: boolean;
-  active: boolean;
-};
-
-type AnimatorCard = {
-  title: string;
-  tag?: string;
-  image: string | null;
-};
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -38,7 +24,7 @@ export default function AnimatorsShowcaseSection({
 }) {
   const reduceMotion = useReducedMotion();
   const popularScrollerRef = useRef<HTMLDivElement | null>(null);
-  const [popular, setPopular] = useState<AnimatorCard[]>([]);
+  const [popular, setPopular] = useState<AnimatorSummary[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,14 +32,8 @@ export default function AnimatorsShowcaseSection({
       try {
         const res = await fetch("/api/animators");
         if (res.ok) {
-          const data: Animator[] = await res.json();
-          setPopular(
-            data.map((a) => ({
-              title: a.name,
-              tag: a.popular ? "хит" : undefined,
-              image: a.imageUrl,
-            }))
-          );
+          const data: AnimatorSummary[] = await res.json();
+          setPopular(data);
         }
       } catch (error) {
         console.error("Error fetching animators:", error);
@@ -139,7 +119,7 @@ export default function AnimatorsShowcaseSection({
             >
               {popular.map((c, idx) => (
                 <motion.div
-                  key={c.title}
+                  key={c.id}
                   initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
                   whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.35 }}
@@ -147,46 +127,7 @@ export default function AnimatorsShowcaseSection({
                   className="shrink-0 w-[min(340px,84vw)] sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)] snap-start"
                   data-animator-card
                 >
-                  <div className="group relative overflow-hidden rounded-[34px] bg-white/70 shadow-[0_26px_80px_rgba(17,24,39,0.10)]">
-                    <div className="absolute inset-0 opacity-90 bg-[linear-gradient(135deg,rgb(var(--mp-lavender-rgb)_/_0.42)_0%,rgba(255,255,255,0.85)_55%,rgba(214,249,239,0.55)_100%)]" />
-                    <div className="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-[rgb(var(--mp-lavender-rgb)_/_0.35)] blur-3xl" />
-                    <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-white/70 blur-3xl" />
-
-                    <div className="relative p-7 sm:p-8">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-h-[44px] sm:min-h-[56px] text-lg sm:text-xl font-black tracking-tight text-[var(--mp-ink)] leading-tight">
-                          {c.title}
-                        </div>
-                        {c.tag ? (
-                          <div className={`shrink-0 ${badgeClassName("hit")}`}>{c.tag}</div>
-                        ) : null}
-                      </div>
-
-                      <div className="mt-6 rounded-[28px] bg-white/55 ring-1 ring-white/70 p-2 sm:p-3">
-                        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[22px] bg-white ring-1 ring-white/60">
-                          {c.image ? (
-                            <img
-                              src={c.image}
-                              alt={c.title}
-                              className="absolute inset-0 h-full w-full object-contain"
-                              style={{ height: "100%" }}
-                            />
-                          ) : (
-                            <div className="absolute inset-0 flex items-center justify-center text-4xl text-black/30">
-                              🎭
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="mt-6 flex items-center justify-between">
-                        <div className="text-sm text-black/60">Фото героя</div>
-                        <div className="text-sm font-semibold text-[var(--mp-ink)] transition-transform group-hover:translate-x-[2px]">
-                          Подробнее
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <AnimatorCard animator={c} />
                 </motion.div>
               ))}
             </div>

@@ -314,49 +314,6 @@ export default function HeroSection({
         </div>
       </div>
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 z-0"
-      >
-        <div className="relative mx-auto w-full max-w-[1200px] px-4 sm:px-6">
-          <div className="hero-top-mascot hero-top-float-left absolute top-[168px] left-[36px] h-[88px] w-[132px] opacity-80 sm:top-[200px] sm:left-[64px] sm:h-[100px] sm:w-[160px] lg:top-[220px] lg:left-[max(72px,6vw)] lg:h-[clamp(88px,10vw,120px)] lg:w-[clamp(150px,14vw,190px)] lg:opacity-70">
-            <div className="hero-top-float-layer h-full w-full">
-              <div className="hero-top-tilt-left h-full w-full">
-                <div ref={leftMascotRef} className="hero-top-jitter h-full w-full">
-                  <div className="hero-top-mirror h-full w-full">
-                    <Image
-                      src={Among2}
-                      alt=""
-                      aria-hidden="true"
-                      fill
-                      priority
-                      sizes="190px"
-                      className="object-contain object-left"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-top-mascot hero-top-float absolute top-[76px] right-[-24px] h-[88px] w-[150px] opacity-80 sm:top-[84px] sm:right-[-36px] sm:h-[110px] sm:w-[200px] lg:top-[92px] lg:right-[calc(max(8px,2vw)-160px)] lg:h-[clamp(92px,12vw,140px)] lg:w-[clamp(200px,24vw,300px)] lg:opacity-70">
-            <div className="hero-top-float-layer h-full w-full">
-              <div ref={rightMascotRef} className="hero-top-jitter h-full w-full">
-                <Image
-                  src={Among2}
-                  alt=""
-                  aria-hidden="true"
-                  fill
-                  sizes="(max-width: 640px) 240px, 300px"
-                  className="select-none"
-                  style={{ objectFit: "contain", objectPosition: "center" }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <Container>
         <div className="relative pt-32 pb-28 sm:pt-28 sm:pb-32 lg:pt-36 lg:pb-40">
           <div className="mx-auto max-w-4xl text-center">
@@ -429,6 +386,49 @@ export default function HeroSection({
             >
               {section.subtitle}
             </motion.p>
+
+            <div
+              aria-hidden="true"
+              className="pointer-events-none relative mt-8 h-24 lg:h-[140px]"
+            >
+              <div className="relative mx-auto h-full w-full max-w-[1200px]">
+                <div className="hero-top-mascot hero-top-float-left absolute top-3 left-4 h-[72px] w-[110px] opacity-80 sm:left-8 sm:w-[140px] lg:top-0 lg:left-6 lg:h-[100px] lg:w-[160px]">
+                  <div className="hero-top-float-layer h-full w-full">
+                    <div className="hero-top-tilt-left h-full w-full">
+                      <div ref={leftMascotRef} className="hero-top-jitter h-full w-full">
+                        <div className="hero-top-mirror h-full w-full">
+                          <Image
+                            src={Among2}
+                            alt=""
+                            aria-hidden="true"
+                            fill
+                            priority
+                            sizes="190px"
+                            className="object-contain object-left"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="hero-top-mascot hero-top-float absolute top-3 right-4 h-[72px] w-[110px] opacity-80 sm:right-8 sm:w-[140px] lg:top-0 lg:right-6 lg:h-[120px] lg:w-[200px]">
+                  <div className="hero-top-float-layer h-full w-full">
+                    <div ref={rightMascotRef} className="hero-top-jitter h-full w-full">
+                      <Image
+                        src={Among2}
+                        alt=""
+                        aria-hidden="true"
+                        fill
+                        sizes="(max-width: 640px) 240px, 300px"
+                        className="select-none"
+                        style={{ objectFit: "contain", objectPosition: "center" }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -1193,7 +1193,7 @@ export default function HeroSection({
             transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
           }
           86% {
-            transform: translate3d(0, -34px, 0) rotate(180deg) scale(1.1);
+            transform: translate3d(0, -12px, 0) rotate(180deg) scale(1.1);
           }
           93% {
             transform: translate3d(0, -8px, 0) rotate(330deg) scale(1.04);
@@ -1240,7 +1240,7 @@ export default function HeroSection({
             transform: translate3d(-14px, 6px, 0) rotate(-6deg);
           }
           50% {
-            transform: translate3d(14px, -30px, 0) rotate(8deg);
+            transform: translate3d(10px, -10px, 0) rotate(8deg);
           }
           100% {
             transform: translate3d(-14px, 6px, 0) rotate(-6deg);

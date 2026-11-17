@@ -8,15 +8,17 @@ export default function RequestButton({
   children = "Оставить заявку",
   className,
   size = "md",
+  subject,
 }: {
   children?: ReactNode;
   className?: string;
   size?: ButtonSize;
+  subject?: string;
 }) {
   const { openRequestModal } = useRequestModal();
 
   return (
-    <Button type="button" size={size} className={className} onClick={openRequestModal}>
+    <Button type="button" size={size} className={className} onClick={() => openRequestModal(subject)}>
       {children}
     </Button>
   );

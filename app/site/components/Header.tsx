@@ -133,7 +133,7 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                onClick={openRequestModal}
+                onClick={() => openRequestModal()}
                 className={`hidden sm:inline-flex ${buttonClassName({ variant: "primary", size: "lg" })}`}
               >
                 Оставить заявку

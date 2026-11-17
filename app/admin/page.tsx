@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import CatalogImageManager from "./CatalogImageManager";
 import { getCatalogImages, formatCatalogPrice } from "@/lib/catalog-media";
 import { HOME_SECTION_META } from "@/lib/home-content";
+import { ANIMATOR_AUDIENCES, ANIMATOR_AGE_GROUPS, type AnimatorAgeGroup, type AnimatorAudience } from "@/lib/animator-filters";
 
 type EntityType =
   | "animators"
@@ -24,6 +25,8 @@ type BaseEntity = {
   priceFrom?: boolean;
   price?: number;
   pricePerHour?: number;
+  audience?: AnimatorAudience;
+  ageGroups?: AnimatorAgeGroup[];
   duration?: number;
   minAge?: number;
   maxAge?: number | null;
@@ -163,7 +166,7 @@ function EntityModal({
           active: true,
           popular: false,
         }
-      : { name: "", description: "", popular: false, active: true, imageUrls: [], priceFrom: false })
+      : { name: "", description: "", popular: false, active: true, imageUrls: [], priceFrom: false, audience: "UNIVERSAL", ageGroups: [] })
   );
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -352,6 +355,41 @@ function EntityModal({
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
               />
             </div>
+          )}
+
+          {entityType === "animators" && (
+            <>
+              <div>
+                <label htmlFor="animator-audience" className="mb-1 block text-sm font-medium text-gray-700">Для кого</label>
+                <select
+                  id="animator-audience"
+                  value={form.audience ?? "UNIVERSAL"}
+                  onChange={event => handleChange("audience", event.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+                >
+                  {ANIMATOR_AUDIENCES.map(item => <option key={item.value} value={item.value}>{item.label}</option>)}
+                </select>
+              </div>
+              <fieldset>
+                <legend className="mb-2 text-sm font-medium text-gray-700">Возраст ребёнка</legend>
+                <div className="flex flex-wrap gap-3">
+                  {ANIMATOR_AGE_GROUPS.map(item => (
+                    <label key={item.value} className="flex items-center gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={form.ageGroups?.includes(item.value) ?? false}
+                        onChange={event => handleChange("ageGroups", event.target.checked
+                          ? [...(form.ageGroups ?? []), item.value]
+                          : (form.ageGroups ?? []).filter(value => value !== item.value))}
+                        className="h-4 w-4"
+                      />
+                      {item.label}
+                    </label>
+                  ))}
+                </div>
+                <p className="mt-2 text-xs text-gray-500">Можно выбрать несколько групп. Пустой список означает, что возраст пока не указан.</p>
+              </fieldset>
+            </>
           )}
 
           {config.hasAge && (

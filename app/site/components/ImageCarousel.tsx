@@ -164,7 +164,7 @@ export default function ImageCarousel({
                     <Button
                       type="button"
                       size="md"
-                      onClick={() => requestModal?.openRequestModal()}
+                      onClick={() => requestModal?.openRequestModal(`Программа: ${slide.title}`)}
                     >
                       {ctaLabel}
                     </Button>

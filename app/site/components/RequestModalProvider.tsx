@@ -13,7 +13,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import RequestForm from "./RequestForm";
 
 type RequestModalContextValue = {
-  openRequestModal: () => void;
+  openRequestModal: (subject?: string) => void;
   closeRequestModal: () => void;
 };
 
@@ -33,8 +33,12 @@ export function useOptionalRequestModal() {
 
 export default function RequestModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [subject, setSubject] = useState("");
 
-  const openRequestModal = useCallback(() => setIsOpen(true), []);
+  const openRequestModal = useCallback((subject = "") => {
+    setSubject(subject);
+    setIsOpen(true);
+  }, []);
   const closeRequestModal = useCallback(() => setIsOpen(false), []);
 
   useEffect(() => {
@@ -118,12 +122,11 @@ export default function RequestModalProvider({ children }: { children: ReactNode
                   Оставьте заявку
                 </h2>
                 <p className="mt-2 text-sm text-black/60">
-                  Перезвоним в течение 15 минут, обсудим детали и подберём программу под
-                  ваш бюджет.
+                  Заполните форму и перейдите в Telegram, чтобы обсудить праздник с менеджером.
                 </p>
 
                 <div className="mt-7">
-                  <RequestForm variant="short" autoFocus />
+                  <RequestForm key={subject} variant="short" autoFocus initialMessage={subject} />
                 </div>
               </div>
             </motion.div>

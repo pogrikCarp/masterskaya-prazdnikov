@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { parseAnimatorFilters } from "@/lib/animator-filters";
 
 export async function GET() {
   if (!(await isAuthenticated())) {
@@ -20,8 +21,15 @@ export async function POST(request: Request) {
 
   try {
     const data = await request.json();
+    let filters;
+    try {
+      filters = parseAnimatorFilters(data);
+    } catch (error) {
+      return NextResponse.json({ error: (error as Error).message }, { status: 400 });
+    }
     const animator = await prisma.animator.create({
       data: {
+        ...filters,
         name: data.name,
         description: data.description || null,
         imageUrl: data.imageUrl || null,
@@ -44,15 +52,22 @@ export async function PUT(request: Request) {
 
   try {
     const data = await request.json();
+    let filters;
+    try {
+      filters = parseAnimatorFilters(data);
+    } catch (error) {
+      return NextResponse.json({ error: (error as Error).message }, { status: 400 });
+    }
     const animator = await prisma.animator.update({
       where: { id: data.id },
       data: {
+        ...filters,
         name: data.name,
-        description: data.description || null,
-        imageUrl: data.imageUrl || null,
-        pricePerHour: parseInt(data.pricePerHour) || 0,
-        popular: data.popular ?? false,
-        active: data.active ?? true,
+        description: data.description === undefined ? undefined : data.description || null,
+        imageUrl: data.imageUrl === undefined ? undefined : data.imageUrl || null,
+        pricePerHour: data.pricePerHour === undefined ? undefined : parseInt(data.pricePerHour) || 0,
+        popular: data.popular,
+        active: data.active,
       },
     });
     return NextResponse.json(animator);

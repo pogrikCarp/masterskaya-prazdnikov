@@ -5,3 +5,4 @@ export const SITE_PHONE_HREF = `tel:${SITE_PHONE_TEL}`;
 export const SITE_EMAIL_HREF = `mailto:${SITE_EMAIL}`;
 export const SITE_VK_URL = "https://vk.ru/moscow.studio.prazdnik";
 export const SITE_TG_URL = "https://t.me/masterskaya_prazdnika_msk";
+export const SITE_REQUEST_TG_URL = "https://t.me/orlixina333";

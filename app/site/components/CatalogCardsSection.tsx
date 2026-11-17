@@ -7,6 +7,7 @@ import { formatCatalogPrice } from "@/lib/catalog-media";
 import Container from "./Container";
 import { ButtonLink, badgeClassName } from "./Button";
 import NavControl from "./CarouselNav";
+import RequestButton from "./RequestButton";
 import type { CatalogCardItem } from "./CatalogCarouselSection";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -140,9 +141,7 @@ export default function CatalogCardsSection({
                       <span className="text-sm font-bold text-[var(--mp-ink)]">
                         {formatCatalogPrice(item.price, item.priceFrom) ?? " "}
                       </span>
-                      <span className="text-xs font-semibold text-black/40 transition group-hover:text-black/70">
-                        Подробнее
-                      </span>
+                      <RequestButton size="sm" subject={`Программа: ${item.title}`}>Заказать</RequestButton>
                     </div>
                   </div>
                 </motion.article>

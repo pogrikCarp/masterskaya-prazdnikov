@@ -1,5 +1,7 @@
 "use client";
 
+import { SITE_REQUEST_TG_URL } from "../content/contacts";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatCatalogPrice } from "@/lib/catalog-media";
 import { Icon } from "./Icon";
@@ -643,7 +645,7 @@ export default function ServiceBuilderModal({
                               </div>
 
                               <a
-                                href={`https://t.me/masterskaya_prazdnika?text=${encodeURIComponent(
+                                href={`${SITE_REQUEST_TG_URL}?text=${encodeURIComponent(
                                   `Здравствуйте! Хочу заказать праздник:\n${summaryItems
                                     .map((i) => `• ${i.name}`)
                                     .join("\n")}\n\nИтого: ${formatCatalogPrice(total, priceIsFrom)}`
@@ -656,7 +658,7 @@ export default function ServiceBuilderModal({
                                   className: "mt-6 w-full",
                                 })}
                               >
-                                Оформить заказ
+                                Обсудить в Telegram
                               </a>
                             </>
                           )}

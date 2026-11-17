@@ -194,7 +194,7 @@ export default function ComboProgramsSection({
                     </div>
                     <Discount value={program.discount} />
                   </div>
-                  <RequestButton className={styles.orderButton}>Заказать праздник</RequestButton>
+                  <RequestButton className={styles.orderButton} subject={`Комбо-программа: ${program.title}`}>Заказать праздник</RequestButton>
                 </div>
               </article>
             </Reveal>

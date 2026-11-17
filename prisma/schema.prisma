@@ -9,6 +9,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum AnimatorAudience {
+  UNIVERSAL
+  BOYS
+  GIRLS
+}
+
+enum AnimatorAgeGroup {
+  UP_TO_3
+  AGE_4_8
+  AGE_9_PLUS
+}
+
 // Аниматоры
 model Animator {
   id          Int      @id @default(autoincrement())
@@ -16,6 +28,8 @@ model Animator {
   description String?
   imageUrl    String?
   pricePerHour Int     @default(0)
+  audience    AnimatorAudience @default(UNIVERSAL)
+  ageGroups   AnimatorAgeGroup[] @default([])
   popular     Boolean  @default(false)
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())

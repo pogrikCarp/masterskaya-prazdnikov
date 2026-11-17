@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { buttonClassName } from "./Button";
+import { SITE_PHONE_DISPLAY, SITE_PHONE_HREF, SITE_REQUEST_TG_URL } from "../content/contacts";
 
 /** 16px обязателен: iOS Safari зумит страницу при фокусе на поле с меньшим шрифтом */
 const inputClass =
@@ -13,19 +14,20 @@ const labelClass = "block text-sm font-semibold text-[var(--mp-ink)]";
 export default function RequestForm({
   variant = "full",
   autoFocus = false,
+  initialMessage = "",
 }: {
   variant?: "full" | "short";
   autoFocus?: boolean;
+  initialMessage?: string;
 }) {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    message: "",
+    message: initialMessage,
   });
 
   const [consentGiven, setConsentGiven] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -33,50 +35,24 @@ export default function RequestForm({
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!consentGiven) return;
-    setIsSubmitting(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setConsentGiven(false);
-      setFormData({ name: "", phone: "", message: "" });
-    }, 3000);
+    setError("");
+    const phone = formData.phone.replace(/\D/g, "");
+    if (!formData.name.trim() || phone.length < 10 || phone.length > 15) {
+      setError("Проверьте имя и номер телефона");
+      return;
+    }
+    const text = [
+      "Здравствуйте! Хочу заказать праздник.",
+      `Имя: ${formData.name.trim()}`,
+      `Телефон: ${formData.phone.trim()}`,
+      formData.message.trim() ? `Пожелания: ${formData.message.trim()}` : "",
+      `Страница: ${window.location.origin}${window.location.pathname}`,
+    ].filter(Boolean).join("\n");
+    window.location.assign(`${SITE_REQUEST_TG_URL}?text=${encodeURIComponent(text)}`);
   };
-
-  if (isSubmitted) {
-    return (
-      <div className="py-12 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#82E6C8]/20">
-          <svg
-            className="h-8 w-8 text-[#82E6C8]"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        </div>
-        <h3 className="mt-4 text-xl font-black text-[var(--mp-ink)]">
-          Заявка отправлена!
-        </h3>
-        <p className="mt-2 text-sm text-black/60">
-          Мы свяжемся с вами в ближайшее время
-        </p>
-      </div>
-    );
-  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -91,6 +67,7 @@ export default function RequestForm({
           value={formData.name}
           onChange={handleChange}
           required
+          maxLength={100}
           autoFocus={autoFocus}
           className={inputClass}
           placeholder="Как к вам обращаться?"
@@ -108,6 +85,7 @@ export default function RequestForm({
           value={formData.phone}
           onChange={handleChange}
           required
+          maxLength={25}
           className={inputClass}
           placeholder="+7 (___) ___-__-__"
         />
@@ -123,6 +101,7 @@ export default function RequestForm({
           value={formData.message}
           onChange={handleChange}
           rows={variant === "full" ? 4 : 3}
+          maxLength={2000}
           className={`${inputClass} resize-none`}
           placeholder="Расскажите о ваших пожеланиях..."
         />
@@ -164,7 +143,7 @@ export default function RequestForm({
 
       <button
         type="submit"
-        disabled={isSubmitting || !consentGiven}
+        disabled={!consentGiven}
         className={buttonClassName({
           variant: "primary",
           size: "lg",
@@ -172,11 +151,16 @@ export default function RequestForm({
             "w-full disabled:opacity-50 disabled:cursor-not-allowed",
         })}
       >
-        {isSubmitting ? "Отправка..." : "Отправить заявку"}
+        Перейти в Telegram
       </button>
 
+      {error && (
+        <p role="alert" className="text-sm text-red-700">
+          {error} Можно позвонить нам — <a href={SITE_PHONE_HREF} className="underline">{SITE_PHONE_DISPLAY}</a>.
+        </p>
+      )}
       <p className="text-center text-xs text-black/50">
-        Перезвоним в рабочее время и не передадим ваши контакты третьим лицам
+        Откроется диалог с менеджером. Проверьте подготовленное сообщение и нажмите «Отправить» в Telegram.
       </p>
     </form>
   );
